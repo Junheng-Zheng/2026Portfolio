@@ -330,7 +330,7 @@ export default function Home() {
         <p className="md:w-1/2 w-full">
           Junheng believes in crafting experiences that feel intentional at
           every touchpoint. His approach blends thoughtful design with scalable
-          code, with the main goal of turning complex issues into simple
+          code, with the main goal of turning complex problems into simple
           solutions.
         </p>
         <a

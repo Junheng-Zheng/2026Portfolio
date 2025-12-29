@@ -121,7 +121,8 @@ export default function Home() {
         className="sticky top-12 flex gap-2  bg-gray1/50  backdrop-blur-sm  z-10 rounded-xl p-2 w-fit"
       >
         {/* About */}
-        <button
+        <a
+          href="#about"
           onClick={() => setIsSelected(0)}
           className={`px-4 py-3 w-auto flex items-center gap-2 cursor-pointer rounded-xl
       transition-[width,transform,background-color] duration-300 ease-out
@@ -147,10 +148,11 @@ export default function Home() {
           >
             About
           </span>
-        </button>
+        </a>
 
         {/* Works */}
-        <button
+        <a
+          href="#works"
           onClick={() => setIsSelected(1)}
           className={`px-4 py-3 w-auto flex items-center gap-2 cursor-pointer rounded-xl
       transition-[width,transform,background-color] duration-300 ease-out
@@ -176,10 +178,11 @@ export default function Home() {
           >
             Works
           </span>
-        </button>
+        </a>
 
         {/* Philosophy */}
-        <button
+        <a
+          href="#philosophy"
           onClick={() => setIsSelected(2)}
           className={`px-4 py-3 w-auto flex items-center gap-2 cursor-pointer rounded-xl
       transition-[width,transform,background-color] duration-300 ease-out
@@ -205,7 +208,7 @@ export default function Home() {
           >
             Philosophy
           </span>
-        </button>
+        </a>
 
         {/* Contact */}
         <a

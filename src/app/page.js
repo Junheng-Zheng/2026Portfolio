@@ -225,14 +225,17 @@ export default function Home() {
           viewport={{ amount: 0 }}
           onViewportEnter={() => setIsSelected(0)}
         >
-          <h1 className="text-2xl">
+          <h1 className="hidden lg:block text-2xl">
             <AnimateWord word="Junheng is a Design Engineer from NYC" />
+          </h1>
+          <h1 className="block lg:hidden text-2xl">
+            <AnimateWord word="Design Engineer based in NYC" />
           </h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-            className="md:w-1/2 w-full"
+            className="md:w-2/3 lg:w-1/2 w-full"
           >
             Product Designer and UX Developer based in NYC. Junheng combines
             design and development to create seamless digital experiences. Prev.
@@ -327,11 +330,10 @@ export default function Home() {
         onViewportLeave={() => setIsSelected(0)}
       >
         <h2 className="text-xl">Philosophy</h2>
-        <p className="md:w-1/2 w-full">
+        <p className="md:w-2/3 lg:w-1/2 w-full">
           Junheng believes in crafting experiences that feel intentional at
           every touchpoint. His approach blends thoughtful design with scalable
-          code, with the main goal of turning complex problems into simple
-          solutions.
+          code, with the main goal of turning complex into simple solutions.
         </p>
         <a
           href="/Junheng_SWE_Resume.pdf"

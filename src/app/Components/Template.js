@@ -21,7 +21,7 @@ const Template = ({ title, description, extra, image, lessons, metrics }) => {
       <div id="about" className="flex w-full flex-col gap-4">
         <p className="text-sm opacity-80">{extra}</p>
         <h1 className="text-2xl">{title}</h1>
-        <p className="md:w-1/2 w-full">{description}</p>
+        <p className="md:w-2/3 lg:w-1/2 w-full">{description}</p>
       </div>
 
       {metrics && (
@@ -45,7 +45,7 @@ const Template = ({ title, description, extra, image, lessons, metrics }) => {
       {lessons && (
         <div className="flex w-full flex-col gap-4">
           <h2 className="text-xl">What I Learned </h2>
-          <p className="md:w-1/2 w-full">{lessons}</p>
+          <p className="md:w-2/3 lg:w-1/2 w-full">{lessons}</p>
         </div>
       )}
 

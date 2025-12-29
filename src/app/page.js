@@ -232,7 +232,7 @@ export default function Home() {
             <AnimateWord word="Junheng is a Design Engineer from NYC" />
           </h1>
           <h1 className="block lg:hidden text-2xl">
-            <AnimateWord word="Design Engineer based in NYC" />
+            <AnimateWord word="Design Engineer from NYC" />
           </h1>
           <motion.p
             initial={{ opacity: 0, y: 30 }}

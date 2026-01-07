@@ -27,7 +27,7 @@ const Template = ({ title, description, extra, image, lessons, metrics }) => {
       {metrics && (
         <div className="flex w-full flex-col gap-4">
           <h2 className="text-xl">Success through Metrics </h2>
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid xl:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-4">
             {metrics.map((metric, index) => {
               return (
                 <div

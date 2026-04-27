@@ -303,7 +303,7 @@ const Page = () => {
                 </div>
               </div>
             </div>
-            <div className="md:hidden  lg:flex flex flex-1 flex-col overflow-hidden justify-center p-3 gap-2 gap-y-2 grow relative items-center rounded-xl ">
+            <div className="md:hidden lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
               {/* <div className="absolute top-12 right-3 w-32 h-32 bg-blue-100 rounded-full blur-2xl"></div>
               <div className="absolute bottom-12 left-8 w-32 h-32 bg-pink-100 rounded-full blur-2xl"></div>
               <div className="absolute top-12 left-2 w-32 h-32 bg-red-100 rounded-full blur-2xl"></div>
@@ -313,7 +313,11 @@ const Page = () => {
                 autoPlay
                 loop
                 muted
-                className="object-cover -z-20  brightness-120 scale-100 origin-top-left   absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
+                playsInline
+                webkit-playsinline="true"
+                disablePictureInPicture
+                controls={false}
+                className="object-cover -z-20 brightness-120 scale-100 origin-top-left absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
               />
               <h2 className="instrument-serif flex items-center gap-1 font-normal z-2 text-amber-500 text-4xl">
                 Let&apos;s Connect.
@@ -529,7 +533,11 @@ const Page = () => {
             autoPlay
             loop
             muted
-            className="object-cover -z-20 brightness-120 scale-145 origin-top-left  xl:origin-center xl:scale-100  absolute left-0 top-0  w-full h-full object-center xl:object-[50%_43%]"
+            playsInline
+            webkit-playsinline="true"
+            disablePictureInPicture
+            controls={false}
+            className="object-cover -z-20 brightness-120 scale-145 origin-top-left xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full object-center xl:object-[50%_43%]"
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"

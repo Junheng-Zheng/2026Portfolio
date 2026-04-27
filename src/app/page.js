@@ -483,7 +483,7 @@ const Page = () => {
             Works
           </p>
         </div>
-        <div className="w-full h-80 xl:h-100 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ">
+        <div className="w-full h-95 xl:h-100 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ">
           {/* <div className="flex flex-col z-10 absolute top-0 left-0 ">
             <div className="flex items-start ">
               <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">

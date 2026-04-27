@@ -139,12 +139,12 @@ const Page = () => {
   return (
     <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-16 gap-16 py-4 px-4 xl:py-10 text-black/70 xl:px-64 text-md ">
       <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
-        <div className=" flex items-center w-[50%]">
+        <div className=" flex items-center w-[70%] md:w-[50%]">
           {/* <div className="flex items-center text-xs py-2 px-4 spacemono  border-r border-white/20  z-40 relative text-white  ">
                 <p>Design + Dev</p>
               </div> */}
           <div className="relative w-full py-2 items-center  overflow-hidden flex-1 flex">
-            <div className="pointer-events-none absolute top-0 left-0 z-20  w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
+            <div className="pointer-events-none absolute top-0 left-0 z-20  md:w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
             <div className="pointer-events-none absolute top-0 right-0 z-20 w-[15%] h-full bg-linear-to-l from-white via-white to-transparent"></div>
             <div className="tech-marquee__track w-full h-full flex ">
               <div className="flex items-center gap-6 px-3">

@@ -1,399 +1,737 @@
 "use client";
-import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Briefcase, User, BookOpen, Mail } from "lucide-react";
+import Image from "next/image";
+import { motion, useMotionValue, useTransform, animate } from "framer-motion";
+import { ArrowUpRight, ArrowDown, Lock } from "lucide-react";
+import { useState, useEffect } from "react";
+import Rounded from "./Components/Rounded";
 import Footer from "./Components/Footer";
-
-const AnimateWord = ({ word }) => {
+const ProjectCard = ({
+  cover,
+  technologies,
+  title,
+  link,
+  className,
+  icon,
+  lines = true,
+  video,
+  children,
+}) => {
   return (
-    <motion.div
-      initial={{ opacity: 0.8 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.8, delay: 1.8, ease: "easeOut" }}
-      className="inline-block"
+    <div
+      className={`relative flex group  mx-auto flex-col gap-2  w-full ${className}`}
     >
-      {word.split("").map((char, i) => (
-        <motion.span
-          key={i}
-          initial={{ y: 16, opacity: 0, scale: 0.8, rotate: -5 }}
-          animate={{ y: 0, opacity: 1, scale: 1, rotate: 0 }}
-          transition={{
-            delay: i * 0.03,
-            duration: 1,
-            ease: "easeOut",
-            type: "spring",
-          }}
-          style={{ display: "inline-block" }}
-        >
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ))}
-    </motion.div>
+      <Link
+        href={link}
+        className={`w-full active:scale-98 ${className} overflow-hidden group rounded-sm  overflow-y-hidden cursor-pointer  inset-shadow-sm inset-shadow-white relative  transition-transform duration-300 aspect-4/3 `}
+      >
+        <div className="flex flex-col z-10 scale-0 group-hover:scale-100 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
+          <div className="flex items-start ">
+            <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
+              {title}
+            </div>
+            <Rounded
+              width={24}
+              height={24}
+              className="rotate-270"
+              fill="#ffffff"
+            />
+          </div>
+          <Rounded
+            width={24}
+            height={24}
+            className="rotate-270"
+            fill="#ffffff"
+          />
+        </div>
+        <div className="flex flex-col scale-0 group-hover:scale-100 transition-transform duration-300 origin-bottom-right z-10 items-end right-0 bottom-0  absolute ">
+          <Rounded
+            width={24}
+            height={24}
+            className="rotate-90"
+            fill="#ffffff"
+          />
+          <div className="flex items-end  ">
+            <Rounded
+              width={24}
+              height={24}
+              className="rotate-90"
+              fill="#ffffff"
+            />
+            <div className="pl-3 pr-2 cursor-pointer group flex items-center gap-1 pt-2 pb-1   bg-white text-black/70 text-sm  rounded-tl-xl">
+              More
+              <ArrowUpRight
+                strokeWidth={1}
+                size={16}
+                className="group-hover:scale-110 transition-transform duration-300"
+              />
+            </div>
+          </div>
+        </div>
+        {/* {lines && (
+        <div className="absolute top-0 left-0 z-1 w-full flex justify-between h-full">
+          {Array.from({ length: 128 }).map((_, i) => (
+            <div key={i} className="w-px z-1 h-full bg-white/10"></div>
+          ))}
+        </div>
+      )} */}
+        {cover && (
+          <Image
+            src={cover}
+            alt={title}
+            fill
+            loading="lazy"
+            quality={75}
+            className="object-cover z-0 group-hover:scale-105 transition-transform duration-300  object-center"
+          />
+        )}
+        {video && (
+          <video
+            src={video}
+            autoPlay
+            loop
+            muted
+            className="object-cover z-0 group-hover:scale-105 h-full  transition-transform duration-300  object-center"
+          />
+        )}
+        {children}
+        <div className="absolute top-0  flex flex-col gap-1 p-4   -translate-y-full group-hover:translate-y-0 transition-all duration-300  left-0 w-full  overflow-hidden group-hover:h-fit"></div>
+      </Link>
+      {/* <div className="flex  flex-col w-full  gap-0.5">
+        <p className="">{title}</p>
+        <p className="text-sm text-gray-500">Junheng&apos;s UI/UX Resume</p>
+      </div> */}
+    </div>
   );
 };
 
-export default function Home() {
-  const [isSelected, setIsSelected] = useState(0);
-  //     background: "bg-[url('/projectcards/Liberty.png')]",
-  //     name: "Experience/LibertyMutual",
-  //     icon: (
-  //       <svg
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         xmlns="http://www.w3.org/2000/svg"
-  //       >
-  //         <path
-  //           d="M16 20V4C16 3.46957 15.7893 2.96086 15.4142 2.58579C15.0391 2.21071 14.5304 2 14 2H10C9.46957 2 8.96086 2.21071 8.58579 2.58579C8.21071 2.96086 8 3.46957 8 4V20M4 6H20C21.1046 6 22 6.89543 22 8V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V8C2 6.89543 2.89543 6 4 6Z"
-  //           stroke="#FFCF20"
-  //           stroke-linecap="round"
-  //           stroke-linejoin="round"
-  //         />
-  //       </svg>
-  //     ),
-  //     link: "https://www.libertymutual.com",
-  //     primaryColor: "#FFCF20",
-  //     secondaryColor: "#FFE06D",
-  //   },
-  //   {
-  //     background: "bg-[url('/projectcards/Liberty.png')]",
-  //     name: "Experience/LibertyMutual",
-  //     icon: (
-  //       <svg
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         xmlns="http://www.w3.org/2000/svg"
-  //       >
-  //         <path
-  //           d="M16 20V4C16 3.46957 15.7893 2.96086 15.4142 2.58579C15.0391 2.21071 14.5304 2 14 2H10C9.46957 2 8.96086 2.21071 8.58579 2.58579C8.21071 2.96086 8 3.46957 8 4V20M4 6H20C21.1046 6 22 6.89543 22 8V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V8C2 6.89543 2.89543 6 4 6Z"
-  //           stroke="#FFCF20"
-  //           stroke-linecap="round"
-  //           stroke-linejoin="round"
-  //         />
-  //       </svg>
-  //     ),
-  //     link: "https://www.libertymutual.com",
-  //     primaryColor: "#FFCF20",
-  //     secondaryColor: "#FFE06D",
-  //   },
-  //   {
-  //     background: "bg-[url('/projectcards/Liberty.png')]",
-  //     name: "Experience/LibertyMutual",
-  //     icon: (
-  //       <svg
-  //         width="24"
-  //         height="24"
-  //         viewBox="0 0 24 24"
-  //         fill="none"
-  //         xmlns="http://www.w3.org/2000/svg"
-  //       >
-  //         <path
-  //           d="M16 20V4C16 3.46957 15.7893 2.96086 15.4142 2.58579C15.0391 2.21071 14.5304 2 14 2H10C9.46957 2 8.96086 2.21071 8.58579 2.58579C8.21071 2.96086 8 3.46957 8 4V20M4 6H20C21.1046 6 22 6.89543 22 8V18C22 19.1046 21.1046 20 20 20H4C2.89543 20 2 19.1046 2 18V8C2 6.89543 2.89543 6 4 6Z"
-  //           stroke="#FFCF20"
-  //           stroke-linecap="round"
-  //           stroke-linejoin="round"
-  //         />
-  //       </svg>
-  //     ),
-  //     link: "https://www.libertymutual.com",
-  //     primaryColor: "#FFCF20",
-  //     secondaryColor: "#FFE06D",
-  //   },
-  // ];
-  const delay = 1.8;
-  const duration = 1;
+const TypingText = ({ text, speed = 0.05, delay = 0 }) => {
+  const count = useMotionValue(0);
+  const rounded = useTransform(count, (latest) => Math.round(latest));
+  const displayText = useTransform(rounded, (latest) => text.slice(0, latest));
+
+  useEffect(() => {
+    const controls = animate(count, text.length, {
+      type: "tween",
+      duration: text.length * speed,
+      ease: "linear",
+      delay: delay,
+    });
+
+    return controls.stop;
+  }, []);
+
+  return <motion.span>{displayText}</motion.span>;
+};
+
+const Page = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const delay = 0;
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <motion.div
-      initial={{ height: "100dvh", overflow: "hidden" }}
-      animate={{ height: "auto", overflow: "visible" }}
-      transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-      className="max-w-[2000px] mx-auto  md:py-12 scroll-smooth p-8 text-[14px] md:px-24 lg:px-32 xl:px-60 font-light flex items-center flex-col gap-24"
-    >
-      {/* <navbar */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-        className="sticky top-12 flex gap-2  bg-gray1/50  backdrop-blur-sm  z-10 rounded-xl p-2 w-fit"
+    <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-16 gap-16 py-4 px-4 xl:py-10 text-black/70 xl:px-64 text-md ">
+      <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
+        <div className=" flex items-center w-[50%]">
+          {/* <div className="flex items-center text-xs py-2 px-4 spacemono  border-r border-white/20  z-40 relative text-white  ">
+                <p>Design + Dev</p>
+              </div> */}
+          <div className="relative w-full py-2 items-center  overflow-hidden flex-1 flex">
+            <div className="pointer-events-none absolute top-0 left-0 z-20  w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
+            <div className="pointer-events-none absolute top-0 right-0 z-20 w-[15%] h-full bg-linear-to-l from-white via-white to-transparent"></div>
+            <div className="tech-marquee__track w-full h-full flex ">
+              <div className="flex items-center gap-6 px-3">
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+              </div>
+              <div className="flex items-center  gap-6 px-3" aria-hidden="true">
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* menu */}
+      <div
+        className={`w-full   relative  flex z-50 justify-between items-center ${isOpen ? "p-4" : ""} transition-all duration-300  mx-auto ${isScrolled && !isOpen ? "bg-white/20 backdrop-blur-sm p-4 xl:w-[70%] w-[80%] rounded-xl" : ""}`}
       >
-        {/* About */}
-        <a
-          href="#about"
-          onClick={() => setIsSelected(0)}
-          className={`px-4 py-3 w-auto flex items-center gap-2 cursor-pointer rounded-xl
-      transition-[width,transform,background-color] duration-300 ease-out
-      hover:scale-[1.03]
-      ${isSelected === 0 ? "bg-gray2 text-inverse" : "opacity-50"}
-    `}
-        >
-          <User
-            strokeWidth={1}
-            size={20}
-            className={`transition-transform duration-300 ${
-              isSelected === 0 ? "scale-110" : "scale-100"
-            }`}
-          />
-          <span
-            className={`whitespace-nowrap transition-all duration-300
-        ${
-          isSelected === 0
-            ? "max-w-[200px] opacity-100 translate-x-0"
-            : "max-w-0 opacity-0 -translate-x-1"
-        }
-      `}
-          >
-            About
-          </span>
-        </a>
+        <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
 
-        {/* Works */}
-        <a
-          href="#works"
-          onClick={() => setIsSelected(1)}
-          className={`px-4 py-3 w-auto flex items-center gap-2 cursor-pointer rounded-xl
-      transition-[width,transform,background-color] duration-300 ease-out
-      hover:scale-[1.03]
-      ${isSelected === 1 ? "bg-gray2 text-inverse" : "opacity-50"}
-    `}
+        {/* <Image
+          src="/logo.png"
+          alt="Junheng Zheng"
+          width={36}
+          height={36}
+          loading="lazy"
+          quality={75}
+        /> */}
+        <div
+          className={`absolute flex flex-col gap-4 top-0 left-0 w-full overflow-hidden h-fit bg-white   rounded-xl border-t   ${isOpen ? "xl:max-h-[300px] max-h-[800px] border-gray-100  p-4 shadow-sm shadow-gray-200" : "border-white border-none max-h-0"} transition-all duration-300`}
         >
-          <Briefcase
-            strokeWidth={1}
-            size={20}
-            className={`transition-transform duration-300 ${
-              isSelected === 1 ? "scale-110" : "scale-100"
-            }`}
-          />
-          <span
-            className={`whitespace-nowrap transition-all duration-300
-        ${
-          isSelected === 1
-            ? "max-w-[200px] opacity-100 translate-x-0"
-            : "max-w-0 opacity-0 -translate-x-1"
-        }
-      `}
-          >
-            Works
-          </span>
-        </a>
+          <h2 className="text-lg  ">Menu</h2>
 
-        {/* Philosophy */}
-        <a
-          href="#philosophy"
-          onClick={() => setIsSelected(2)}
-          className={`px-4 py-3 w-auto flex items-center gap-2 cursor-pointer rounded-xl
-      transition-[width,transform,background-color] duration-300 ease-out
-      hover:scale-[1.03]
-      ${isSelected === 2 ? "bg-gray2 text-inverse" : "opacity-50"}
-    `}
+          <div className="flex md:flex-row z-30 flex-col gap-4">
+            <div className="flex flex-1 flex-col gap-3">
+              <div className="w-full flex cursor-pointer  active:scale-98  transition-transform duration-300 items-center gap-3 h-fit p-4 bg-gray-50 inset-shadow-sm  border border-gray-100 inset-shadow-white rounded-md">
+                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
+                  <Image
+                    src="/isometrics/gmail.png"
+                    alt="Email"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-xl instrument-serif font-normal">Email</p>
+                  <p className="text-xs text-gray-500">
+                    junhengzheng@gmail.com
+                  </p>
+                </div>
+              </div>
+              <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
+                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
+                  <Image
+                    src="/isometrics/linkedin.png"
+                    alt="Email"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-xl instrument-serif font-normal">
+                    LinkedIn
+                  </p>
+                  <p className="text-xs text-gray-500">Junheng Zheng</p>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-1 flex-col gap-3">
+              <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
+                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
+                  <Image
+                    src="/isometrics/resume.png"
+                    alt="Resume"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-xl instrument-serif font-normal">Resume</p>
+                  <p className="text-xs text-gray-500">
+                    Junheng&apos;s UI/UX Resume
+                  </p>
+                </div>
+              </div>
+              <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
+                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
+                  <Image
+                    src="/isometrics/github.png"
+                    alt="Github"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-xl instrument-serif font-normal">Github</p>
+                  <p className="text-xs text-gray-500">
+                    junhengzheng@gmail.com
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="md:hidden  lg:flex flex flex-1 flex-col overflow-hidden justify-center p-3 gap-2 gap-y-2 grow relative items-center rounded-xl ">
+              {/* <div className="absolute top-12 right-3 w-32 h-32 bg-blue-100 rounded-full blur-2xl"></div>
+              <div className="absolute bottom-12 left-8 w-32 h-32 bg-pink-100 rounded-full blur-2xl"></div>
+              <div className="absolute top-12 left-2 w-32 h-32 bg-red-100 rounded-full blur-2xl"></div>
+              <div className="absolute bottom-8 right-24 w-32 h-32 bg-purple-100 rounded-full blur-2xl"></div> */}
+              <video
+                src="/projectcards/dandi.mp4"
+                autoPlay
+                loop
+                muted
+                className="object-cover -z-20  brightness-120 scale-100 origin-top-left   absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
+              />
+              <h2 className="instrument-serif flex items-center gap-1 font-normal z-2 text-amber-500 text-4xl">
+                Let&apos;s Connect.
+                <ArrowUpRight
+                  strokeWidth={1}
+                  size={36}
+                  className="group-hover:scale-110 group-hover:rotate-45 stroke-amber-500 transition-transform duration-300"
+                />
+              </h2>
+            </div>
+          </div>
+        </div>
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className={`grid grid-cols-3 grid-rows-3 w-[23px] h-[23px] relative cursor-pointer active:scale-88 group transition-all duration-300 ${isOpen ? "rotate-45 gap-0" : "gap-px"}`}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
         >
-          <BookOpen
-            strokeWidth={1}
-            size={20}
-            className={`transition-transform duration-300 ${
-              isSelected === 2 ? "scale-110" : "scale-100"
-            }`}
+          {/* Top-left corner dot */}
+          <div
+            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 translate-y-full translate-x-full" : "hidden scale-100"}`}
           />
-          <span
-            className={`whitespace-nowrap transition-all duration-300
-        ${
-          isSelected === 2
-            ? "max-w-[200px] opacity-100 translate-x-0"
-            : "max-w-0 opacity-0 -translate-x-1"
-        }
-      `}
-          >
-            Philosophy
-          </span>
-        </a>
 
-        {/* Contact */}
-        <a
-          href="https://mail.google.com/mail/?view=cm&fs=1&to=jz7259@g.rit.edu"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="py-3 cursor-pointer px-4 flex justify-center rounded-xl bg-linear-to-r from-orange-500 to-orange-600 items-center hover:scale-[1.03] transition-transform ease-out duration-300"
-        >
-          <Mail strokeWidth={1} size={20} color="white" />
-        </a>
-      </motion.div>
-      {/* hero section */}
-      <div>
-        <motion.div
-          id="about"
-          className="flex w-full flex-col gap-4"
-          viewport={{ amount: 0 }}
-          onViewportEnter={() => setIsSelected(0)}
-        >
-          <h1 className="hidden lg:block text-2xl">
-            <AnimateWord word="Junheng is a Design Engineer from NYC" />
-          </h1>
-          <h1 className="block lg:hidden text-2xl">
-            <AnimateWord word="Design Engineer from NYC" />
-          </h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-            className="md:w-2/3 lg:w-1/2 w-full"
-          >
-            Product Designer and UX Developer based in NYC. Junheng combines
-            design and development to create seamless digital experiences. Prev.
-            Design Engineer Intern @ Liberty Mutual Insurance working on their
-            internal design system, Enterprise UI.
-          </motion.p>
+          {/* Top center - vertical line */}
+          <div className="flex items-center justify-center">
+            <div
+              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "w-px" : "hidden rounded-full"}`}
+            />
+          </div>
+
+          {/* Top-right corner dot */}
+          <div
+            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 translate-y-full -translate-x-full" : "scale-100"}`}
+          />
+
+          {/* Middle-left - horizontal line */}
+          <div className="flex items-center justify-center">
+            <div
+              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "hidden rounded-full"}`}
+            />
+          </div>
+
+          {/* Center - cross intersection */}
+          <div className="flex relative items-center justify-center">
+            <div
+              className={`bg-black/70 w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${isOpen ? "w-px" : "rounded-full"}`}
+            />
+            <div
+              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "rounded-full"}`}
+            />
+          </div>
+
+          {/* Middle-right - horizontal line */}
+          <div className="flex items-center justify-center">
+            <div
+              className={`bg-black/80 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "rounded-full"}`}
+            />
+          </div>
+
+          {/* Bottom-left corner dot */}
+          <div
+            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 -translate-y-full translate-x-full" : "scale-100"}`}
+          />
+
+          {/* Bottom center - vertical line */}
+          <div className="flex items-center justify-center">
+            <div
+              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "w-px" : "hidden rounded-full"}`}
+            />
+          </div>
+
+          {/* Bottom-right corner dot */}
+          <div
+            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 -translate-y-full -translate-x-full" : "scale-100"}`}
+          />
+        </button>
+      </div>
+      {/* <div className="flex hidden flex-col gap-4">
+        <div className="flex flex-col gap-2  instrument-serif text-2xl ">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-            className="flex gap-3"
+            transition={{ duration: 1, delay: delay }}
+            className="py-1.5 pl-1 pr-3 bg-gray-100/80 rounded-xl border-r border-white/20 shadow-sm inset-shadow-sm inset-shadow-white w-fit flex items-center gap-2"
           >
-            <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=jz7259@g.rit.edu"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="py-3 hover:scale-[1.02] active:scale-[0.98] transition-transform ease-out duration-300 cursor-pointer px-4 flex justify-center text-white rounded-xl  bg-gradient-to-r from-orange-500 to-orange-600 items-center"
-            >
-              Let&apos;s Connect!
-            </a>
-            <a
-              href="/Junheng_SWE_Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="py-3 hover:scale-[1.02] active:scale-[0.98] transition-transform ease-out duration-300 cursor-pointer px-4 flex justify-center text-inverse rounded-xl  bg-gray1/50 backdrop-blur-lg items-center"
-            >
-              View Resume
-            </a>
+            <div className=" py-1 px-3 bg-blue-100 inset-shadow-sm border-r border-white/30 inset-shadow-white shadow-sm overflow-hidden relative rounded-xl ">
+              <TypingText text="Design Engineer" speed={0.05} delay={delay} />
+            </div>
+            <div>🌷based in New York City</div>
           </motion.div>
-        </motion.div>
-      </div>
-      {/* works section */}
-      <motion.div
-        id="works"
-        className="flex w-full flex-col gap-4"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-      >
-        <h2 className="text-xl">Work</h2>
-        <Link
-          href="/projects/uxinterviewer"
-          className="w-full group flex justify-between py-4 border-b border-gray1"
-        >
-          Co-founder @ UXInterviewer
-          <ArrowUpRight
-            strokeWidth={1}
-            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-          />
-        </Link>
-        <Link
-          href="/projects/liberty"
-          className="w-full group flex justify-between py-4 border-b border-gray1"
-        >
-          Design Engineer @ Liberty Mutual
-          <ArrowUpRight
-            strokeWidth={1}
-            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-          />
-        </Link>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: delay + 0.25 }}
+            className="py-1.5 pl-3 pr-1 bg-gray-100/80 rounded-xl inset-shadow-sm border-r border-white/30 inset-shadow-white shadow-sm w-fit flex items-center gap-2"
+          >
+            <div className="xl:block hidden">Passionate about creating 🌼</div>
+            <div className="xl:hidden block">Creating</div>
 
-        {/* <Link
-          href="/projects/tigersnackbox"
-          className="w-full group flex justify-between py-4 border-b border-gray1"
-        >
-          UX Design @ Tiger Snack Box
-          <ArrowUpRight
-            strokeWidth={1}
-            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-          />
-        </Link> */}
-        <Link
-          href="/projects/ddmotor"
-          className="w-full group flex justify-between py-4 border-b border-gray1"
-        >
-          Frontend Dev @ D&D Motor Systems
-          <ArrowUpRight
-            strokeWidth={1}
-            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-          />
-        </Link>
-      </motion.div>
-      {/* philosophy section */}
-      <motion.div
-        id="philosophy"
-        className="flex w-full flex-col gap-4"
-        viewport={{ amount: 0 }}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-        onViewportEnter={() => setIsSelected(1)}
-        onViewportLeave={() => setIsSelected(0)}
-      >
-        <h2 className="text-xl">Philosophy</h2>
-        <p className="md:w-2/3 lg:w-1/2 w-full">
-          Junheng believes in crafting experiences that feel intentional at
-          every touchpoint. His approach blends thoughtful design with scalable
-          code, with the main goal of turning complex into simple solutions.
+            <div className=" py-1 px-3 bg-yellow-100 inset-shadow-sm border-r border-white/30 inset-shadow-white shadow-sm overflow-hidden relative rounded-xl ">
+              <TypingText
+                text=" seamless digital experiences"
+                speed={0.05}
+                delay={delay}
+              />
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="flex gap-3 ">
+          <button className="cursor-pointer active:scale-98 bg-white group hover:scale-101 transition-transform duration-300 px-4 py-2 border flex gap-2 items-center border-gray-200/80 rounded-md">
+            Contact
+            <ArrowUpRight
+              strokeWidth={1}
+              size={16}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+          </button>
+          <button className="cursor-pointer active:scale-98 bg-white group hover:scale-101 transition-transform duration-300 px-4 py-2 border flex gap-2 items-center border-gray-200/80 rounded-md">
+            Resume
+            <ArrowUpRight
+              strokeWidth={1}
+              size={16}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+          </button>
+        </div>
+      </div> */}
+      <div className="flex flex-col gap-6">
+        {/* <div className="w-full flex justify-between text-sm  leading-tight mono items-center">
+          <p> [Based in NYC]</p>
+          <p>[10:38]</p>
+        </div> */}
+        <p className="z-20 text-lg w-full  md:w-1/2 ">
+          Junheng combines design and development to create seamless digital
+          experiences. Incoming @ <span className="italic">IBM Research</span>,
+          and previously interned @{" "}
+          <span className="italic">Liberty Mutual Insurance</span>.
         </p>
-        <a
-          href="/Junheng_SWE_Resume.pdf"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="py-3 w-fit hover:scale-[1.02] active:scale-[0.98] transition-transform ease-out duration-300 cursor-pointer px-4 flex justify-center text-inverse rounded-xl  bg-gray1/50 backdrop-blur-lg items-center"
-        >
-          View Resume
-        </a>
-      </motion.div>
-      <motion.div
-        viewport={{ amount: 0.5 }}
-        onViewportEnter={() => setIsSelected(2)}
-        onViewportLeave={() => setIsSelected(1)}
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: duration, delay: delay, ease: "easeOut" }}
-        className="w-full"
-      >
-        <Footer />
-      </motion.div>
-    </motion.div>
-  );
-}
+        <div className="flex gap-7">
+          <p className="flex cursor-pointer  group items-center gap-1">
+            {" "}
+            <ArrowUpRight
+              strokeWidth={1}
+              size={20}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+            Contact
+          </p>
+          <p className="flex cursor-pointer  group items-center gap-1">
+            <ArrowUpRight
+              strokeWidth={1}
+              size={20}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+            Resume
+          </p>
+          <p className="flex cursor-pointer  group items-center gap-1">
+            <ArrowUpRight
+              strokeWidth={1}
+              size={20}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+            Works
+          </p>
+        </div>
+        <div className="w-full h-110 xl:h-100 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ">
+          {/* <div className="flex flex-col z-10 absolute top-0 left-0 ">
+            <div className="flex items-start ">
+              <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
+                Hello 👋
+              </div>
+              <Rounded
+                width={24}
+                height={24}
+                className="rotate-270"
+                fill="#ffffff"
+              />
+            </div>
+            <Rounded
+              width={24}
+              height={24}
+              className="rotate-270"
+              fill="#ffffff"
+            />
+          </div> */}
 
-// const ProjectCard = ({
-//   background,
-//   name,
-//   icon,
-//   link,
-//   primaryColor,
-//   secondaryColor,
-// }) => {
-//   return (
-//     <Link
-//       href={link}
-//       target="_blank"
-//       rel="noopener noreferrer"
-//       className={` flex flex-col bg-cover bg-center rounded-xl p-3 w-full aspect-square gap-2 ${background}`}
-//     >
-//       <div
-//         className="flex gap-2 p-2 rounded-xl w-full"
-//         style={{ backgroundColor: secondaryColor }}
-//       >
-//         <div
-//           className={`w-[42px] flex items-center justify-center h-[42px] rounded-lg bg-white`}
-//           style={{ color: primaryColor }}
-//         >
-//           {icon}
-//         </div>
-//         <div
-//           className="flex-1 rounded-lg flex items-center justify-start"
-//           style={{ backgroundColor: primaryColor }}
-//         >
-//           <p className={`text-white px-3`}>{name}</p>
-//         </div>
-//       </div>
-//     </Link>
-//   );
-// };
+          {/* <div className="flex flex-col z-10 items-end right-0 bottom-0  absolute ">
+            <Rounded
+              width={24}
+              height={24}
+              className="rotate-90"
+              fill="#ffffff"
+            />
+            <div className="flex items-end  ">
+              <Rounded
+                width={24}
+                height={24}
+                className="rotate-90"
+                fill="#ffffff"
+              />
+              <div className="pl-3 pr-2 cursor-pointer group flex items-center gap-1 pt-2 pb-1   bg-white text-black/70 text-sm  rounded-tl-xl">
+                Contact
+                <ArrowUpRight
+                  strokeWidth={1}
+                  size={16}
+                  className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+                />
+              </div>
+            </div>
+          </div> */}
+          <video
+            src="/windowlight.mp4"
+            autoPlay
+            loop
+            muted
+            className="object-cover -z-20 brightness-120 scale-145 origin-top-left  xl:origin-center xl:scale-100  absolute left-0 top-0  w-full h-full object-center xl:object-[50%_43%]"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1920 1080"
+            preserveAspectRatio="none"
+            className="absolute inset-0   w-full h-full opacity-30 pointer-events-none z-0"
+          >
+            <filter id="noiseFilter">
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="10"
+                numOctaves="2"
+                stitchTiles="stitch"
+              />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+          </svg>
+
+          {/* <div className="flex absolute bottom-4 opacity-75  group left-1/2 -translate-x-1/2 flex-col gap-2 py-2 px-1 border border-white rounded-full">
+            <ArrowDown
+              strokeWidth={1}
+              size={16}
+              className="group-hover:scale-110  transition-transform duration-300"
+            />
+          </div> */}
+          {/* <div className="flex gap-7 items-center">
+          <div className="flex gap-1 items-center">
+            <p>Works</p>
+            <ArrowUpRight
+              strokeWidth={1}
+              size={16}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+          </div>
+          <div className="flex gap-1 items-center">
+            <p>Resume</p>
+            <ArrowUpRight
+              strokeWidth={1}
+              size={16}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+          </div>
+        </div> */}
+        </div>
+        {/* <div className="w-full flex justify-between leading-tight text-sm mono items-center">
+          <p> [Contact]</p>
+          <p>[Resume]</p>
+        </div> */}
+      </div>
+      {/* <div className="py-7 flex text-lg text-center  justify-center">
+        <p className="w-full md:w-1/2">
+          Junheng has worked with startups, small businesses, and fortune 100s,
+          and freelance work.Check out some of his works below.
+        </p>
+      </div> */}
+      {/* <div className="w-full relative overflow-hidden 2xl:h-[320px] h-[320px] rounded-xl  flex items-center justify-between">
+        {Array.from({ length: 256 }).map((_, i) => (
+          <div key={i} className="w-px z-1 h-full bg-white/20"></div>
+        ))}
+
+        <img
+          src="/testold.jpeg"
+          alt="hero"
+          className="object-cover absolute top-0 left-0 w-full h-full object-center rounded-xl"
+        />
+      </div> */}
+
+      <div className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6">
+        <ProjectCard
+          cover="/cardcovers/ibm.gif"
+          technologies={["Figma", "SwiftUI", "Kotlin"]}
+          title="SWE Intern @ IBM Research"
+          link="/works/pack"
+          icon="/isometrics/meditate.png"
+          className="md:col-span-4"
+        >
+          <div className="flex flex-col z-50 group-hover:scale-0 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
+            <div className="flex items-start ">
+              <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
+                Coming Soon
+              </div>
+              <Rounded
+                width={24}
+                height={24}
+                className="rotate-270"
+                fill="#ffffff"
+              />
+            </div>
+            <Rounded
+              width={24}
+              height={24}
+              className="rotate-270"
+              fill="#ffffff"
+            />
+          </div>
+        </ProjectCard>
+        <ProjectCard
+          cover="/cardcovers/limi.gif"
+          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
+          title="Design Engineer @ LMI "
+          link="/works/libertymutual"
+          icon="/isometrics/liberty.png"
+          className="md:col-span-4 "
+        />
+
+        <ProjectCard
+          cover="/cardcovers/propriomock.png"
+          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
+          title="Figbuild 2026 [Proprio]"
+          link="/works/proprio"
+          icon="/isometrics/liberty.png"
+          className="md:col-span-4 saturate-100 "
+        />
+        <ProjectCard
+          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
+          title="Design Engineer @ Crafty Studios "
+          link="/works/makerspace"
+          icon="/isometrics/liberty.png"
+          className="md:col-span-4 "
+        >
+          <Image
+            src="/cardcovers/seniorproj.png"
+            alt="Coming Soon"
+            fill
+            className="object-cover w-full h-full "
+          />
+        </ProjectCard>
+        <ProjectCard
+          cover="/projectcards/packgame.png"
+          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
+          title="PACK! Mobile Game"
+          link="/works/pack"
+          icon="/isometrics/liberty.png"
+          className="md:col-span-4"
+        />
+        {/* <ProjectCard
+          cover="/projectcards/website.png"
+          technologies={["Figma", "SwiftUI", "Kotlin"]}
+          title="Pack!"
+          link="/works/pack"
+          icon="/isometrics/meditate.png"
+          className="md:col-span-4 "
+        /> */}
+        {/* <ProjectCard
+          cover="/projectcards/keyb.png"
+          technologies={["Figma"]}
+          title="FloralTyper"
+          link="/projects/30min"
+          icon="/isometrics/website.png"
+          className="md:col-span-4"
+        /> */}
+        {/* <ProjectCard
+          video="/projectcards/proprio.mov"
+          technologies={["Figma"]}
+          title="Proprio"
+          link="/projects/30min"
+          icon="/isometrics/website.png"
+          className="md:col-span-4"
+          lines={false}
+        />
+
+
+
+        <ProjectCard
+          cover="/projectcards/bal.png"
+          technologies={["Figma"]}
+          title="Figma Studies"
+          link="/projects/30min"
+          icon="/isometrics/website.png"
+          className="md:col-span-5"
+        />
+        <ProjectCard
+          cover="/projectcards/30min.png"
+          technologies={["Figma"]}
+          title="Rythmn"
+          link="/projects/30min"
+          icon="/isometrics/gym.png"
+          className="md:col-span-3"
+        /> */}
+      </div>
+      {/* <div className="w-full flex flex-col py-12 gap-12">
+
+        <p className="w-1/2">
+          I started my journey studying industrial and product design at
+          Brooklyn Technical Highschool. After graduating, I started my
+          undergraduate at RIT studying Web and Mobile Computing , a major that
+          combines developement and design. since then, I have worked with
+          startups, small businesses, and fortune 100s, and freelance work to
+          create seamless digital experiences.
+        </p>
+        <div className="relative h-96 rounded-lg overflow-hidden">
+          <Image
+            src="/jun/junback.jpeg"
+            alt="about"
+            fill
+            className="object-cover object-center"
+          />
+        </div>
+      </div> */}
+      <Footer />
+    </div>
+  );
+};
+
+export default Page;

@@ -1,7 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import Footer from "./Footer";
-const Template = ({ title, description, extra, image, lessons, metrics }) => {
+const Template = ({
+  title,
+  description,
+  extra,
+  image,
+  lessons,
+  metrics,
+  more,
+}) => {
   return (
     <div className="md:py-12 scroll-smooth p-8 text-[14px] xl:px-60 font-light flex flex-col gap-12">
       <p className="cursor-pointer">
@@ -50,7 +58,18 @@ const Template = ({ title, description, extra, image, lessons, metrics }) => {
       )}
 
       <div className="w-full h-px bg-gray1"></div>
-
+      {more &&
+        more.map((moreItem, index) => {
+          return (
+            <div
+              key={index}
+              className="flex flex-col p-4 bg-gray1/50 rounded-xl justify-between  gap-8"
+            >
+              <p className="text-2xl">{moreItem.percentage}</p>
+              <p>{moreItem.description}</p>
+            </div>
+          );
+        })}
       <div className="w-full ">
         <Footer />
       </div>

@@ -25,6 +25,9 @@ body {
   scroll-behavior: smooth;
 }
 
+.instrument-serif {
+  font-family: var(--font-instrument-serif);
+}
 #about {
   scroll-margin-top: 80px;
 }
@@ -35,4 +38,41 @@ body {
 
 #philosophy {
   scroll-margin-top: 80px;
+}
+
+.mono {
+  font-family: var(--font-geist-mono);
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+@keyframes tech-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.tech-marquee {
+  overflow: hidden;
+}
+
+.tech-marquee__track {
+  width: max-content;
+  will-change: transform;
+  animation: tech-marquee-scroll 120s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tech-marquee__track {
+    animation: none;
+    transform: translateX(0);
+  }
 }

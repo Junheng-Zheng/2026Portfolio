@@ -1,9 +1,17 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import { Instrument_Serif } from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+});
+
+export const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: "normal",
+  variable: "--font-instrument-serif",
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -21,7 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
         {children}
       </body>

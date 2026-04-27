@@ -137,76 +137,7 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-16 gap-16 py-4 px-4 xl:py-10 text-black/70 xl:px-64 text-md ">
-      <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
-        <div className=" flex items-center w-[70%] md:w-[50%]">
-          {/* <div className="flex items-center text-xs py-2 px-4 spacemono  border-r border-white/20  z-40 relative text-white  ">
-                <p>Design + Dev</p>
-              </div> */}
-          <div className="relative w-full py-2 items-center  overflow-hidden flex-1 flex">
-            <div className="pointer-events-none absolute top-0 left-0 z-20  md:w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
-            <div className="pointer-events-none absolute top-0 right-0 z-20 w-[15%] h-full bg-linear-to-l from-white via-white to-transparent"></div>
-            <div className="tech-marquee__track w-full h-full flex ">
-              <div className="flex items-center gap-6 px-3">
-                <p>React</p>
-                <p>Tailwind</p>
-                <p>Figma</p>
-                <p>Javascript</p>
-                <p>Typescript</p>
-                <p>Framer Motion</p>
-                <p>Vercel</p>
-                <p>Next.js</p>
-                <p>Node.js</p>
-                <p>Express</p>
-                <p>MongoDB</p>
-                <p>PostgreSQL</p>
-                <p>MySQL</p>
-                <p>React</p>
-                <p>Tailwind</p>
-                <p>Figma</p>
-                <p>Javascript</p>
-                <p>Typescript</p>
-                <p>Framer Motion</p>
-                <p>Vercel</p>
-                <p>Next.js</p>
-                <p>Node.js</p>
-                <p>Express</p>
-                <p>MongoDB</p>
-                <p>PostgreSQL</p>
-                <p>MySQL</p>
-              </div>
-              <div className="flex items-center  gap-6 px-3" aria-hidden="true">
-                <p>React</p>
-                <p>Tailwind</p>
-                <p>Figma</p>
-                <p>Javascript</p>
-                <p>Typescript</p>
-                <p>Framer Motion</p>
-                <p>Vercel</p>
-                <p>Next.js</p>
-                <p>Node.js</p>
-                <p>Express</p>
-                <p>MongoDB</p>
-                <p>PostgreSQL</p>
-                <p>MySQL</p>
-                <p>React</p>
-                <p>Tailwind</p>
-                <p>Figma</p>
-                <p>Javascript</p>
-                <p>Typescript</p>
-                <p>Framer Motion</p>
-                <p>Vercel</p>
-                <p>Next.js</p>
-                <p>Node.js</p>
-                <p>Express</p>
-                <p>MongoDB</p>
-                <p>PostgreSQL</p>
-                <p>MySQL</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-16 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
       {/* menu */}
       <div
         className={`w-full   relative  flex z-50 justify-between items-center ${isOpen ? "p-4" : ""} transition-all duration-300  mx-auto ${isScrolled && !isOpen ? "bg-white/20 backdrop-blur-sm p-4 xl:w-[70%] w-[80%] rounded-xl" : ""}`}
@@ -483,7 +414,7 @@ const Page = () => {
             Works
           </p>
         </div>
-        <div className="w-full h-95 xl:h-100 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ">
+        <div className="w-full h-100 xl:h-100 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ">
           {/* <div className="flex flex-col z-10 absolute top-0 left-0 ">
             <div className="flex items-start ">
               <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
@@ -604,6 +535,76 @@ const Page = () => {
           className="object-cover absolute top-0 left-0 w-full h-full object-center rounded-xl"
         />
       </div> */}
+
+      <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
+        <div className=" flex items-center w-[70%] md:w-[50%]">
+          {/* <div className="flex items-center text-xs py-2 px-4 spacemono  border-r border-white/20  z-40 relative text-white  ">
+                <p>Design + Dev</p>
+              </div> */}
+          <div className="relative w-full py-2 items-center  overflow-hidden flex-1 flex">
+            <div className="pointer-events-none absolute top-0 left-0 z-20  md:w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
+            <div className="pointer-events-none absolute top-0 right-0 z-20 w-[15%] h-full bg-linear-to-l from-white via-white to-transparent"></div>
+            <div className="tech-marquee__track w-full h-full flex ">
+              <div className="flex items-center gap-6 px-3">
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+              </div>
+              <div className="flex items-center  gap-6 px-3" aria-hidden="true">
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+                <p>React</p>
+                <p>Tailwind</p>
+                <p>Figma</p>
+                <p>Javascript</p>
+                <p>Typescript</p>
+                <p>Framer Motion</p>
+                <p>Vercel</p>
+                <p>Next.js</p>
+                <p>Node.js</p>
+                <p>Express</p>
+                <p>MongoDB</p>
+                <p>PostgreSQL</p>
+                <p>MySQL</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6">
         <ProjectCard

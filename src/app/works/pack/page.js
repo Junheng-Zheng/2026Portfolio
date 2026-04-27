@@ -12,8 +12,8 @@ import { Star, Briefcase, Palette, Clock, Circle } from "lucide-react";
 import { Gamepad } from "lucide-react";
 const Pack = () => {
   return (
-    <div className="flex flex-col gap-8 py-12  font-light text-black/70   ">
-      <div className="flex flex-col xl:px-64 text-base opacity-90   gap-3">
+    <div className="flex flex-col 2xl:px-128 xl:px-64   gap-8 py-12  font-light text-black/70   ">
+      <div className="flex flex-col text-base opacity-90   gap-3">
         <Link className="cursor-pointer text-sm  " href="/">
           Back to Home
         </Link>
@@ -23,9 +23,9 @@ const Pack = () => {
         </p>
       </div>
 
-      <div className="flex flex-col gap-3 xl:px-64 ">
+      <div className="flex flex-col gap-3 ">
         <div className="w-full lg:gap-3 grid grid-cols-2">
-          <div className="w-full h-[280px] lg:h-[600px] relative  col-span-2 rounded-lg overflow-hidden bg-blue-100">
+          <div className="w-full h-[280px] lg:h-[600px] relative  col-span-2 overflow-hidden bg-blue-100">
             <Image
               src="/pack/pack1.png"
               alt="cover"
@@ -34,7 +34,7 @@ const Pack = () => {
             />
           </div>
 
-          <div className="w-full h-full relative row-span-2 col-span-1 rounded-lg overflow-hidden bg-blue-100">
+          <div className="w-full h-full relative row-span-2 col-span-1 overflow-hidden bg-blue-100">
             <Image
               src="/pack/pack2.png"
               alt="1"
@@ -42,7 +42,7 @@ const Pack = () => {
               className="object-cover object-center"
             />
           </div>
-          <div className="w-full h-[200px]  lg:h-[500px] relative row-span-1 col-span-1 rounded-lg overflow-hidden bg-blue-100">
+          <div className="w-full h-[200px]  lg:h-[500px] relative row-span-1 col-span-1 overflow-hidden bg-blue-100">
             <Image
               src="/pack/pack3.png"
               alt="2"
@@ -69,7 +69,7 @@ const Pack = () => {
               </div>
             </div> */}
           </div>
-          <div className="w-full h-[200px] lg:h-[500px] relative row-span-1 col-span-1 rounded-lg overflow-hidden bg-blue-100">
+          <div className="w-full h-[200px] lg:h-[500px] relative row-span-1 col-span-1 overflow-hidden bg-blue-100">
             <Image
               src="/pack/pack4.png"
               alt="3"
@@ -77,7 +77,7 @@ const Pack = () => {
               className="object-cover object-bottom"
             />
           </div>
-          <div className="w-full h-[280px] lg:h-[600px] relative  col-span-2 rounded-lg overflow-hidden bg-blue-100">
+          <div className="w-full h-[280px] lg:h-[600px] relative  col-span-2 overflow-hidden bg-blue-100">
             <Image
               src="/pack/pack5.png"
               alt="4"
@@ -88,7 +88,7 @@ const Pack = () => {
         </div>
       </div>
 
-      <div className="xl:px-64 ">
+      <div className="">
         <Footer />
       </div>
     </div>

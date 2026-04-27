@@ -12,8 +12,8 @@ import { Star, Briefcase, Palette, Clock, Circle } from "lucide-react";
 import { Gamepad } from "lucide-react";
 const Pack = () => {
   return (
-    <div className="flex flex-col gap-8 py-12  font-light text-black/70   ">
-      <div className="flex flex-col xl:px-64 text-base opacity-90   gap-3">
+    <div className="flex flex-col 2xl:px-128 xl:px-64   gap-8 py-12  font-light text-black/70   ">
+      <div className="flex flex-col text-base opacity-90   gap-3">
         <Link className="cursor-pointer text-sm  " href="/">
           Back to Home
         </Link>
@@ -23,7 +23,7 @@ const Pack = () => {
           this project.
         </p>
       </div>
-      <div className="flex flex-col w-full gap-3 xl:px-64 ">
+      <div className="flex flex-col w-full gap-3 ">
         <div className="w-full flex flex-col gap-3">
           <div className="w-full aspect-4/3 md:aspect-2/1 relative  overflow-hidden bg-blue-100">
             <Image
@@ -57,7 +57,7 @@ const Pack = () => {
         </div>
       </div>
 
-      <div className="xl:px-64 ">
+      <div className="">
         <Footer />
       </div>
     </div>

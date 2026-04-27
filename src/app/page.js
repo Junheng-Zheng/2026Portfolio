@@ -309,14 +309,15 @@ const Page = () => {
               <div className="absolute top-12 left-2 w-32 h-32 bg-red-100 rounded-full blur-2xl"></div>
               <div className="absolute bottom-8 right-24 w-32 h-32 bg-purple-100 rounded-full blur-2xl"></div> */}
               <video
-                src="/windowlight.mp4"
+                src="/projectcards/dandi.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
+                webkit-playsinline="true"
                 disablePictureInPicture
                 controls={false}
-                className="object-cover -z-20 brightness-120 scale-145 origin-top-left xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full object-center xl:object-[50%_43%]"
+                className="object-cover -z-20 brightness-120 scale-100 origin-top-left absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
               />
               <h2 className="instrument-serif flex items-center gap-1 font-normal z-2 text-amber-500 text-4xl">
                 Let&apos;s Connect.

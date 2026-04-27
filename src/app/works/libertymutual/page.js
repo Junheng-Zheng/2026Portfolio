@@ -12,7 +12,7 @@ import { Star, Briefcase, Palette, Clock, Circle } from "lucide-react";
 import { Gamepad, ArrowUpRight } from "lucide-react";
 const Pack = () => {
   return (
-    <div className="flex flex-col 2xl:px-128 xl:px-64   gap-8 py-12  font-light text-black/70   ">
+    <div className="flex flex-col 2xl:px-128 xl:px-64   px-4  gap-8 py-12  font-light text-black/70   ">
       <div className="flex flex-col text-base opacity-90   gap-3">
         <Link className="cursor-pointer text-sm  " href="/">
           Back to Home
@@ -25,7 +25,7 @@ const Pack = () => {
         </p>
       </div>
       <div className="flex flex-col gap-3 ">
-        <div className="w-full aspect-2/1 relative bg-[#FFD000] flex ">
+        <div className="w-full aspect-4/3 md:aspect-2/1 relative bg-[#FFD000] flex ">
           <Image
             src="/cardcovers/limi.gif"
             alt="cover"
@@ -35,7 +35,7 @@ const Pack = () => {
         </div>
       </div>
       <div className="flex flex-col gap-3 ">
-        <div className="w-full aspect-video relative flex-col gap-3  bg-gray-100 flex justify-center items-center">
+        <div className="w-full aspect-video px-12 text-center relative flex-col gap-3  bg-gray-100 flex justify-center items-center">
           <p className="z-20 text-lg">
             Please message me to learn more about what I did.
           </p>

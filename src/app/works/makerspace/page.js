@@ -12,7 +12,7 @@ import { Star, Briefcase, Palette, Clock, Circle } from "lucide-react";
 import { Gamepad } from "lucide-react";
 const Pack = () => {
   return (
-    <div className="flex flex-col 2xl:px-128 xl:px-64   gap-8 py-12  font-light text-black/70   ">
+    <div className="flex flex-col 2xl:px-128 xl:px-64  px-4   gap-8 py-12  font-light text-black/70   ">
       <div className="flex flex-col text-base opacity-90   gap-3">
         <Link className="cursor-pointer text-sm  " href="/">
           Back to Home

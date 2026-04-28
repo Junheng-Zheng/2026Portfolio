@@ -209,7 +209,12 @@ const Page = () => {
 
           <div className="flex md:flex-row z-30 flex-col gap-4">
             <div className="flex flex-1 flex-col gap-3">
-              <div className="w-full flex cursor-pointer  active:scale-98  transition-transform duration-300 items-center gap-3 h-fit p-4 bg-gray-50 inset-shadow-sm  border border-gray-100 inset-shadow-white rounded-md">
+              <Link
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=jz7259@g.rit.edu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex cursor-pointer  active:scale-98  transition-transform duration-300 items-center gap-3 h-fit p-4 bg-gray-50 inset-shadow-sm  border border-gray-100 inset-shadow-white rounded-md"
+              >
                 <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
                   <Image
                     src="/isometrics/gmail.png"
@@ -224,8 +229,13 @@ const Page = () => {
                   <p className="text-md">Email</p>
                   <p className="text-xs text-gray-500">jz7259@g.rit.edu</p>
                 </div>
-              </div>
-              <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
+              </Link>
+              <Link
+                href="https://linkedin.com/in/junhengzheng"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
+              >
                 <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
                   <Image
                     src="/isometrics/linkedin.png"
@@ -240,10 +250,15 @@ const Page = () => {
                   <p className="text-md">LinkedIn</p>
                   <p className="text-xs text-gray-500">@Junheng Zheng</p>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="flex flex-1 flex-col gap-3">
-              <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
+              <Link
+                href="/Junheng_SWE_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
+              >
                 <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
                   <Image
                     src="/isometrics/resume.png"
@@ -258,8 +273,13 @@ const Page = () => {
                   <p className="text-md">Resume</p>
                   <p className="text-xs text-gray-500">Dev + Design Resume</p>
                 </div>
-              </div>
-              <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
+              </Link>
+              <Link
+                href="https://github.com/junheng-zheng"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
+              >
                 <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
                   <Image
                     src="/isometrics/github.png"
@@ -274,7 +294,7 @@ const Page = () => {
                   <p className="text-md">Github</p>
                   <p className="text-xs text-gray-500">@junhengzheng</p>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="md:hidden group cursor-pointer lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
               {/* <div className="absolute top-12 right-3 w-32 h-32 bg-blue-100 rounded-full blur-2xl"></div>
@@ -426,9 +446,12 @@ const Page = () => {
           initial="hidden"
           animate={introDone ? "show" : "hidden"}
         >
-          <motion.p
+          <motion.a
             variants={linkItem}
             className="flex cursor-pointer  group items-center gap-1"
+            href="https://linkedin.com/in/junhengzheng"
+            target="_blank"
+            rel="noopener noreferrer"
           >
             {" "}
             <ArrowUpRight
@@ -437,9 +460,12 @@ const Page = () => {
               className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
             />
             Contact
-          </motion.p>
-          <motion.p
+          </motion.a>
+          <motion.a
             variants={linkItem}
+            href="/Junheng_SWE_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex cursor-pointer  group items-center gap-1"
           >
             <ArrowUpRight
@@ -448,7 +474,7 @@ const Page = () => {
               className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
             />
             Resume
-          </motion.p>
+          </motion.a>
           <motion.p
             variants={linkItem}
             className="flex cursor-pointer  group items-center gap-1"
@@ -688,14 +714,19 @@ const Page = () => {
           </p>
         </div>
         <div className="w-full py-4 gap-6 flex justify-start items-center">
-          <p className="flex cursor-pointer  group items-center gap-1">
+          <Link
+            href="/Junheng_SWE_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex cursor-pointer  group items-center gap-1"
+          >
             <ArrowUpRight
               strokeWidth={1}
               size={20}
               className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
             />
             Full Resume
-          </p>
+          </Link>
           <Link
             href="/manifesto"
             className="flex cursor-pointer  group items-center gap-1"

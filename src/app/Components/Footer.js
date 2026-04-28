@@ -26,9 +26,9 @@ const Footer = () => {
       <div className="flex md:flex-row flex-col md:justify-between gap-16 md:items-end">
         <div className="flex  gap-12">
           <div className="flex flex-col gap-4">
-            <Animatedlink href="#about">About</Animatedlink>
+            <Animatedlink href="#about">Manifesto</Animatedlink>
             <Animatedlink href="#works">Works</Animatedlink>
-            <Animatedlink href="#philosophy">Philosophy</Animatedlink>
+            <Animatedlink href="#philosophy">Resume</Animatedlink>
           </div>
           <div className="flex flex-col gap-4">
             <Animatedlink link="https://www.linkedin.com/in/junhengzheng/">

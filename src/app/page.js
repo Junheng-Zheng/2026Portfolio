@@ -298,15 +298,17 @@ const Page = () => {
                 <rect width="100%" height="100%" filter="url(#noiseFilter)" />
               </svg>
               <video
-                src="/projectcards/dandi.mp4"
                 autoPlay
-                loop
                 muted
                 playsInline
+                loop
                 preload="auto"
-                disablePictureInPicture
+                controls={false}
                 className="object-cover -z-20 brightness-120 group-hover:scale-105 transition-transform duration-300 origin-top-left absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
-              />
+              >
+                <source src="/projectcards/dandi.mp4" type="video/mp4" />
+              </video>
+
               <h2 className="flex items-center group-hover:scale-105 transition-transform duration-300 font-normalgap-1  z-2 text-amber-500 text-2xl">
                 Let&apos;s Connect.
                 <ArrowUpRight
@@ -471,9 +473,17 @@ const Page = () => {
           }}
           className="w-full h-100 xl:h-90 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  "
         >
-          <video autoPlay muted playsInline loop>
-            <source src="/projectcards/dandi.mp4" type="video/mp4" />
-          </video>
+          <video
+            src="/projectcards/dandi.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            webkit-playsinline="true"
+            disablePictureInPicture
+            controls={false}
+            className="object-cover -z-20 brightness-120 scale-145 origin-top-left xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full object-center xl:object-[50%_43%]"
+          />
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1920 1080"

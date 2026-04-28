@@ -482,7 +482,7 @@ const Page = () => {
             webkit-playsinline="true"
             disablePictureInPicture
             controls={false}
-            className="object-cover -z-20 brightness-120 scale-145 origin-top-left xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full object-center xl:object-[50%_43%]"
+            className="object-cover -z-20 brightness-120 scale-145 origin-top-left xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full object-center "
           />
           <svg
             xmlns="http://www.w3.org/2000/svg"

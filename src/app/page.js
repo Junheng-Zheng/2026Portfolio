@@ -6,6 +6,7 @@ import { ArrowUpRight, ArrowDown, Lock } from "lucide-react";
 import { useState, useEffect } from "react";
 import Rounded from "./Components/Rounded";
 import Footer from "./Components/Footer";
+import Animatedparagrah from "./Components/Animatedparagrah";
 const ProjectCard = ({
   cover,
   technologies,
@@ -16,9 +17,19 @@ const ProjectCard = ({
   lines = true,
   video,
   children,
+  delay = 0,
 }) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{
+        type: "spring",
+        stiffness: 500,
+        damping: 80,
+        mass: 0.5,
+        delay: delay,
+      }}
       className={`relative flex group  mx-auto flex-col gap-2  w-full ${className}`}
     >
       <Link
@@ -101,7 +112,7 @@ const ProjectCard = ({
         <p className="">{title}</p>
         <p className="text-sm text-gray-500">Junheng&apos;s UI/UX Resume</p>
       </div> */}
-    </div>
+    </motion.div>
   );
 };
 
@@ -127,6 +138,7 @@ const TypingText = ({ text, speed = 0.05, delay = 0 }) => {
 const Page = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
   const delay = 0;
   useEffect(() => {
     const handleScroll = () => {
@@ -136,11 +148,49 @@ const Page = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const sentence = [
+    {
+      text: "Junheng combines product design and development to create seamless digital experiences. Incoming @ ",
+      italic: false,
+    },
+    { text: "IBM Research", italic: true },
+    { text: ", and previously @ ", italic: false },
+    { text: "Liberty Mutual Insurance", italic: true },
+    { text: ".", italic: false },
+  ];
+
+  const linksContainer = {
+    hidden: {},
+    show: {
+      transition: { staggerChildren: 0.08, delayChildren: 0 },
+    },
+  };
+
+  const linkItem = {
+    hidden: { opacity: 0, y: 8, scale: 0.98, filter: "blur(6px)" },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 500, damping: 35, mass: 0.5 },
+    },
+  };
+
   return (
     <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-16 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
       {/* menu */}
-      <div
-        className={`w-full   relative  flex z-50 justify-between items-center ${isOpen ? "p-4" : ""} transition-all duration-300  mx-auto ${isScrolled && !isOpen ? "bg-white/20 backdrop-blur-sm p-4 xl:w-[70%] w-[80%] rounded-xl" : ""}`}
+      <motion.div
+        initial={{ opacity: 0, filter: "blur(3px)" }}
+        animate={{ opacity: 1, filter: "blur(0px)" }}
+        transition={{
+          type: "spring",
+          stiffness: 500,
+          damping: 80,
+          mass: 0.5,
+          delay: 1.8,
+        }}
+        className={`w-full   relative  flex z-50 justify-between items-center transition-all duration-300 ${isOpen ? "p-4" : ""}   mx-auto ${isScrolled && !isOpen ? "bg-white/20 backdrop-blur-sm p-4 xl:w-[70%] w-[80%] rounded-xl" : ""}`}
       >
         <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
 
@@ -171,10 +221,8 @@ const Page = () => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl instrument-serif font-normal">Email</p>
-                  <p className="text-xs text-gray-500">
-                    junhengzheng@gmail.com
-                  </p>
+                  <p className="text-md">Email</p>
+                  <p className="text-xs text-gray-500">jz7259@g.rit.edu</p>
                 </div>
               </div>
               <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
@@ -189,10 +237,8 @@ const Page = () => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl instrument-serif font-normal">
-                    LinkedIn
-                  </p>
-                  <p className="text-xs text-gray-500">Junheng Zheng</p>
+                  <p className="text-md">LinkedIn</p>
+                  <p className="text-xs text-gray-500">@Junheng Zheng</p>
                 </div>
               </div>
             </div>
@@ -209,10 +255,8 @@ const Page = () => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl instrument-serif font-normal">Resume</p>
-                  <p className="text-xs text-gray-500">
-                    Junheng&apos;s UI/UX Resume
-                  </p>
+                  <p className="text-md">Resume</p>
+                  <p className="text-xs text-gray-500">Dev + Design Resume</p>
                 </div>
               </div>
               <div className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md">
@@ -227,35 +271,48 @@ const Page = () => {
                   />
                 </div>
                 <div className="flex flex-col">
-                  <p className="text-xl instrument-serif font-normal">Github</p>
-                  <p className="text-xs text-gray-500">
-                    junhengzheng@gmail.com
-                  </p>
+                  <p className="text-md">Github</p>
+                  <p className="text-xs text-gray-500">@junhengzheng</p>
                 </div>
               </div>
             </div>
-            <div className="md:hidden lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
+            <div className="md:hidden group cursor-pointer lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
               {/* <div className="absolute top-12 right-3 w-32 h-32 bg-blue-100 rounded-full blur-2xl"></div>
               <div className="absolute bottom-12 left-8 w-32 h-32 bg-pink-100 rounded-full blur-2xl"></div>
               <div className="absolute top-12 left-2 w-32 h-32 bg-red-100 rounded-full blur-2xl"></div>
               <div className="absolute bottom-8 right-24 w-32 h-32 bg-purple-100 rounded-full blur-2xl"></div> */}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 1920 1080"
+                preserveAspectRatio="none"
+                className="absolute inset-0   w-full h-full opacity-30 pointer-events-none z-0"
+              >
+                <filter id="noiseFilter">
+                  <feTurbulence
+                    type="fractalNoise"
+                    baseFrequency="10"
+                    numOctaves="2"
+                    stitchTiles="stitch"
+                  />
+                </filter>
+                <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+              </svg>
               <video
                 src="/projectcards/dandi.mp4"
                 autoPlay
                 loop
                 muted
                 playsInline
-                webkit-playsinline="true"
+                preload="auto"
                 disablePictureInPicture
-                controls={false}
-                className="object-cover -z-20 brightness-120 scale-100 origin-top-left absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
+                className="object-cover -z-20 brightness-120 group-hover:scale-105 transition-transform duration-300 origin-top-left absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
               />
-              <h2 className="instrument-serif flex items-center gap-1 font-normal z-2 text-amber-500 text-4xl">
+              <h2 className="flex items-center group-hover:scale-105 transition-transform duration-300 font-normalgap-1  z-2 text-amber-500 text-2xl">
                 Let&apos;s Connect.
                 <ArrowUpRight
                   strokeWidth={1}
-                  size={36}
-                  className="group-hover:scale-110 group-hover:rotate-45 stroke-amber-500 transition-transform duration-300"
+                  size={32}
+                  className="group-hover:rotate-45 stroke-amber-500 transition-transform duration-300"
                 />
               </h2>
             </div>
@@ -263,68 +320,43 @@ const Page = () => {
         </div>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className={`grid grid-cols-3 grid-rows-3 w-[23px] h-[23px] relative cursor-pointer active:scale-88 group transition-all duration-300 ${isOpen ? "rotate-45 gap-0" : "gap-px"}`}
+          className={`flex flex-col w-[20px] opacity-80 h-[20px] relative cursor-pointer active:scale-88 transition-transform duration-300 group ${isOpen ? "rotate-45 gap-0" : "gap-px"}`}
           aria-label={isOpen ? "Close menu" : "Open menu"}
         >
-          {/* Top-left corner dot */}
+          <div className="w-full h-full gap-px flex items-center justify-center">
+            <div className="w-1/3 h-full opacity-0"></div>
+            <div
+              className={` bg-black rounded-full transition-all duration-300  h-full ${isOpen ? "w-px" : "w-1/3"}`}
+            ></div>
+            <div className="w-1/3 h-full opacity-0"></div>
+          </div>
           <div
-            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 translate-y-full translate-x-full" : "hidden scale-100"}`}
-          />
-
-          {/* Top center - vertical line */}
-          <div className="flex items-center justify-center">
+            className={`w-full h-full  flex items-center justify-center ${isOpen ? "gap-0" : "gap-px"}`}
+          >
             <div
-              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "w-px" : "hidden rounded-full"}`}
-            />
+              className={` bg-black rounded-full transition-all duration-300  w-1/3  ${isOpen ? "h-px" : "h-full"}`}
+            ></div>
+            <div className="w-1/3 h-full rounded-full relative ">
+              <div
+                className={` bg-black rounded-full transition-all duration-300  w-full absolute top-1/2 left-0  translate-y-[calc(-50%+.4px)] ${isOpen ? "h-px" : "h-full"}`}
+              ></div>
+              <div
+                className={` bg-black rounded-full transition-all duration-300  h-full absolute top-0 left-1/2 translate-x-[calc(-50%+.4px)] ${isOpen ? "w-px" : "w-full"}`}
+              ></div>
+            </div>
+            <div
+              className={` bg-black rounded-full transition-all duration-300  w-1/3  ${isOpen ? "h-px" : "h-full"}`}
+            ></div>
           </div>
-
-          {/* Top-right corner dot */}
-          <div
-            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 translate-y-full -translate-x-full" : "scale-100"}`}
-          />
-
-          {/* Middle-left - horizontal line */}
-          <div className="flex items-center justify-center">
+          <div className="w-full h-full gap-px flex items-center justify-center">
+            <div className="w-1/3 h-full opacity-0"></div>
             <div
-              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "hidden rounded-full"}`}
-            />
+              className={` bg-black rounded-full transition-all duration-300  h-full ${isOpen ? "w-px" : "w-1/3"}`}
+            ></div>
+            <div className="w-1/3 h-full opacity-0"></div>
           </div>
-
-          {/* Center - cross intersection */}
-          <div className="flex relative items-center justify-center">
-            <div
-              className={`bg-black/70 w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${isOpen ? "w-px" : "rounded-full"}`}
-            />
-            <div
-              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "rounded-full"}`}
-            />
-          </div>
-
-          {/* Middle-right - horizontal line */}
-          <div className="flex items-center justify-center">
-            <div
-              className={`bg-black/80 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "rounded-full"}`}
-            />
-          </div>
-
-          {/* Bottom-left corner dot */}
-          <div
-            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 -translate-y-full translate-x-full" : "scale-100"}`}
-          />
-
-          {/* Bottom center - vertical line */}
-          <div className="flex items-center justify-center">
-            <div
-              className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "w-px" : "hidden rounded-full"}`}
-            />
-          </div>
-
-          {/* Bottom-right corner dot */}
-          <div
-            className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 -translate-y-full -translate-x-full" : "scale-100"}`}
-          />
         </button>
-      </div>
+      </motion.div>
       {/* <div className="flex hidden flex-col gap-4">
         <div className="flex flex-col gap-2  instrument-serif text-2xl ">
           <motion.div
@@ -381,14 +413,21 @@ const Page = () => {
           <p> [Based in NYC]</p>
           <p>[10:38]</p>
         </div> */}
-        <p className="z-20 text-lg w-full  md:w-1/2 ">
-          Junheng combines design and development to create seamless digital
-          experiences. Incoming @ <span className="italic">IBM Research</span>,
-          and previously interned @{" "}
-          <span className="italic">Liberty Mutual Insurance</span>.
-        </p>
-        <div className="flex gap-7">
-          <p className="flex cursor-pointer  group items-center gap-1">
+        <Animatedparagrah
+          className="z-20 text-lg w-full md:w-1/2"
+          segments={sentence}
+          onComplete={() => setIntroDone(true)}
+        />
+        <motion.div
+          className="flex gap-7"
+          variants={linksContainer}
+          initial="hidden"
+          animate={introDone ? "show" : "hidden"}
+        >
+          <motion.p
+            variants={linkItem}
+            className="flex cursor-pointer  group items-center gap-1"
+          >
             {" "}
             <ArrowUpRight
               strokeWidth={1}
@@ -396,80 +435,45 @@ const Page = () => {
               className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
             />
             Contact
-          </p>
-          <p className="flex cursor-pointer  group items-center gap-1">
+          </motion.p>
+          <motion.p
+            variants={linkItem}
+            className="flex cursor-pointer  group items-center gap-1"
+          >
             <ArrowUpRight
               strokeWidth={1}
               size={20}
               className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
             />
             Resume
-          </p>
-          <p className="flex cursor-pointer  group items-center gap-1">
+          </motion.p>
+          <motion.p
+            variants={linkItem}
+            className="flex cursor-pointer  group items-center gap-1"
+          >
             <ArrowUpRight
               strokeWidth={1}
               size={20}
               className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
             />
             Works
-          </p>
-        </div>
-        <div className="w-full h-100 xl:h-100 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ">
-          {/* <div className="flex flex-col z-10 absolute top-0 left-0 ">
-            <div className="flex items-start ">
-              <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
-                Hello 👋
-              </div>
-              <Rounded
-                width={24}
-                height={24}
-                className="rotate-270"
-                fill="#ffffff"
-              />
-            </div>
-            <Rounded
-              width={24}
-              height={24}
-              className="rotate-270"
-              fill="#ffffff"
-            />
-          </div> */}
-
-          {/* <div className="flex flex-col z-10 items-end right-0 bottom-0  absolute ">
-            <Rounded
-              width={24}
-              height={24}
-              className="rotate-90"
-              fill="#ffffff"
-            />
-            <div className="flex items-end  ">
-              <Rounded
-                width={24}
-                height={24}
-                className="rotate-90"
-                fill="#ffffff"
-              />
-              <div className="pl-3 pr-2 cursor-pointer group flex items-center gap-1 pt-2 pb-1   bg-white text-black/70 text-sm  rounded-tl-xl">
-                Contact
-                <ArrowUpRight
-                  strokeWidth={1}
-                  size={16}
-                  className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-                />
-              </div>
-            </div>
-          </div> */}
-          <video
-            src="/windowlight.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            webkit-playsinline="true"
-            disablePictureInPicture
-            controls={false}
-            className="object-cover -z-20 brightness-120 scale-145 origin-top-left xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full object-center xl:object-[50%_43%]"
-          />
+          </motion.p>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(3px)" }}
+          animate={{ opacity: 1, filter: "blur(0px)" }}
+          transition={{
+            type: "spring",
+            stiffness: 500,
+            damping: 80,
+            mass: 0.5,
+            delay: 1.8,
+          }}
+          className="w-full h-100 xl:h-90 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  "
+        >
+          <video autoPlay muted playsInline loop>
+            <source src="/projectcards/dandi.mp4" type="video/mp4" />
+          </video>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1920 1080"
@@ -486,33 +490,7 @@ const Page = () => {
             </filter>
             <rect width="100%" height="100%" filter="url(#noiseFilter)" />
           </svg>
-
-          {/* <div className="flex absolute bottom-4 opacity-75  group left-1/2 -translate-x-1/2 flex-col gap-2 py-2 px-1 border border-white rounded-full">
-            <ArrowDown
-              strokeWidth={1}
-              size={16}
-              className="group-hover:scale-110  transition-transform duration-300"
-            />
-          </div> */}
-          {/* <div className="flex gap-7 items-center">
-          <div className="flex gap-1 items-center">
-            <p>Works</p>
-            <ArrowUpRight
-              strokeWidth={1}
-              size={16}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-          </div>
-          <div className="flex gap-1 items-center">
-            <p>Resume</p>
-            <ArrowUpRight
-              strokeWidth={1}
-              size={16}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-          </div>
-        </div> */}
-        </div>
+        </motion.div>
         {/* <div className="w-full flex justify-between leading-tight text-sm mono items-center">
           <p> [Contact]</p>
           <p>[Resume]</p>
@@ -614,6 +592,7 @@ const Page = () => {
           link="/works/pack"
           icon="/isometrics/meditate.png"
           className="md:col-span-4"
+          delay={2.2}
         >
           <div className="flex flex-col z-50 group-hover:scale-0 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
             <div className="flex items-start ">
@@ -642,6 +621,7 @@ const Page = () => {
           link="/works/libertymutual"
           icon="/isometrics/liberty.png"
           className="md:col-span-4 "
+          delay={2.2}
         />
 
         <ProjectCard
@@ -651,6 +631,7 @@ const Page = () => {
           link="/works/proprio"
           icon="/isometrics/liberty.png"
           className="md:col-span-4 saturate-100 "
+          delay={2.2}
         />
         <ProjectCard
           technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
@@ -658,6 +639,7 @@ const Page = () => {
           link="/works/makerspace"
           icon="/isometrics/liberty.png"
           className="md:col-span-4 "
+          delay={2.2}
         >
           <Image
             src="/cardcovers/seniorproj.png"
@@ -674,50 +656,55 @@ const Page = () => {
           icon="/isometrics/liberty.png"
           className="md:col-span-4"
         />
-        {/* <ProjectCard
-          cover="/projectcards/website.png"
-          technologies={["Figma", "SwiftUI", "Kotlin"]}
-          title="Pack!"
-          link="/works/pack"
-          icon="/isometrics/meditate.png"
-          className="md:col-span-4 "
-        /> */}
-        {/* <ProjectCard
-          cover="/projectcards/keyb.png"
-          technologies={["Figma"]}
-          title="FloralTyper"
-          link="/projects/30min"
-          icon="/isometrics/website.png"
-          className="md:col-span-4"
-        /> */}
-        {/* <ProjectCard
-          video="/projectcards/proprio.mov"
-          technologies={["Figma"]}
-          title="Proprio"
-          link="/projects/30min"
-          icon="/isometrics/website.png"
-          className="md:col-span-4"
-          lines={false}
-        />
-
-
-
-        <ProjectCard
-          cover="/projectcards/bal.png"
-          technologies={["Figma"]}
-          title="Figma Studies"
-          link="/projects/30min"
-          icon="/isometrics/website.png"
-          className="md:col-span-5"
-        />
-        <ProjectCard
-          cover="/projectcards/30min.png"
-          technologies={["Figma"]}
-          title="Rythmn"
-          link="/projects/30min"
-          icon="/isometrics/gym.png"
-          className="md:col-span-3"
-        /> */}
+      </div>
+      <div className="w-full md:hidden flex flex-col ">
+        <div className="w-full border-b border-gray-200/80 py-4 md:px-8 flex justify-between items-center">
+          <p>Frontend Dev @ IBM Research</p>
+          <p>Summer &apos;26</p>
+        </div>
+        <div className="w-full border-b border-gray-200/80 py-4 md:px-8 flex justify-between items-center">
+          <p>UX Engineer @ Liberty Mutual</p>
+          <p>Summer &apos;25</p>
+        </div>
+        <div className="w-full border-b border-gray-200/80 py-4  flex justify-between items-center">
+          <p>Frontend Dev @ D&D Motor Systems</p>
+          <p>Fall &apos;24</p>
+        </div>
+      </div>
+      <div className="w-full hidden md:flex flex-col  ">
+        <div className="w-full border-b border-gray-200/80 py-4 flex justify-between items-center">
+          <p>Frontend Developer @ IBM Research</p>
+          <p>Summer 2026</p>
+        </div>
+        <div className="w-full border-b border-gray-200/80 py-4  flex justify-between items-center">
+          <p>UX Engineer @ Liberty Mutual Insurance</p>
+          <p>Summer 2025</p>
+        </div>
+        <div className="w-full border-b border-gray-200/80 py-4 flex justify-between items-center">
+          <p>Frontend Developer @ D&D Motor Systems</p>
+          <p>Fall 2024</p>
+        </div>
+        <div className="w-full py-4 gap-6 flex justify-start items-center">
+          <p className="flex cursor-pointer  group items-center gap-1">
+            <ArrowUpRight
+              strokeWidth={1}
+              size={20}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+            Full Resume
+          </p>
+          <Link
+            href="/manifesto"
+            className="flex cursor-pointer  group items-center gap-1"
+          >
+            <ArrowUpRight
+              strokeWidth={1}
+              size={20}
+              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+            />
+            Junheng&apos;s Manifesto
+          </Link>
+        </div>
       </div>
       {/* <div className="w-full flex flex-col py-12 gap-12">
 
@@ -744,3 +731,53 @@ const Page = () => {
 };
 
 export default Page;
+
+// Top-left corner dot
+//         <div
+//           className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 translate-y-full translate-x-full" : "hidden scale-100"}`}
+//         />
+//         {/* Top center - vertical line */}
+//         <div className="flex items-center justify-center">
+//           <div
+//             className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "w-px" : "hidden rounded-full"}`}
+//           />
+//         </div>
+//         {/* Top-right corner dot */}
+//         <div
+//           className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 translate-y-full -translate-x-full" : "scale-100"}`}
+//         />
+//         {/* Middle-left - horizontal line */}
+//         <div className="flex items-center justify-center">
+//           <div
+//             className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "hidden rounded-full"}`}
+//           />
+//         </div>
+//         {/* Center - cross intersection */}
+//         <div className="flex relative items-center justify-center">
+//           <div
+//             className={`bg-black/70 w-full h-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-500 ${isOpen ? "w-px" : "rounded-full"}`}
+//           />
+//           <div
+//             className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "rounded-full"}`}
+//           />
+//         </div>
+//         {/* Middle-right - horizontal line */}
+//         <div className="flex items-center justify-center">
+//           <div
+//             className={`bg-black/80 w-full h-full transition-all duration-500 ${isOpen ? "h-px" : "rounded-full"}`}
+//           />
+//         </div>
+//         {/* Bottom-left corner dot */}
+//         <div
+//           className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 -translate-y-full translate-x-full" : "scale-100"}`}
+//         />
+//         {/* Bottom center - vertical line */}
+//         <div className="flex items-center justify-center">
+//           <div
+//             className={`bg-black/70 w-full h-full transition-all duration-500 ${isOpen ? "w-px" : "hidden rounded-full"}`}
+//           />
+//         </div>
+//         {/* Bottom-right corner dot */}
+//         <div
+//           className={`bg-black/70 rounded-full transition-all duration-200 ${isOpen ? "scale-0 -translate-y-full -translate-x-full" : "scale-100"}`}
+//         />

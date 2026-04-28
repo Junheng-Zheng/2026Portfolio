@@ -24,7 +24,7 @@ const Page = () => {
   const LETTER_STAGGER_S = 0.009;
   const DELAY_CHILDREN_S = 0.05;
   const EST_SPRING_SETTLE_MS = 250;
-  const OVERLAP_MS = 750;
+  const OVERLAP_MS = 800;
 
   useEffect(() => {
     return () => {

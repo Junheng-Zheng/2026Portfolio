@@ -667,32 +667,25 @@ const Page = () => {
           className="md:col-span-4"
         />
       </div>
-      <div className="w-full md:hidden flex flex-col ">
-        <div className="w-full border-b border-gray-200/80 py-4 md:px-8 flex justify-between items-center">
-          <p>Frontend Dev @ IBM Research</p>
-          <p>Summer &apos;26</p>
-        </div>
-        <div className="w-full border-b border-gray-200/80 py-4 md:px-8 flex justify-between items-center">
-          <p>UX Engineer @ Liberty Mutual</p>
-          <p>Summer &apos;25</p>
-        </div>
-        <div className="w-full border-b border-gray-200/80 py-4  flex justify-between items-center">
-          <p>Frontend Dev @ D&D Motor Systems</p>
-          <p>Fall &apos;24</p>
-        </div>
-      </div>
-      <div className="w-full hidden md:flex flex-col  ">
-        <div className="w-full border-b border-gray-200/80 py-4 flex justify-between items-center">
+
+      <div className="w-full flex flex-col  ">
+        <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
           <p>Frontend Developer @ IBM Research</p>
-          <p>Summer 2026</p>
+          <p className="text-sm md:text-base opacity-80 md:opacity-100">
+            Summer 2026
+          </p>
         </div>
-        <div className="w-full border-b border-gray-200/80 py-4  flex justify-between items-center">
+        <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
           <p>UX Engineer @ Liberty Mutual Insurance</p>
-          <p>Summer 2025</p>
+          <p className="text-sm md:text-base opacity-80 md:opacity-100">
+            Summer 2025
+          </p>
         </div>
-        <div className="w-full border-b border-gray-200/80 py-4 flex justify-between items-center">
+        <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
           <p>Frontend Developer @ D&D Motor Systems</p>
-          <p>Fall 2024</p>
+          <p className="text-sm md:text-base opacity-80 md:opacity-100  ">
+            Fall 2024
+          </p>
         </div>
         <div className="w-full py-4 gap-6 flex justify-start items-center">
           <p className="flex cursor-pointer  group items-center gap-1">

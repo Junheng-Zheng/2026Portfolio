@@ -11,10 +11,13 @@ import Marketanalysis from "../../Components/casestudy/Marketanalysis";
 import { Star, Briefcase, Palette, Clock, Circle } from "lucide-react";
 import { Gamepad, ArrowUpRight } from "lucide-react";
 import Animatedparagrah from "../../Components/Animatedparagrah";
+import { motion } from "framer-motion";
+import { useState } from "react";
 const Pack = () => {
+  const [introDone, setIntroDone] = useState(false);
   const sentence = [
     {
-      text: "Over the summer of 2025, I worked as a Design Engineer Intern at Liberty Mutual Insurance. I worked as a hybrid designer and developer, working on the Enterprise UI team, a team focused on designing and developing the internal design system for the company. I increased the library by over 30%, singlehandedly creating components from 0 to 1. I communicated through Slack and Jira, researched through Lucidcharts, designed in Figma, developed in React, Typescript, and SCSS, and deployed to Storybook. ",
+      text: "Over the summer of 2025, I worked as a Design Engineer Intern at Liberty Mutual Insurance. I worked as a hybrid designer and developer, working on the Enterprise UI team, a team focused on designing and developing the internal design system for the company. I increased the library by over 30%, singlehandedly creating components from 0 to 1. ",
       italic: false,
     },
   ];
@@ -27,18 +30,30 @@ const Pack = () => {
         <Animatedparagrah
           segments={sentence}
           className="z-20 text-lg w-full md:w-1/2 "
+          onComplete={() => setIntroDone(true)}
         />
       </div>
-      <div className="flex flex-col gap-3 ">
-        <div className="w-full aspect-4/3 md:aspect-2/1 relative bg-[#FFD000] flex ">
-          <Image
-            src="/cardcovers/limi.gif"
-            alt="cover"
-            fill
-            className="object-cover scale-80 object-center"
-          />
-        </div>
-      </div>
+      <motion.div
+        initial={
+          introDone
+            ? { opacity: 1, y: 0, filter: "blur(0px)" }
+            : { opacity: 0, y: 10, filter: "blur(3px)" }
+        }
+        animate={
+          introDone
+            ? { opacity: 1, y: 0, filter: "blur(0px)" }
+            : { opacity: 0, y: 10, filter: "blur(3px)" }
+        }
+        transition={{ duration: 0.5 }}
+        className="flex flex-col w-full gap-3 relative aspect-3/2 md:aspect-video"
+      >
+        <Image
+          src="/cardcovers/limi.gif"
+          alt="cover"
+          fill
+          className="object-cover object-center"
+        />
+      </motion.div>
       <div className="flex flex-col gap-3 ">
         <div className="w-full aspect-video px-12 text-center relative flex-col gap-3  bg-gray-100 flex justify-center items-center">
           <p className="z-20 text-lg">

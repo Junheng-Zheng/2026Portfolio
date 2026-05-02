@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
 import { Instrument_Serif } from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,10 +20,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteTitle = "Junheng Zheng | Design Engineer";
+const siteDescription =
+  "Junheng Zheng is a design engineer with a passion for creating user-friendly and efficient designs.";
+
 export const metadata = {
-  title: "Junheng Zheng | Design Engineer",
-  description:
-    "Junheng Zheng is a design engineer with a passion for creating user-friendly and efficient designs.",
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    images: [{ url: "/coverimage.png", alt: siteTitle }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteTitle,
+    description: siteDescription,
+    images: ["/coverimage.png"],
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -32,6 +47,7 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

@@ -40,7 +40,7 @@ function countAnimatedLetters(segments) {
   return segments.reduce(
     (n, seg) =>
       n + Array.from(seg?.text ?? "").filter((c) => !/\s/.test(c)).length,
-    0
+    0,
   );
 }
 
@@ -48,7 +48,9 @@ function countAnimatedLetters(segments) {
 function getLinksDelayAfterIntro(segments) {
   const n = countAnimatedLetters(segments);
   if (n === 0) return AP_INTRO_TAIL_SEC;
-  return AP_INTRO_DELAY_CHILDREN + (n - 1) * AP_LETTER_STAGGER + AP_INTRO_TAIL_SEC;
+  return (
+    AP_INTRO_DELAY_CHILDREN + (n - 1) * AP_LETTER_STAGGER + AP_INTRO_TAIL_SEC
+  );
 }
 
 const ProjectCard = ({
@@ -349,7 +351,7 @@ const Page = () => {
   const skipAnimations = useSyncExternalStore(
     subscribeHomeVisited,
     getHomeVisitedSnapshot,
-    getHomeVisitedServerSnapshot
+    getHomeVisitedServerSnapshot,
   );
   const delay = 0;
 
@@ -431,13 +433,9 @@ const Page = () => {
     : linkItem;
 
   return (
-    <div className="flex max-w-[1700px] mx-auto  font-light  px-auto w-full flex-col xl:gap-16 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
+    <div className="flex max-w-[1700px] mx-auto  font-light  px-auto w-full flex-col xl:gap-13 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
       {/* menu */}
-      <NavChrome
-        skip={skipAnimations}
-        isOpen={isOpen}
-        isScrolled={isScrolled}
-      >
+      <NavChrome skip={skipAnimations} isOpen={isOpen} isScrolled={isScrolled}>
         <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
 
         {/* <Image

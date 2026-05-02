@@ -3,10 +3,54 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
 import { ArrowUpRight, ArrowDown, Lock } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useSyncExternalStore } from "react";
+import { usePathname } from "next/navigation";
 import Rounded from "./Components/Rounded";
 import Footer from "./Components/Footer";
 import Animatedparagrah from "./Components/Animatedparagrah";
+const HOME_VISITED_KEY = "portfolio-home-visited";
+
+const homeVisitedListeners = new Set();
+
+function subscribeHomeVisited(onStoreChange) {
+  homeVisitedListeners.add(onStoreChange);
+  return () => homeVisitedListeners.delete(onStoreChange);
+}
+
+function notifyHomeVisitedSubscribers() {
+  homeVisitedListeners.forEach((fn) => fn());
+}
+
+function getHomeVisitedSnapshot() {
+  if (typeof window === "undefined") return false;
+  return sessionStorage.getItem(HOME_VISITED_KEY) === "true";
+}
+
+function getHomeVisitedServerSnapshot() {
+  return false;
+}
+
+/** Match Animatedparagrah timing so links can stagger without waiting on onComplete + setState */
+const AP_INTRO_DELAY_CHILDREN = 0.05;
+const AP_LETTER_STAGGER = 0.006;
+const AP_INTRO_TAIL_SEC = 0.38;
+
+function countAnimatedLetters(segments) {
+  if (!Array.isArray(segments)) return 0;
+  return segments.reduce(
+    (n, seg) =>
+      n + Array.from(seg?.text ?? "").filter((c) => !/\s/.test(c)).length,
+    0
+  );
+}
+
+/** Wall-clock delay before the link row stagger should begin (after intro letters). */
+function getLinksDelayAfterIntro(segments) {
+  const n = countAnimatedLetters(segments);
+  if (n === 0) return AP_INTRO_TAIL_SEC;
+  return AP_INTRO_DELAY_CHILDREN + (n - 1) * AP_LETTER_STAGGER + AP_INTRO_TAIL_SEC;
+}
+
 const ProjectCard = ({
   cover,
   technologies,
@@ -18,20 +62,11 @@ const ProjectCard = ({
   video,
   children,
   delay = 0,
+  skipEntrance = false,
 }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
-      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      transition={{
-        type: "spring",
-        stiffness: 500,
-        damping: 80,
-        mass: 0.5,
-        delay: delay,
-      }}
-      className={`relative flex group  mx-auto flex-col gap-2  w-full ${className}`}
-    >
+  const wrapClassName = `relative flex group  mx-auto flex-col gap-2  w-full ${className}`;
+  const inner = (
+    <>
       <Link
         href={link}
         className={`w-full active:scale-98 ${className} overflow-hidden group rounded-sm  overflow-y-hidden cursor-pointer  inset-shadow-sm inset-shadow-white relative  transition-transform duration-300 aspect-4/3 `}
@@ -112,9 +147,180 @@ const ProjectCard = ({
         <p className="">{title}</p>
         <p className="text-sm text-gray-500">Junheng&apos;s UI/UX Resume</p>
       </div> */}
+    </>
+  );
+
+  if (skipEntrance) {
+    return <div className={wrapClassName}>{inner}</div>;
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{
+        type: "spring",
+        stiffness: 500,
+        damping: 80,
+        mass: 0.5,
+        delay: delay,
+      }}
+      className={wrapClassName}
+    >
+      {inner}
     </motion.div>
   );
 };
+
+/** No Framer wrapper when skipping — avoids entrance animations after hydration/store updates. */
+function NavChrome({ skip, isOpen, isScrolled, children }) {
+  const className = `w-full   relative  flex z-50 justify-between items-center transition-all duration-300 ${isOpen ? "p-4" : ""}   mx-auto ${isScrolled && !isOpen ? "bg-white/20 backdrop-blur-sm p-4 xl:w-[70%] w-[80%] rounded-xl" : ""}`;
+  if (skip) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(3px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{
+        type: "spring",
+        stiffness: 500,
+        damping: 80,
+        mass: 0.5,
+        delay: 1.8,
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function HeroVisual({ skip, children }) {
+  const className =
+    "w-full h-100 xl:h-90 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ";
+  if (skip) return <div className={className}>{children}</div>;
+  return (
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(3px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{
+        type: "spring",
+        stiffness: 500,
+        damping: 80,
+        mass: 0.5,
+        delay: 1.8,
+      }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function HomeLinksRow({ skip, linksContainer, linkItemResolved }) {
+  if (skip) {
+    return (
+      <div className="flex gap-7">
+        <a
+          className="flex cursor-pointer  group items-center gap-1"
+          href="https://linkedin.com/in/junhengzheng"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <ArrowUpRight
+            strokeWidth={1}
+            size={20}
+            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+          />
+          Contact
+        </a>
+        <a
+          href="/Junheng_SWE_Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex cursor-pointer  group items-center gap-1"
+        >
+          <ArrowUpRight
+            strokeWidth={1}
+            size={20}
+            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+          />
+          Resume
+        </a>
+        <button
+          type="button"
+          className="flex cursor-pointer bg-transparent border-none p-0 font-inherit text-inherit  group items-center gap-1"
+          onClick={() =>
+            document
+              .getElementById("works-grid")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" })
+          }
+        >
+          <ArrowUpRight
+            strokeWidth={1}
+            size={20}
+            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+          />
+          Works
+        </button>
+      </div>
+    );
+  }
+  return (
+    <motion.div
+      className="flex gap-7"
+      variants={linksContainer}
+      initial="hidden"
+      animate="show"
+    >
+      <motion.a
+        variants={linkItemResolved}
+        className="flex cursor-pointer  group items-center gap-1"
+        href="https://linkedin.com/in/junhengzheng"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {" "}
+        <ArrowUpRight
+          strokeWidth={1}
+          size={20}
+          className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+        />
+        Contact
+      </motion.a>
+      <motion.a
+        variants={linkItemResolved}
+        href="/Junheng_SWE_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex cursor-pointer  group items-center gap-1"
+      >
+        <ArrowUpRight
+          strokeWidth={1}
+          size={20}
+          className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+        />
+        Resume
+      </motion.a>
+      <motion.button
+        type="button"
+        variants={linkItemResolved}
+        className="flex cursor-pointer bg-transparent border-none p-0 font-inherit text-inherit  group items-center gap-1"
+        onClick={() =>
+          document
+            .getElementById("works-grid")
+            ?.scrollIntoView({ behavior: "smooth", block: "start" })
+        }
+      >
+        <ArrowUpRight
+          strokeWidth={1}
+          size={20}
+          className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+        />
+        Works
+      </motion.button>
+    </motion.div>
+  );
+}
 
 const TypingText = ({ text, speed = 0.05, delay = 0 }) => {
   const count = useMotionValue(0);
@@ -136,10 +342,29 @@ const TypingText = ({ text, speed = 0.05, delay = 0 }) => {
 };
 
 const Page = () => {
+  const pathname = usePathname();
+  const prevPathnameRef = useRef(pathname);
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [introDone, setIntroDone] = useState(false);
+  const skipAnimations = useSyncExternalStore(
+    subscribeHomeVisited,
+    getHomeVisitedSnapshot,
+    getHomeVisitedServerSnapshot
+  );
   const delay = 0;
+
+  useEffect(() => {
+    if (prevPathnameRef.current === "/" && pathname !== "/") {
+      try {
+        sessionStorage.setItem(HOME_VISITED_KEY, "true");
+        notifyHomeVisitedSubscribers();
+      } catch {
+        /* ignore */
+      }
+    }
+    prevPathnameRef.current = pathname;
+  }, [pathname]);
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 100);
@@ -159,12 +384,22 @@ const Page = () => {
     { text: ".", italic: false },
   ];
 
-  const linksContainer = {
-    hidden: {},
-    show: {
-      transition: { staggerChildren: 0.08, delayChildren: 0 },
-    },
-  };
+  const linksDelayAfterIntro = getLinksDelayAfterIntro(sentence);
+
+  const linksContainer = skipAnimations
+    ? {
+        hidden: {},
+        show: { transition: { staggerChildren: 0, delayChildren: 0 } },
+      }
+    : {
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: 0.08,
+            delayChildren: linksDelayAfterIntro,
+          },
+        },
+      };
 
   const linkItem = {
     hidden: { opacity: 0, y: 8, scale: 0.98, filter: "blur(6px)" },
@@ -177,20 +412,31 @@ const Page = () => {
     },
   };
 
+  const linkItemResolved = skipAnimations
+    ? {
+        hidden: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+        },
+        show: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          transition: { duration: 0 },
+        },
+      }
+    : linkItem;
+
   return (
     <div className="flex max-w-[1700px] mx-auto  font-light  px-auto w-full flex-col xl:gap-16 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
       {/* menu */}
-      <motion.div
-        initial={{ opacity: 0, filter: "blur(3px)" }}
-        animate={{ opacity: 1, filter: "blur(0px)" }}
-        transition={{
-          type: "spring",
-          stiffness: 500,
-          damping: 80,
-          mass: 0.5,
-          delay: 1.8,
-        }}
-        className={`w-full   relative  flex z-50 justify-between items-center transition-all duration-300 ${isOpen ? "p-4" : ""}   mx-auto ${isScrolled && !isOpen ? "bg-white/20 backdrop-blur-sm p-4 xl:w-[70%] w-[80%] rounded-xl" : ""}`}
+      <NavChrome
+        skip={skipAnimations}
+        isOpen={isOpen}
+        isScrolled={isScrolled}
       >
         <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
 
@@ -378,7 +624,7 @@ const Page = () => {
             <div className="w-1/3 h-full opacity-0"></div>
           </div>
         </button>
-      </motion.div>
+      </NavChrome>
       {/* <div className="flex hidden flex-col gap-4">
         <div className="flex flex-col gap-2  instrument-serif text-2xl ">
           <motion.div
@@ -438,67 +684,21 @@ const Page = () => {
         <Animatedparagrah
           className="z-20 text-lg w-full  md:w-1/2"
           segments={sentence}
-          onComplete={() => setIntroDone(true)}
-        />
-        <motion.div
-          className="flex gap-7"
-          variants={linksContainer}
-          initial="hidden"
-          animate={introDone ? "show" : "hidden"}
-        >
-          <motion.a
-            variants={linkItem}
-            className="flex cursor-pointer  group items-center gap-1"
-            href="https://linkedin.com/in/junhengzheng"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {" "}
-            <ArrowUpRight
-              strokeWidth={1}
-              size={20}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-            Contact
-          </motion.a>
-          <motion.a
-            variants={linkItem}
-            href="/Junheng_SWE_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex cursor-pointer  group items-center gap-1"
-          >
-            <ArrowUpRight
-              strokeWidth={1}
-              size={20}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-            Resume
-          </motion.a>
-          <motion.p
-            variants={linkItem}
-            className="flex cursor-pointer  group items-center gap-1"
-          >
-            <ArrowUpRight
-              strokeWidth={1}
-              size={20}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-            Works
-          </motion.p>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0, filter: "blur(3px)" }}
-          animate={{ opacity: 1, filter: "blur(0px)" }}
-          transition={{
-            type: "spring",
-            stiffness: 500,
-            damping: 80,
-            mass: 0.5,
-            delay: 1.8,
+          skipAnimation={skipAnimations}
+          onComplete={() => {
+            try {
+              sessionStorage.setItem(HOME_VISITED_KEY, "true");
+            } catch {
+              /* ignore quota / private mode */
+            }
           }}
-          className="w-full h-100 xl:h-90 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  "
-        >
+        />
+        <HomeLinksRow
+          skip={skipAnimations}
+          linksContainer={linksContainer}
+          linkItemResolved={linkItemResolved}
+        />
+        <HeroVisual skip={skipAnimations}>
           <Image
             src="/floral.png"
             alt="Dandi"
@@ -532,7 +732,7 @@ const Page = () => {
             </filter>
             <rect width="100%" height="100%" filter="url(#noiseFilter)" />
           </svg>
-        </motion.div>
+        </HeroVisual>
         {/* <div className="w-full flex justify-between leading-tight text-sm mono items-center">
           <p> [Contact]</p>
           <p>[Resume]</p>
@@ -623,7 +823,10 @@ const Page = () => {
         </div>
       </div> */}
 
-      <div className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6">
+      <div
+        id="works-grid"
+        className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6 scroll-mt-24"
+      >
         <ProjectCard
           cover="/cardcovers/ibm.gif"
           technologies={["Figma", "SwiftUI", "Kotlin"]}
@@ -632,6 +835,7 @@ const Page = () => {
           icon="/isometrics/meditate.png"
           className="md:col-span-4"
           delay={2.2}
+          skipEntrance={skipAnimations}
         >
           <div className="flex flex-col z-50 group-hover:scale-0 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
             <div className="flex items-start ">
@@ -661,6 +865,7 @@ const Page = () => {
           icon="/isometrics/liberty.png"
           className="md:col-span-4 "
           delay={2.2}
+          skipEntrance={skipAnimations}
         />
 
         <ProjectCard
@@ -671,6 +876,7 @@ const Page = () => {
           icon="/isometrics/liberty.png"
           className="md:col-span-4 saturate-100 "
           delay={2.2}
+          skipEntrance={skipAnimations}
         />
         <ProjectCard
           technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
@@ -679,6 +885,7 @@ const Page = () => {
           icon="/isometrics/liberty.png"
           className="md:col-span-4 "
           delay={2.2}
+          skipEntrance={skipAnimations}
         >
           <Image
             src="/cardcovers/seniorproj.png"
@@ -694,6 +901,7 @@ const Page = () => {
           link="/works/pack"
           icon="/isometrics/liberty.png"
           className="md:col-span-4"
+          skipEntrance={skipAnimations}
         />
       </div>
 

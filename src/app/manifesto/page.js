@@ -2,14 +2,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Animatedparagrah from "../Components/Animatedparagrah";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowUpLeft } from "lucide-react";
 const Page = () => {
   const paragraphs = useMemo(
     () => [
-      "I grew up on art.",
-      "I don't know why, but I just loved art. Growing up, my parents let me pick and choose my hobbies. I was always drawn to the creative process of creating. Before I knew it, I was taking fine art classes at 6 years old.",
-      "In high school, I had a chose between majoring in new media or Industrial design. I chose Industrial design. At this point, my love for creating went beyond a piece of paper. During this time, I fell in love with product design; the idea of creating with purpose.",
-      "In college, I decided to fully visit my curiosity for solving problems. I enrolled in Web and Mobile Computing at Rochester Institute of Technology. It was during this time I learned about UX Design and frontend development. I quickly fell in love with the technicality and creativity that this field combined.",
+      "Growing up, my parents let me pick and choose my hobbies. I was always drawn to the creative process of creating. Before I knew it, I was taking fine art classes at 6 years old.",
+      "In high school, I had a decided to major in industrial and product design. During this time, I fell in love with solving problems with creativity.",
+      "In college, I enrolled in Web and Mobile Computing at Rochester Institute of Technology. It was during this time I learned about UX design and frontend development. I quickly became passionate about the technicality and creativity that this field combined.",
       "Since then, I have worked across small teams and big systems. Startups, local companies, and Fortune 100s. Last summer I worked as a hybrid UX Designer and developer at Liberty Mutual. This summer, I am incoming at IBM Research doing the same. ",
       "My manifesto is simple. Create with Intention and make the complex simple. I pull from many disciplines. Fine arts, product design, industrial design, engineering. The core stays the same. Different fields that have shaped who I am, and how I approach problems. ",
     ],
@@ -60,7 +59,7 @@ const Page = () => {
     <div className="w-full min-h-dvh flex flex-col items-center justify-center font-light py-16 px-4">
       <div className="flex flex-col text-sm gap-6">
         <Link href="/" className="flex items-center gap-2">
-          <ArrowLeft
+          <ArrowUpLeft
             strokeWidth={1}
             size={16}
             className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"

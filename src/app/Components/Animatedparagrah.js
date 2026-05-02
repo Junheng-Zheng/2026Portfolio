@@ -38,10 +38,23 @@ const Animatedparagrah = ({
   onComplete,
   container = defaultContainer,
   letter = defaultLetter,
+  skipAnimation = false,
 }) => {
   const ariaLabel = Array.isArray(segments)
     ? segments.map((s) => s?.text ?? "").join("")
     : "";
+
+  if (skipAnimation) {
+    return (
+      <p className={className} aria-label={ariaLabel}>
+        {(segments ?? []).map((seg, i) => (
+          <span key={i} className={seg?.italic ? "italic" : undefined}>
+            {seg?.text ?? ""}
+          </span>
+        ))}
+      </p>
+    );
+  }
 
   return (
     <motion.p

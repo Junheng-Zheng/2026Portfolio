@@ -503,7 +503,7 @@ const Page = () => {
             src="/floral.png"
             alt="Dandi"
             fill
-            className="object-cover -z-20  contrast-125 brightness-80 scale-145 origin-top-left object-[50%_70%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
+            className="object-cover -z-20  contrast-115 brightness-80 scale-145 origin-top-left object-[50%_70%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
           />
           {/* <video
             src="/projectcards/dandi.mp4"

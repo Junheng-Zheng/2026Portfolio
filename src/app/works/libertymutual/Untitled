@@ -1,0 +1,6 @@
+  const sentence = [
+    {
+      text: "Proprio was my submission for Figbuild 2026. The prompt was simple - create a future product that targets a sense that cannot be tracked today. ",
+      italic: false,
+    },
+  ];

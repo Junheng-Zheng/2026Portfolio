@@ -10,19 +10,24 @@ import Marketresearch from "../../Components/casestudy/Marketresearch";
 import Marketanalysis from "../../Components/casestudy/Marketanalysis";
 import { Star, Briefcase, Palette, Clock, Circle } from "lucide-react";
 import { Gamepad, ArrowUpRight } from "lucide-react";
+import Animatedparagrah from "../../Components/Animatedparagrah";
 const Pack = () => {
+  const sentence = [
+    {
+      text: "Over the summer of 2025, I worked as a Design Engineer Intern at Liberty Mutual Insurance. I worked as a hybrid designer and developer, working on the Enterprise UI team, a team focused on designing and developing the internal design system for the company. I increased the library by over 30%, singlehandedly creating components from 0 to 1. I communicated through Slack and Jira, researched through Lucidcharts, designed in Figma, developed in React, Typescript, and SCSS, and deployed to Storybook. ",
+      italic: false,
+    },
+  ];
   return (
     <div className="flex flex-col 2xl:px-128 xl:px-64   px-4  gap-8 py-12  font-light text-black/70   ">
       <div className="flex flex-col text-base opacity-90   gap-3">
         <Link className="cursor-pointer text-sm  " href="/">
           Back to Home
         </Link>
-        <p className="z-20 text-lg w-full md:w-1/2 ">
-          Over the summer of 2025, I worked as a Design Engineer Intern at
-          Liberty Mutual Insurance. I worked as a hybrid designer and developer,
-          working on the Enterprise UI team, a team focused on designing and
-          developing the internal design system for the company.
-        </p>
+        <Animatedparagrah
+          segments={sentence}
+          className="z-20 text-lg w-full md:w-1/2 "
+        />
       </div>
       <div className="flex flex-col gap-3 ">
         <div className="w-full aspect-4/3 md:aspect-2/1 relative bg-[#FFD000] flex ">

@@ -88,7 +88,7 @@ const Pack = () => {
           </div>
         </div>
       </motion.div>
-      <div className="flex flex-col items-center justify-center">
+      {/* <div className="flex flex-col items-center justify-center">
         <div className="flex flex-col gap-12 w-full py-12 md:max-w-[700px]">
           <div className="flex flex-col gap-3">
             <h2 className="text-sm">The Problem (based on the prompt)</h2>
@@ -231,7 +231,7 @@ const Pack = () => {
             />
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="">
         <Footer />
       </div>

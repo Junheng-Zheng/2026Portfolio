@@ -153,9 +153,9 @@ const Page = () => {
       text: "Junheng combines product design and development to create seamless digital experiences. Incoming @ ",
       italic: false,
     },
-    { text: "IBM Research", italic: true },
+    { text: "IBM Research", italic: false },
     { text: ", and previously @ ", italic: false },
-    { text: "Liberty Mutual Insurance", italic: true },
+    { text: "Liberty Mutual Insurance", italic: false },
     { text: ".", italic: false },
   ];
 
@@ -178,7 +178,7 @@ const Page = () => {
   };
 
   return (
-    <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-16 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
+    <div className="flex max-w-[1700px] mx-auto  font-light  px-auto w-full flex-col xl:gap-16 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
       {/* menu */}
       <motion.div
         initial={{ opacity: 0, filter: "blur(3px)" }}
@@ -360,10 +360,10 @@ const Page = () => {
             ></div>
             <div className="w-1/3 h-full rounded-full relative ">
               <div
-                className={` bg-black rounded-full transition-all duration-300  w-full absolute top-1/2 left-0  translate-y-[calc(-50%+.4px)] ${isOpen ? "h-px" : "h-full"}`}
+                className={` bg-black  transition-all duration-300  w-full absolute top-1/2 left-0  translate-y-[calc(-50%+0px)] ${isOpen ? "h-px" : "h-full rounded-full"}`}
               ></div>
               <div
-                className={` bg-black rounded-full transition-all duration-300  h-full absolute top-0 left-1/2 translate-x-[calc(-50%+.4px)] ${isOpen ? "w-px" : "w-full"}`}
+                className={` bg-black  transition-all duration-300  h-full absolute top-0 left-1/2 translate-x-[calc(-50%+0px)] ${isOpen ? "w-px" : "w-full rounded-full"}`}
               ></div>
             </div>
             <div
@@ -436,7 +436,7 @@ const Page = () => {
           <p>[10:38]</p>
         </div> */}
         <Animatedparagrah
-          className="z-20 text-lg w-full md:w-1/2"
+          className="z-20 text-lg w-full  md:w-1/2"
           segments={sentence}
           onComplete={() => setIntroDone(true)}
         />
@@ -499,7 +499,13 @@ const Page = () => {
           }}
           className="w-full h-100 xl:h-90 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  "
         >
-          <video
+          <Image
+            src="/floral.png"
+            alt="Dandi"
+            fill
+            className="object-cover -z-20  brightness-80 scale-145 origin-top-left object-[50%_70%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
+          />
+          {/* <video
             src="/projectcards/dandi.mp4"
             autoPlay
             loop
@@ -509,7 +515,7 @@ const Page = () => {
             disablePictureInPicture
             controls={false}
             className="object-cover -z-20 brightness-120 scale-145 origin-top-left object-[50%_70%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
-          />
+          /> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1920 1080"
@@ -550,11 +556,8 @@ const Page = () => {
         />
       </div> */}
 
-      <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
+      {/* <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
         <div className=" flex items-center w-[70%] md:w-[50%]">
-          {/* <div className="flex items-center text-xs py-2 px-4 spacemono  border-r border-white/20  z-40 relative text-white  ">
-                <p>Design + Dev</p>
-              </div> */}
           <div className="relative w-full py-2 items-center  overflow-hidden flex-1 flex">
             <div className="pointer-events-none absolute top-0 left-0 z-20  md:w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
             <div className="pointer-events-none absolute top-0 right-0 z-20 w-[15%] h-full bg-linear-to-l from-white via-white to-transparent"></div>
@@ -618,7 +621,7 @@ const Page = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6">
         <ProjectCard
@@ -696,19 +699,19 @@ const Page = () => {
 
       <div className="w-full flex flex-col  ">
         <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
-          <p>Frontend Developer @ IBM Research</p>
+          <p>Frontend Developer Intern @ IBM Research</p>
           <p className="text-sm md:text-base opacity-80 md:opacity-100">
-            Summer 2026
+            Incoming Summer 2026
           </p>
         </div>
         <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
-          <p>UX Engineer @ Liberty Mutual Insurance</p>
+          <p>UX Engineer Intern @ Liberty Mutual Insurance</p>
           <p className="text-sm md:text-base opacity-80 md:opacity-100">
             Summer 2025
           </p>
         </div>
         <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
-          <p>Frontend Developer @ D&D Motor Systems</p>
+          <p>Frontend Developer Intern @ D&D Motor Systems</p>
           <p className="text-sm md:text-base opacity-80 md:opacity-100  ">
             Fall 2024
           </p>

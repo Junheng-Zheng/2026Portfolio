@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { motion } from "framer-motion";
+
 const Animatedlink = ({
   href,
   children,
@@ -11,13 +11,22 @@ const Animatedlink = ({
   const Wrapper = link ? Link : "a";
   const wrapperProps = link ? { href: link } : { href };
 
+  const rawHref = link ?? href ?? "";
+  const openInNewTab =
+    /^https?:\/\//i.test(rawHref) ||
+    rawHref.startsWith("mailto:") ||
+    /\.pdf(\?|$)/i.test(rawHref);
+
+  const targetProps = openInNewTab
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+
   return (
     <div className={`relative overflow-hidden group pb-1 w-fit ${className}`}>
       <div className="absolute -translate-x-full group-hover:translate-x-0 transition-all duration-300 top-0 left-0 w-full h-full border-b border-gray1" />
       <Wrapper
-        target="_blank"
-        rel="noopener noreferrer"
         {...wrapperProps}
+        {...targetProps}
         className="relative group"
       >
         <div className="flex flex-col h-5 overflow-hidden">

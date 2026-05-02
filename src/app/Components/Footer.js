@@ -1,7 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
 import Animatedlink from "./Animatedlink";
-import Image from "next/image";
 const Footer = () => {
   return (
     <div className="flex flex-col gap-16 pb-8 w-full">
@@ -26,9 +24,9 @@ const Footer = () => {
       <div className="flex md:flex-row flex-col md:justify-between gap-16 md:items-end">
         <div className="flex  gap-12">
           <div className="flex flex-col gap-4">
-            <Animatedlink href="#about">Manifesto</Animatedlink>
-            <Animatedlink href="#works">Works</Animatedlink>
-            <Animatedlink href="#philosophy">Resume</Animatedlink>
+            <Animatedlink link="/manifesto">Manifesto</Animatedlink>
+            <Animatedlink link="/#works-grid">Works</Animatedlink>
+            <Animatedlink link="/Junheng_SWE_Resume.pdf">Resume</Animatedlink>
           </div>
           <div className="flex flex-col gap-4">
             <Animatedlink link="https://www.linkedin.com/in/junhengzheng/">

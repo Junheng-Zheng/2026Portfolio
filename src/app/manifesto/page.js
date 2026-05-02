@@ -6,7 +6,7 @@ import { ArrowUpLeft } from "lucide-react";
 const Page = () => {
   const paragraphs = useMemo(
     () => [
-      "Growing up, my parents let me pick and choose my hobbies. I was always drawn to the creative process of creating. Before I knew it, I was taking fine art classes at 6 years old.",
+      "Growing up, my parents let me pick and choose my hobbies. I was always drawn to the creative process of creating. Before I knew it, I was taking fine art classes.",
       "In high school, I had a decided to major in industrial and product design. During this time, I fell in love with solving problems with creativity.",
       "In college, I enrolled in Web and Mobile Computing at Rochester Institute of Technology. It was during this time I learned about UX design and frontend development. I quickly became passionate about the technicality and creativity that this field combined.",
       "Since then, I have worked across small teams and big systems. Startups, local companies, and Fortune 100s. Last summer I worked as a hybrid UX Designer and developer at Liberty Mutual. This summer, I am incoming at IBM Research doing the same. ",

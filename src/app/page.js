@@ -198,7 +198,7 @@ function NavChrome({ skip, isOpen, isScrolled, children }) {
 
 function HeroVisual({ skip, children }) {
   const className =
-    "w-full h-100 xl:h-90 overflow-hidden items-center text-white flex-col gap-3  rounded-md justify-center flex relative  ";
+    "w-full h-[400px] overflow-hidden rounded-sm  relative flex justify-center  ";
   if (skip) return <div className={className}>{children}</div>;
   return (
     <motion.div
@@ -211,7 +211,7 @@ function HeroVisual({ skip, children }) {
         mass: 0.5,
         delay: 1.8,
       }}
-      className={className}
+      className={`${className}  `}
     >
       {children}
     </motion.div>
@@ -433,7 +433,7 @@ const Page = () => {
     : linkItem;
 
   return (
-    <div className="flex max-w-[1700px] mx-auto  font-light  px-auto w-full flex-col xl:gap-13 gap-12 py-4 px-4 xl:py-10 text-black/70 2xl:px-96 xl:px-64 text-md ">
+    <div className="flex max-w-[1700px] mx-auto  font-light px-4   2xl:px-96 xl:px-64 px-auto w-full flex-col xl:gap-13 gap-12 py-4 xl:py-10 text-black/70  text-md ">
       {/* menu */}
       <NavChrome skip={skipAnimations} isOpen={isOpen} isScrolled={isScrolled}>
         <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
@@ -696,14 +696,112 @@ const Page = () => {
           linksContainer={linksContainer}
           linkItemResolved={linkItemResolved}
         />
-        <HeroVisual skip={skipAnimations}>
-          <Image
-            src="/floral.png"
-            alt="Dandi"
-            fill
-            className="object-cover -z-20  contrast-115 md:contrast-105 brightness-80 scale-145 origin-top-left object-[50%_70%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
-          />
-          {/* <video
+        {/* <div className="flex  justify-center">
+          <div className="w-fit flex gap-2 ">
+            <div className="h-full flex  items-start justify-between">
+              <img
+                src="/testlanding/timer.png"
+                alt="Dandi"
+                className="h-[75%] aspect-square"
+              />
+            </div>
+            <div className=" h-full flex  items-end justify-between">
+              <img
+                src="/testlanding/keyboard.png"
+                alt="Dandi"
+                className="h-[75%]"
+              />
+            </div>
+            <div className=" h-full flex  items-end justify-between">
+              <img
+                src="/testlanding/keyboard.png"
+                alt="Dandi"
+                className="h-[75%]"
+              />
+            </div>
+            <div className=" h-full flex  items-end justify-between">
+              <img
+                src="/testlanding/keyboard.png"
+                alt="Dandi"
+                className="h-[75%]"
+              />
+            </div>
+          </div>
+        </div> */}
+        <HeroVisual
+          skip={skipAnimations}
+          className="w-full h-full flex justify-between"
+        >
+          {/* <div className="w-full h-full grid gap-2relative grid-rows-3 grid-cols-5 ">
+            <div className="absolute left-1/5 h-full w-px bg-black/20 z-10"></div>
+            <div className="absolute left-2/5 h-full w-px bg-black/20 z-10"></div>
+            <div className="absolute left-3/5 h-full w-px bg-black/20 z-10"></div>
+            <div className="absolute left-4/5 h-full w-px bg-black/20 z-10"></div>
+            <div className="absolute left-1/5 h-full w-px bg-black/20 z-10"></div>
+            <div className="absolute top-1/3 w-full h-px bg-black/20 z-10"></div>
+            <div className="absolute top-2/3 w-full h-px bg-black/20 z-10"></div>
+            <div className="w-full h-full relative row-span-1 p-2">
+              <div className="relative">
+                <Image
+                  src="/testlanding/timer.png"
+                  alt="Dandi"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
+            </div>
+            <div className="w-full h-full bg-blue-500 relative col-span-2 row-span-2">
+              <Image
+                src="/testlanding/timer.png"
+                alt="Dandi"
+                fill
+                className="object-cover object-center"
+              />
+            </div>
+            <div className="w-full h-full bg-red-500 relative row-span-1 row-start-2 col-start-2">
+              <Image
+                src="/testlanding/timer.png"
+                alt="Dandi"
+                fill
+                className="object-cover object-center"
+              />
+            </div>
+            <div className="w-full h-full bg-red-500 relative row-span-1 row-start-2 col-start-5">
+              <Image
+                src="/testlanding/timer.png"
+                alt="Dandi"
+                fill
+                className="object-cover object-center"
+              />
+            </div>
+            <div className="w-full h-full bg-blue-500 relative row-start-3 col-span-2  row-span-1">
+              <Image
+                src="/testlanding/timer.png"
+                alt="Dandi"
+                fill
+                className="object-cover object-center"
+              />
+            </div>
+            <div className="w-full h-full bg-red-500 relative row-start-3 col-start-4   row-span-1">
+              <Image
+                src="/testlanding/timer.png"
+                alt="Dandi"
+                fill
+                className="object-cover object-center"
+              />
+            </div>
+          </div> */}
+          <div className="w-full h-full md:hidden flex justify-between">
+            {Array.from({ length: 120 }).map((_, i) => (
+              <div key={i} className="w-px h-full bg-white relative"></div>
+            ))}
+          </div>
+          <div className="w-full h-full hidden md:flex justify-between">
+            {Array.from({ length: 240 }).map((_, i) => (
+              <div key={i} className="w-px h-full bg-white relative"></div>
+            ))}
+          </div>
+          <video
             src="/projectcards/dandi.mp4"
             autoPlay
             loop
@@ -712,9 +810,9 @@ const Page = () => {
             webkit-playsinline="true"
             disablePictureInPicture
             controls={false}
-            className="object-cover -z-20 brightness-120 scale-145 origin-top-left object-[50%_70%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
-          /> */}
-          <svg
+            className="object-cover -z-20 brightness-120 saturate-0 scale-145 origin-top-left object-[50%_130%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
+          />
+          {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1920 1080"
             preserveAspectRatio="none"
@@ -729,7 +827,7 @@ const Page = () => {
               />
             </filter>
             <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-          </svg>
+          </svg> */}
         </HeroVisual>
         {/* <div className="w-full flex justify-between leading-tight text-sm mono items-center">
           <p> [Contact]</p>

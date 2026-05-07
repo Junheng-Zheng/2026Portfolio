@@ -198,7 +198,7 @@ function NavChrome({ skip, isOpen, isScrolled, children }) {
 
 function HeroVisual({ skip, children }) {
   const className =
-    "w-full h-[400px] overflow-hidden rounded-sm  relative flex justify-center  ";
+    "w-full h-[400px] overflow-hidden rounded-md  relative flex justify-center  ";
   if (skip) return <div className={className}>{children}</div>;
   return (
     <motion.div
@@ -793,12 +793,12 @@ const Page = () => {
           </div> */}
           <div className="w-full h-full md:hidden flex justify-between">
             {Array.from({ length: 120 }).map((_, i) => (
-              <div key={i} className="w-px h-full bg-white relative"></div>
+              <div key={i} className="w-px h-full bg-white/30 relative"></div>
             ))}
           </div>
           <div className="w-full h-full hidden md:flex justify-between">
             {Array.from({ length: 240 }).map((_, i) => (
-              <div key={i} className="w-px h-full bg-white relative"></div>
+              <div key={i} className="w-px h-full bg-white/30 relative"></div>
             ))}
           </div>
           <video

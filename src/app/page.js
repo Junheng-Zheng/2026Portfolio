@@ -73,7 +73,7 @@ const ProjectCard = ({
         href={link}
         className={`w-full active:scale-98 ${className} overflow-hidden group rounded-sm  overflow-y-hidden cursor-pointer  inset-shadow-sm inset-shadow-white relative  transition-transform duration-300 aspect-4/3 `}
       >
-        <div className="flex flex-col z-10 scale-0 group-hover:scale-100 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
+        {/* <div className="flex flex-col  z-10 scale-0 group-hover:scale-100 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
           <div className="flex items-start ">
             <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
               {title}
@@ -91,8 +91,8 @@ const ProjectCard = ({
             className="rotate-270"
             fill="#ffffff"
           />
-        </div>
-        <div className="flex flex-col scale-0 group-hover:scale-100 transition-transform duration-300 origin-bottom-right z-10 items-end right-0 bottom-0  absolute ">
+        </div> */}
+        {/* <div className="flex flex-col scale-0 group-hover:scale-100 transition-transform duration-300 origin-bottom-right z-10 items-end right-0 bottom-0  absolute ">
           <Rounded
             width={24}
             height={24}
@@ -115,7 +115,7 @@ const ProjectCard = ({
               />
             </div>
           </div>
-        </div>
+        </div> */}
         {/* {lines && (
         <div className="absolute top-0 left-0 z-1 w-full flex justify-between h-full">
           {Array.from({ length: 128 }).map((_, i) => (
@@ -145,9 +145,16 @@ const ProjectCard = ({
         {children}
         <div className="absolute top-0  flex flex-col gap-1 p-4   -translate-y-full group-hover:translate-y-0 transition-all duration-300  left-0 w-full  overflow-hidden group-hover:h-fit"></div>
       </Link>
-      {/* <div className="flex  flex-col w-full  gap-0.5">
+      {/* <div className="flex group-hover:blur-none justify-between w-full ">
         <p className="">{title}</p>
-        <p className="text-sm text-gray-500">Junheng&apos;s UI/UX Resume</p>
+        <div className="flex gap-1 items-center">
+          <p>More</p>
+          <ArrowUpRight
+            strokeWidth={1}
+            size={16}
+            className="group-hover:scale-110 transition-transform duration-300"
+          />
+        </div>
       </div> */}
     </>
   );
@@ -198,7 +205,7 @@ function NavChrome({ skip, isOpen, isScrolled, children }) {
 
 function HeroVisual({ skip, children }) {
   const className =
-    "w-full h-[400px] overflow-hidden rounded-md  relative flex justify-center  ";
+    "w-full h-[400px] hidden overflow-hidden rounded-md  relative flex justify-center  ";
   if (skip) return <div className={className}>{children}</div>;
   return (
     <motion.div
@@ -377,11 +384,11 @@ const Page = () => {
 
   const sentence = [
     {
-      text: "Junheng combines product design and development to create seamless digital experiences. Incoming @ ",
+      text: "Junheng combines design and development to create seamless digital experiences. Incoming SWE + Designer @ ",
       italic: false,
     },
     { text: "IBM Research", italic: false },
-    { text: ", and previously @ ", italic: false },
+    { text: ", prev. working on design systems @ ", italic: false },
     { text: "Liberty Mutual Insurance", italic: false },
     { text: ".", italic: false },
   ];
@@ -433,9 +440,9 @@ const Page = () => {
     : linkItem;
 
   return (
-    <div className="flex max-w-[1700px] mx-auto  font-light px-4   2xl:px-96 xl:px-64 px-auto w-full flex-col xl:gap-13 gap-12 py-4 xl:py-10 text-black/70  text-md ">
+    <div className="flex max-w-[1700px] mx-auto  font-light px-4   2xl:px-96 xl:px-48 px-auto w-full flex-col xl:gap-13 gap-12 py-4 xl:py-10 text-black/70  text-md ">
       {/* menu */}
-      <NavChrome skip={skipAnimations} isOpen={isOpen} isScrolled={isScrolled}>
+      <NavChrome skip={skipAnimations} isOpen={isOpen}>
         <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
 
         {/* <Image
@@ -498,6 +505,50 @@ const Page = () => {
             </div>
             <div className="flex flex-1 flex-col gap-3">
               <Link
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=jz7259@g.rit.edu"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex cursor-pointer  active:scale-98  transition-transform duration-300 items-center gap-3 h-fit p-4 bg-gray-50 inset-shadow-sm  border border-gray-100 inset-shadow-white rounded-md"
+              >
+                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
+                  <Image
+                    src="/isometrics/gmail.png"
+                    alt="Email"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-md">Manifesto</p>
+                  <p className="text-xs text-gray-500">jz7259@g.rit.edu</p>
+                </div>
+              </Link>
+              <Link
+                href="https://linkedin.com/in/junhengzheng"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
+              >
+                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
+                  <Image
+                    src="/isometrics/linkedin.png"
+                    alt="Email"
+                    width={32}
+                    height={32}
+                    loading="lazy"
+                    quality={75}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-md">LinkedIn</p>
+                  <p className="text-xs text-gray-500">@Junheng Zheng</p>
+                </div>
+              </Link>
+            </div>
+            <div className="flex flex-1 flex-col gap-3">
+              <Link
                 href="/Junheng_SWE_Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -515,7 +566,7 @@ const Page = () => {
                 </div>
                 <div className="flex flex-col">
                   <p className="text-md">Resume</p>
-                  <p className="text-xs text-gray-500">Dev + Design Resume</p>
+                  <p className="text-xs text-gray-500">Dev + Design</p>
                 </div>
               </Link>
               <Link
@@ -540,11 +591,7 @@ const Page = () => {
                 </div>
               </Link>
             </div>
-            <div className="md:hidden group cursor-pointer lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
-              {/* <div className="absolute top-12 right-3 w-32 h-32 bg-blue-100 rounded-full blur-2xl"></div>
-              <div className="absolute bottom-12 left-8 w-32 h-32 bg-pink-100 rounded-full blur-2xl"></div>
-              <div className="absolute top-12 left-2 w-32 h-32 bg-red-100 rounded-full blur-2xl"></div>
-              <div className="absolute bottom-8 right-24 w-32 h-32 bg-purple-100 rounded-full blur-2xl"></div> */}
+            {/* <div className="md:hidden group cursor-pointer lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 1920 1080"
@@ -581,7 +628,7 @@ const Page = () => {
                   className="group-hover:rotate-45 stroke-amber-500 transition-transform duration-300"
                 />
               </h2>
-            </div>
+            </div> */}
           </div>
         </div>
         <button
@@ -730,7 +777,7 @@ const Page = () => {
         </div> */}
         <HeroVisual
           skip={skipAnimations}
-          className="w-full h-full flex justify-between"
+          className="w-full  flex justify-between"
         >
           {/* <div className="w-full h-full grid gap-2relative grid-rows-3 grid-cols-5 ">
             <div className="absolute left-1/5 h-full w-px bg-black/20 z-10"></div>
@@ -791,7 +838,13 @@ const Page = () => {
               />
             </div>
           </div> */}
-          <div className="w-full h-full md:hidden flex justify-between">
+          <Image
+            src="/wallpaper/flower.jpg"
+            alt="Hero"
+            fill
+            className="object-cover object-center"
+          />
+          {/* <div className="w-full h-full md:hidden flex justify-between">
             {Array.from({ length: 120 }).map((_, i) => (
               <div key={i} className="w-px h-full bg-white/30 relative"></div>
             ))}
@@ -811,7 +864,7 @@ const Page = () => {
             disablePictureInPicture
             controls={false}
             className="object-cover -z-20 brightness-120 saturate-0 scale-145 origin-top-left object-[50%_130%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
-          />
+          /> */}
           {/* <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 1920 1080"
@@ -924,7 +977,17 @@ const Page = () => {
         className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6 scroll-mt-24"
       >
         <ProjectCard
-          cover="/cardcovers/ibm.gif"
+          cover="/cardcovers/makerfixed2.png"
+          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
+          title="Design Engineer @ Crafty Studios "
+          link="/works/makerspace"
+          icon="/isometrics/liberty.png"
+          className="md:col-span-4 "
+          delay={2.2}
+          skipEntrance={skipAnimations}
+        />
+        <ProjectCard
+          cover="/cardcovers/ibmstill.png"
           technologies={["Figma", "SwiftUI", "Kotlin"]}
           title="SWE Intern @ IBM Research"
           link="/works/pack"
@@ -933,7 +996,7 @@ const Page = () => {
           delay={2.2}
           skipEntrance={skipAnimations}
         >
-          <div className="flex flex-col z-50 group-hover:scale-0 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
+          {/* <div className="flex flex-col z-50 group-hover:scale-0 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
             <div className="flex items-start ">
               <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
                 Coming Soon
@@ -951,7 +1014,7 @@ const Page = () => {
               className="rotate-270"
               fill="#ffffff"
             />
-          </div>
+          </div> */}
         </ProjectCard>
         <ProjectCard
           cover="/cardcovers/limi.gif"
@@ -974,23 +1037,8 @@ const Page = () => {
           delay={2.2}
           skipEntrance={skipAnimations}
         />
-        <ProjectCard
-          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
-          title="Design Engineer @ Crafty Studios "
-          link="/works/makerspace"
-          icon="/isometrics/liberty.png"
-          className="md:col-span-4 "
-          delay={2.2}
-          skipEntrance={skipAnimations}
-        >
-          <Image
-            src="/cardcovers/seniorproj.png"
-            alt="Coming Soon"
-            fill
-            className="object-cover w-full h-full "
-          />
-        </ProjectCard>
-        <ProjectCard
+
+        {/* <ProjectCard
           cover="/projectcards/packgame.png"
           technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
           title="PACK! Mobile Game"
@@ -998,7 +1046,7 @@ const Page = () => {
           icon="/isometrics/liberty.png"
           className="md:col-span-4"
           skipEntrance={skipAnimations}
-        />
+        /> */}
       </div>
 
       <div className="w-full flex flex-col  ">
@@ -1019,32 +1067,6 @@ const Page = () => {
           <p className="text-sm md:text-base opacity-80 md:opacity-100  ">
             Fall 2024
           </p>
-        </div>
-        <div className="w-full py-4 gap-6 flex justify-start items-center">
-          <Link
-            href="/Junheng_SWE_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex cursor-pointer  group items-center gap-1"
-          >
-            <ArrowUpRight
-              strokeWidth={1}
-              size={20}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-            Full Resume
-          </Link>
-          <Link
-            href="/manifesto"
-            className="flex cursor-pointer  group items-center gap-1"
-          >
-            <ArrowUpRight
-              strokeWidth={1}
-              size={20}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-            Junheng&apos;s Manifesto
-          </Link>
         </div>
       </div>
       {/* <div className="w-full flex flex-col py-12 gap-12">

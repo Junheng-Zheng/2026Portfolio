@@ -925,7 +925,7 @@ const Page = () => {
           </div>
         </div>
       </div> */}
-      <div className="w-full flex flex-col gap-15 md:gap-24  md:items-center justify-center  px-4   2xl:px-96 xl:px-48 ">
+      <div className="w-full flex flex-col gap-15 md:gap-26  md:items-center justify-center  px-4   2xl:px-96 xl:px-48 ">
         <div className="flex md:mx-auto w-full md:w-fit flex-col gap-6 md:gap-9 md:items-center justify-center">
           <div className="flex md:items-center flex-col gap-2 justify-center">
             <Animatedparagrah

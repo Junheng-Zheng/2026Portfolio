@@ -599,13 +599,9 @@ const Page = () => {
 
   const sentence = [
     {
-      text: "Junheng combines design and development to create seamless digital experiences. Incoming SWE + Designer @ ",
+      text: "Jun combines design & development to create beautiful digital experiences. Current swe + design intern @ IBM Research, & prev. working on design systems @ Liberty Mutual Insurance.",
       italic: false,
     },
-    { text: "IBM Research", italic: false },
-    { text: ", prev. working on design systems @ ", italic: false },
-    { text: "Liberty Mutual Insurance", italic: false },
-    { text: ".", italic: false },
   ];
 
   const mobileSentence = [

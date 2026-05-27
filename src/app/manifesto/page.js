@@ -6,11 +6,11 @@ import { ArrowUpLeft } from "lucide-react";
 const Page = () => {
   const paragraphs = useMemo(
     () => [
-      "Growing up, my parents let me pick and choose my hobbies. I was always drawn to the creative process of creating. Before I knew it, I was taking fine art classes.",
-      "In high school, I had a decided to major in industrial and product design. During this time, I fell in love with solving problems with creativity.",
-      "In college, I enrolled in Web and Mobile Computing at Rochester Institute of Technology. It was during this time I learned about UX design and frontend development. I quickly became passionate about the technicality and creativity that this field combined.",
-      "Since then, I have worked across small teams and big systems. Startups, local companies, and Fortune 100s. Last summer I worked as a hybrid UX Designer and developer at Liberty Mutual. This summer, I am incoming at IBM Research doing the same. ",
-      "My manifesto is simple. Create with Intention and make the complex simple. I pull from many disciplines. Fine arts, product design, industrial design, engineering. The core stays the same. Different fields that have shaped who I am, and how I approach problems. ",
+      "My parents let me pick and choose my hobbies. I was always drawn to the creative process of creating. Before I knew it, I was taking fine art classes.",
+      "In high school, I majored in industrial and product design. Here, I learned how to laser cut, 3d model, and utilize power tools. During this time, I fell in love with solving problems with creativity and function.",
+      "Currently in college, I am majoring in Web and Mobile Computing. During this time, I learned about UX design and frontend development. I quickly became passionate about the technicality and creativity that this field combined.",
+
+      "I pull from many disciplines. Fine arts, product design, industrial design, and engineering. Different perspectives define the way I solve problems. These fields have shaped who I am and how I approach challenges.",
     ],
     [],
   );
@@ -56,16 +56,12 @@ const Page = () => {
   }, [activeParagraph, paragraphs]);
 
   return (
-    <div className="w-full min-h-dvh flex flex-col items-center justify-center font-light py-16 px-4">
-      <div className="flex flex-col text-sm gap-6">
+    <div className="w-full min-h-dvh flex text-black/70 flex-col items-center justify-center font-light py-16 px-4">
+      <div className="flex flex-col text-sm gap-4">
         <Link href="/" className="flex items-center gap-2">
-          <ArrowUpLeft
-            strokeWidth={1}
-            size={16}
-            className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-          />
-          Back to Home
+          Back
         </Link>
+        <h1 className="alice uppercase text-2xl font-bold">About</h1>
         <div className="w-full md:w-[560px] flex flex-col gap-6">
           {paragraphs.map((text, idx) => (
             <Animatedparagrah

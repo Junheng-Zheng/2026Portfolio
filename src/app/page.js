@@ -2,13 +2,82 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useMotionValue, useTransform, animate } from "framer-motion";
-import { ArrowUpRight, ArrowDown, Lock } from "lucide-react";
+import { ArrowUpRight, ArrowDown, Lock, ChevronDown } from "lucide-react";
 import { useState, useEffect, useRef, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import Rounded from "./Components/Rounded";
 import Footer from "./Components/Footer";
 import Animatedparagrah from "./Components/Animatedparagrah";
+import Animatedlink from "./Components/Animatedlink";
 const HOME_VISITED_KEY = "portfolio-home-visited";
+
+const EXPERIENCE_SORT_OPTIONS = [
+  { value: "relevance", label: "By Relevance" },
+  { value: "date", label: "By Date" },
+  { value: "design", label: "Design" },
+  { value: "swe", label: "SWE" },
+];
+
+const EXPERIENCES = [
+  {
+    id: "ibm",
+    role: "swe + design @ IBM Research",
+    period: "Summer '26",
+    relevance: 0,
+    dateKey: 20262,
+    tags: ["swe"],
+  },
+  {
+    id: "liberty",
+    role: "swe + design @ Liberty Mutual",
+    period: "Summer '25",
+    relevance: 1,
+    dateKey: 20252,
+    tags: ["swe", "design"],
+  },
+  {
+    id: "collabotory",
+    role: "swe + design @ Collabotory",
+    period: "Spring '26",
+    relevance: 2,
+    dateKey: 20261,
+    tags: ["swe", "design"],
+  },
+  {
+    id: "tiger",
+    role: "design @ Tiger Snack Box",
+    period: "Spring '25",
+    relevance: 3,
+    dateKey: 20251,
+    tags: ["design"],
+  },
+  {
+    id: "dnd",
+    role: "design @ D&D Motor Systems",
+    period: "Fall '24",
+    relevance: 4,
+    dateKey: 20243,
+    tags: ["swe"],
+  },
+];
+
+function getSortedExperiences(sortBy) {
+  let list = [...EXPERIENCES];
+
+  if (sortBy === "design") {
+    list = list.filter((item) => item.tags.includes("design"));
+  } else if (sortBy === "swe") {
+    list = list.filter((item) => item.tags.includes("swe"));
+  }
+
+  if (sortBy === "date") {
+    list.sort((a, b) => b.dateKey - a.dateKey);
+  } else {
+    list.sort((a, b) => a.relevance - b.relevance);
+  }
+
+  return list;
+}
 
 const homeVisitedListeners = new Set();
 
@@ -31,9 +100,9 @@ function getHomeVisitedServerSnapshot() {
 }
 
 /** Match Animatedparagrah timing so links can stagger without waiting on onComplete + setState */
-const AP_INTRO_DELAY_CHILDREN = 0.05;
-const AP_LETTER_STAGGER = 0.006;
-const AP_INTRO_TAIL_SEC = 0.38;
+const AP_INTRO_DELAY_CHILDREN = 0.4;
+const AP_LETTER_STAGGER = 0.004;
+const AP_INTRO_TAIL_SEC = 0.22;
 
 function countAnimatedLetters(segments) {
   if (!Array.isArray(segments)) return 0;
@@ -44,12 +113,135 @@ function countAnimatedLetters(segments) {
   );
 }
 
-/** Wall-clock delay before the link row stagger should begin (after intro letters). */
-function getLinksDelayAfterIntro(segments) {
+/** Wall-clock duration for a letter-stagger paragraph to finish. */
+function getAnimatedParagraphDuration(segments) {
   const n = countAnimatedLetters(segments);
   if (n === 0) return AP_INTRO_TAIL_SEC;
   return (
     AP_INTRO_DELAY_CHILDREN + (n - 1) * AP_LETTER_STAGGER + AP_INTRO_TAIL_SEC
+  );
+}
+
+const STAGGER_ROW_GAP = 0.05;
+const STAGGER_ROW_TAIL = 0.22;
+
+function getStaggerRowDuration(count, skip) {
+  if (skip || count <= 0) return 0;
+  return (count - 1) * STAGGER_ROW_GAP + STAGGER_ROW_TAIL;
+}
+
+function markHomeVisited() {
+  try {
+    sessionStorage.setItem(HOME_VISITED_KEY, "true");
+    notifyHomeVisitedSubscribers();
+  } catch {
+    /* ignore quota / private mode */
+  }
+}
+
+/** Blur/fade entrance; renders a plain div when skip is true. */
+function HomeEntrance({
+  skip,
+  delay = 0,
+  className = "",
+  children,
+  onComplete,
+}) {
+  if (skip) {
+    return <div className={className}>{children}</div>;
+  }
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 10, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{
+        type: "spring",
+        stiffness: 500,
+        damping: 80,
+        mass: 0.5,
+        delay,
+      }}
+      className={className}
+      onAnimationComplete={onComplete}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/** Staggered row (nav links, CTAs, list rows) after prior sequence steps. */
+function HomeAnimatedLinks({
+  skip,
+  delay = 0,
+  className = "",
+  itemClassName = "",
+  children,
+  onComplete,
+}) {
+  const container = skip
+    ? {
+        hidden: {},
+        show: { transition: { staggerChildren: 0, delayChildren: 0 } },
+      }
+    : {
+        hidden: {},
+        show: {
+          transition: {
+            staggerChildren: STAGGER_ROW_GAP,
+            delayChildren: delay,
+          },
+        },
+      };
+
+  const item = skip
+    ? {
+        hidden: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+        show: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          transition: { duration: 0 },
+        },
+      }
+    : {
+        hidden: { opacity: 0, y: 8, scale: 0.98, filter: "blur(6px)" },
+        show: {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          filter: "blur(0px)",
+          transition: {
+            type: "spring",
+            stiffness: 500,
+            damping: 35,
+            mass: 0.5,
+          },
+        },
+      };
+
+  if (skip) {
+    return <div className={className}>{children}</div>;
+  }
+
+  return (
+    <motion.div
+      className={className}
+      variants={container}
+      initial="hidden"
+      animate="show"
+      onAnimationComplete={(definition) => {
+        if (definition === "show" && onComplete) onComplete();
+      }}
+    >
+      {Array.isArray(children)
+        ? children.map((child, i) => (
+            <motion.div key={i} variants={item} className={itemClassName}>
+              {child}
+            </motion.div>
+          ))
+        : children}
+    </motion.div>
   );
 }
 
@@ -194,7 +386,7 @@ function NavChrome({ skip, isOpen, isScrolled, children }) {
         stiffness: 500,
         damping: 80,
         mass: 0.5,
-        delay: 1.8,
+        delay: 0.6,
       }}
       className={className}
     >
@@ -203,22 +395,21 @@ function NavChrome({ skip, isOpen, isScrolled, children }) {
   );
 }
 
-function HeroVisual({ skip, children }) {
-  const className =
-    "w-full h-[400px] hidden overflow-hidden rounded-md  relative flex justify-center  ";
-  if (skip) return <div className={className}>{children}</div>;
+function HeroVisual({ skip, delay = 0, className = "", children }) {
+  const resolvedClassName = `w-full overflow-hidden relative ${className}`;
+  if (skip) return <div className={resolvedClassName}>{children}</div>;
   return (
     <motion.div
-      initial={{ opacity: 0, filter: "blur(3px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 12, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{
         type: "spring",
         stiffness: 500,
         damping: 80,
         mass: 0.5,
-        delay: 1.8,
+        delay,
       }}
-      className={`${className}  `}
+      className={resolvedClassName}
     >
       {children}
     </motion.div>
@@ -355,6 +546,9 @@ const Page = () => {
   const prevPathnameRef = useRef(pathname);
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [experienceSort, setExperienceSort] = useState("relevance");
+  const [experienceSortOpen, setExperienceSortOpen] = useState(false);
+  const experienceSortRef = useRef(null);
   const skipAnimations = useSyncExternalStore(
     subscribeHomeVisited,
     getHomeVisitedSnapshot,
@@ -382,6 +576,27 @@ const Page = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (!experienceSortOpen) return;
+    const handlePointerDown = (e) => {
+      if (!experienceSortRef.current?.contains(e.target)) {
+        setExperienceSortOpen(false);
+      }
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [experienceSortOpen]);
+
+  const sortedExperiences = getSortedExperiences(experienceSort);
+  const experienceSortLabel =
+    EXPERIENCE_SORT_OPTIONS.find((o) => o.value === experienceSort)?.label ??
+    "By Relevance";
+
+  const nameSegments = [
+    { text: "Junheng", italic: false },
+    { text: " Zheng", italic: false },
+  ];
+
   const sentence = [
     {
       text: "Junheng combines design and development to create seamless digital experiences. Incoming SWE + Designer @ ",
@@ -393,7 +608,45 @@ const Page = () => {
     { text: ".", italic: false },
   ];
 
-  const linksDelayAfterIntro = getLinksDelayAfterIntro(sentence);
+  const mobileSentence = [
+    {
+      text: "Junheng combines swe + design to create seamless, beautiful experiences. Currently a frontend developer @ IBM Research, and previously @ Liberty Mutual Insurance. ",
+      italic: false,
+    },
+  ];
+
+  const experienceTitleSegments = [{ text: "Experience", italic: false }];
+  const hackathonsTitleSegments = [{ text: "Hackathons", italic: false }];
+
+  const introDelay = 0;
+  const introDuration = skipAnimations
+    ? 0
+    : getAnimatedParagraphDuration(sentence);
+
+  const nameDelay = introDelay + introDuration;
+  const nameDuration = skipAnimations
+    ? 0
+    : getAnimatedParagraphDuration(nameSegments);
+  const afterIntroDelay = introDelay + introDuration;
+
+  // Order: intro paragraph -> (nav links + CTA together) -> hero ...
+  // Name is delayed so the intro paragraph is always first.
+  const navLinksDelay = afterIntroDelay;
+  const navLinksDuration = getStaggerRowDuration(3, skipAnimations);
+  const ctaDelay = afterIntroDelay;
+  const ctaDuration = getStaggerRowDuration(2, skipAnimations);
+  const heroDelay = afterIntroDelay + Math.max(navLinksDuration, ctaDuration);
+
+  // After the hero comes in, bring everything else in together.
+  const HERO_ENTRANCE_TAIL_SEC = 0.35;
+  const afterHeroDelay =
+    heroDelay + (skipAnimations ? 0 : HERO_ENTRANCE_TAIL_SEC);
+
+  const experienceDelay = afterHeroDelay;
+  const experienceSortDelay = afterHeroDelay;
+  const experienceListDelay = afterHeroDelay;
+  const hackathonsDelay = afterHeroDelay;
+  const hackathonsListDelay = afterHeroDelay;
 
   const linksContainer = skipAnimations
     ? {
@@ -404,8 +657,8 @@ const Page = () => {
         hidden: {},
         show: {
           transition: {
-            staggerChildren: 0.08,
-            delayChildren: linksDelayAfterIntro,
+            staggerChildren: STAGGER_ROW_GAP,
+            delayChildren: ctaDelay,
           },
         },
       };
@@ -440,309 +693,69 @@ const Page = () => {
     : linkItem;
 
   return (
-    <div className="flex max-w-[1700px] mx-auto  font-light px-4   2xl:px-96 xl:px-48 px-auto w-full flex-col xl:gap-13 gap-12 py-4 xl:py-10 text-black/70  text-md ">
+    <div className="flex max-w-[1700px] mx-auto  font-light px-auto w-full flex-col xl:gap-13 gap-10 py-4 xl:py-10 text-black/70  text-md ">
       {/* menu */}
-      <NavChrome skip={skipAnimations} isOpen={isOpen}>
-        <p className="-tracking-[1px] text-black text-lg font-black ">JUN</p>
 
-        {/* <Image
-          src="/logo.png"
-          alt="Junheng Zheng"
-          width={36}
-          height={36}
-          loading="lazy"
-          quality={75}
-        /> */}
-        <div
-          className={`absolute flex flex-col gap-4 top-0 left-0 w-full overflow-hidden h-fit bg-white   rounded-xl border-t   ${isOpen ? "xl:max-h-[300px] max-h-[800px] border-gray-100  p-4 shadow-sm shadow-gray-200" : "border-white border-none max-h-0"} transition-all duration-300`}
-        >
-          <h2 className="text-lg  ">Menu</h2>
-
-          <div className="flex md:flex-row z-30 flex-col gap-4">
-            <div className="flex flex-1 flex-col gap-3">
-              <Link
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=jz7259@g.rit.edu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex cursor-pointer  active:scale-98  transition-transform duration-300 items-center gap-3 h-fit p-4 bg-gray-50 inset-shadow-sm  border border-gray-100 inset-shadow-white rounded-md"
-              >
-                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
-                  <Image
-                    src="/isometrics/gmail.png"
-                    alt="Email"
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    quality={75}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-md">Email</p>
-                  <p className="text-xs text-gray-500">jz7259@g.rit.edu</p>
-                </div>
-              </Link>
-              <Link
-                href="https://linkedin.com/in/junhengzheng"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
-              >
-                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
-                  <Image
-                    src="/isometrics/linkedin.png"
-                    alt="Email"
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    quality={75}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-md">LinkedIn</p>
-                  <p className="text-xs text-gray-500">@Junheng Zheng</p>
-                </div>
-              </Link>
-            </div>
-            <div className="flex flex-1 flex-col gap-3">
-              <Link
-                href="https://mail.google.com/mail/?view=cm&fs=1&to=jz7259@g.rit.edu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex cursor-pointer  active:scale-98  transition-transform duration-300 items-center gap-3 h-fit p-4 bg-gray-50 inset-shadow-sm  border border-gray-100 inset-shadow-white rounded-md"
-              >
-                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
-                  <Image
-                    src="/isometrics/gmail.png"
-                    alt="Email"
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    quality={75}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-md">Manifesto</p>
-                  <p className="text-xs text-gray-500">jz7259@g.rit.edu</p>
-                </div>
-              </Link>
-              <Link
-                href="https://linkedin.com/in/junhengzheng"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
-              >
-                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
-                  <Image
-                    src="/isometrics/linkedin.png"
-                    alt="Email"
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    quality={75}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-md">LinkedIn</p>
-                  <p className="text-xs text-gray-500">@Junheng Zheng</p>
-                </div>
-              </Link>
-            </div>
-            <div className="flex flex-1 flex-col gap-3">
-              <Link
-                href="/Junheng_SWE_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
-              >
-                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
-                  <Image
-                    src="/isometrics/resume.png"
-                    alt="Resume"
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    quality={75}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-md">Resume</p>
-                  <p className="text-xs text-gray-500">Dev + Design</p>
-                </div>
-              </Link>
-              <Link
-                href="https://github.com/junheng-zheng"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full flex cursor-pointer bg-gray-50 inset-shadow-sm inset-shadow-white  active:scale-98 transition-transform duration-300 items-center gap-3 h-fit p-4 border border-gray-100 rounded-md"
-              >
-                <div className="w-10 h-10 rounded-md flex bg-white inset-shadow-sm inset-shadow-black/5 items-center justify-center">
-                  <Image
-                    src="/isometrics/github.png"
-                    alt="Github"
-                    width={32}
-                    height={32}
-                    loading="lazy"
-                    quality={75}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-md">Github</p>
-                  <p className="text-xs text-gray-500">@junhengzheng</p>
-                </div>
-              </Link>
-            </div>
-            {/* <div className="md:hidden group cursor-pointer lg:flex flex flex-1 flex-col overflow-hidden justify-center py-16 p-3  md:py-3 gap-2  grow relative items-center rounded-xl ">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 1920 1080"
-                preserveAspectRatio="none"
-                className="absolute inset-0   w-full h-full opacity-30 pointer-events-none z-0"
-              >
-                <filter id="noiseFilter">
-                  <feTurbulence
-                    type="fractalNoise"
-                    baseFrequency="10"
-                    numOctaves="2"
-                    stitchTiles="stitch"
-                  />
-                </filter>
-                <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-              </svg>
-              <video
-                autoPlay
-                muted
-                playsInline
-                loop
-                preload="auto"
-                controls={false}
-                className="object-cover -z-20 brightness-120 group-hover:scale-105 transition-transform duration-300 origin-top-left absolute left-0 top-0 rounded-xl w-full h-full object-[10%_25%]"
-              >
-                <source src="/projectcards/dandi.mp4" type="video/mp4" />
-              </video>
-
-              <h2 className="flex items-center group-hover:scale-105 transition-transform duration-300 font-normalgap-1  z-2 text-amber-500 text-2xl">
-                Let&apos;s Connect.
-                <ArrowUpRight
-                  strokeWidth={1}
-                  size={32}
-                  className="group-hover:rotate-45 stroke-amber-500 transition-transform duration-300"
-                />
-              </h2>
-            </div> */}
-          </div>
-        </div>
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`flex flex-col w-[20px] opacity-80 h-[20px] relative cursor-pointer active:scale-88 transition-transform duration-300 group ${isOpen ? "rotate-45 gap-0" : "gap-px"}`}
-          aria-label={isOpen ? "Close menu" : "Open menu"}
-        >
-          <div className="w-full h-full gap-px flex items-center justify-center">
-            <div className="w-1/3 h-full opacity-0"></div>
-            <div
-              className={` bg-black rounded-full transition-all duration-300  h-full ${isOpen ? "w-px" : "w-1/3"}`}
-            ></div>
-            <div className="w-1/3 h-full opacity-0"></div>
-          </div>
-          <div
-            className={`w-full h-full  flex items-center justify-center ${isOpen ? "gap-0" : "gap-px"}`}
-          >
-            <div
-              className={` bg-black rounded-full transition-all duration-300  w-1/3  ${isOpen ? "h-px" : "h-full"}`}
-            ></div>
-            <div className="w-1/3 h-full rounded-full relative ">
-              <div
-                className={` bg-black  transition-all duration-300  w-full absolute top-1/2 left-0  translate-y-[calc(-50%+0px)] ${isOpen ? "h-px" : "h-full rounded-full"}`}
-              ></div>
-              <div
-                className={` bg-black  transition-all duration-300  h-full absolute top-0 left-1/2 translate-x-[calc(-50%+0px)] ${isOpen ? "w-px" : "w-full rounded-full"}`}
-              ></div>
-            </div>
-            <div
-              className={` bg-black rounded-full transition-all duration-300  w-1/3  ${isOpen ? "h-px" : "h-full"}`}
-            ></div>
-          </div>
-          <div className="w-full h-full gap-px flex items-center justify-center">
-            <div className="w-1/3 h-full opacity-0"></div>
-            <div
-              className={` bg-black rounded-full transition-all duration-300  h-full ${isOpen ? "w-px" : "w-1/3"}`}
-            ></div>
-            <div className="w-1/3 h-full opacity-0"></div>
-          </div>
-        </button>
-      </NavChrome>
-      {/* <div className="flex hidden flex-col gap-4">
-        <div className="flex flex-col gap-2  instrument-serif text-2xl ">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: delay }}
-            className="py-1.5 pl-1 pr-3 bg-gray-100/80 rounded-xl border-r border-white/20 shadow-sm inset-shadow-sm inset-shadow-white w-fit flex items-center gap-2"
-          >
-            <div className=" py-1 px-3 bg-blue-100 inset-shadow-sm border-r border-white/30 inset-shadow-white shadow-sm overflow-hidden relative rounded-xl ">
-              <TypingText text="Design Engineer" speed={0.05} delay={delay} />
-            </div>
-            <div>🌷based in New York City</div>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: delay + 0.25 }}
-            className="py-1.5 pl-3 pr-1 bg-gray-100/80 rounded-xl inset-shadow-sm border-r border-white/30 inset-shadow-white shadow-sm w-fit flex items-center gap-2"
-          >
-            <div className="xl:block hidden">Passionate about creating 🌼</div>
-            <div className="xl:hidden block">Creating</div>
-
-            <div className=" py-1 px-3 bg-yellow-100 inset-shadow-sm border-r border-white/30 inset-shadow-white shadow-sm overflow-hidden relative rounded-xl ">
-              <TypingText
-                text=" seamless digital experiences"
-                speed={0.05}
-                delay={delay}
-              />
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="flex gap-3 ">
-          <button className="cursor-pointer active:scale-98 bg-white group hover:scale-101 transition-transform duration-300 px-4 py-2 border flex gap-2 items-center border-gray-200/80 rounded-md">
-            Contact
-            <ArrowUpRight
-              strokeWidth={1}
-              size={16}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-          </button>
-          <button className="cursor-pointer active:scale-98 bg-white group hover:scale-101 transition-transform duration-300 px-4 py-2 border flex gap-2 items-center border-gray-200/80 rounded-md">
-            Resume
-            <ArrowUpRight
-              strokeWidth={1}
-              size={16}
-              className="group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-            />
-          </button>
-        </div>
-      </div> */}
-      <div className="flex flex-col gap-6">
-        {/* <div className="w-full flex justify-between text-sm  leading-tight mono items-center">
-          <p> [Based in NYC]</p>
-          <p>[10:38]</p>
-        </div> */}
+      <div className="w-full flex flex-col  px-4   2xl:px-96 xl:px-48  gap-2 md:items-center justify-center">
         <Animatedparagrah
-          className="z-20 text-lg w-full  md:w-1/2"
+          className="alice uppercase text-2xl font-bold"
+          segments={nameSegments}
+          skipAnimation={skipAnimations}
+          delayChildren={nameDelay}
+        />
+        <HomeAnimatedLinks
+          skip={skipAnimations}
+          delay={navLinksDelay}
+          className="flex gap-4"
+        >
+          <Animatedlink link="/Junheng_SWE_Resume.pdf">Resume</Animatedlink>
+          <Animatedlink href="https://www.linkedin.com/in/junhengzheng/">
+            LinkedIn
+          </Animatedlink>
+          <Animatedlink href="https://github.com/junheng-zheng">
+            Github
+          </Animatedlink>
+        </HomeAnimatedLinks>
+      </div>
+      <div className="flex flex-col items-center   px-4   2xl:px-96 xl:px-48   gap-5">
+        <Animatedparagrah
+          className="z-20 text-lg w-full  text-center hidden md:block md:w-1/2"
           segments={sentence}
           skipAnimation={skipAnimations}
-          onComplete={() => {
-            try {
-              sessionStorage.setItem(HOME_VISITED_KEY, "true");
-            } catch {
-              /* ignore quota / private mode */
-            }
-          }}
+          delayChildren={introDelay}
         />
-        <HomeLinksRow
+        <Animatedparagrah
+          className="z-20 text-lg w-full  block md:hidden md:w-1/2"
+          segments={mobileSentence}
+          skipAnimation={skipAnimations}
+          delayChildren={introDelay}
+        />
+        <HomeAnimatedLinks
+          skip={skipAnimations}
+          delay={ctaDelay}
+          className="flex w-full md:justify-center gap-3"
+        >
+          <Link
+            href="https://linkedin.com/in/junhengzheng"
+            type="button"
+            className="px-3 py-1 border cursor-pointer active:scale-98 transition-transform duration-300 w-fit text-nowrap flex gap-1 items-center border-gray-200 rounded-md text-sm"
+          >
+            Contact
+            <ArrowUpRight strokeWidth={1} size={16} />
+          </Link>
+          <Link
+            href="/manifesto"
+            className="px-3 py-1 border cursor-pointer active:scale-98 transition-transform duration-300 w-fit text-nowrap flex gap-1 items-center border-gray-200 rounded-md text-sm"
+          >
+            About
+            <ArrowUpRight strokeWidth={1} size={16} />
+          </Link>
+        </HomeAnimatedLinks>
+        {/* <HomeLinksRow
           skip={skipAnimations}
           linksContainer={linksContainer}
           linkItemResolved={linkItemResolved}
-        />
+        /> */}
         {/* <div className="flex  justify-center">
           <div className="w-fit flex gap-2 ">
             <div className="h-full flex  items-start justify-between">
@@ -775,118 +788,59 @@ const Page = () => {
             </div>
           </div>
         </div> */}
-        <HeroVisual
-          skip={skipAnimations}
-          className="w-full  flex justify-between"
-        >
-          {/* <div className="w-full h-full grid gap-2relative grid-rows-3 grid-cols-5 ">
-            <div className="absolute left-1/5 h-full w-px bg-black/20 z-10"></div>
-            <div className="absolute left-2/5 h-full w-px bg-black/20 z-10"></div>
-            <div className="absolute left-3/5 h-full w-px bg-black/20 z-10"></div>
-            <div className="absolute left-4/5 h-full w-px bg-black/20 z-10"></div>
-            <div className="absolute left-1/5 h-full w-px bg-black/20 z-10"></div>
-            <div className="absolute top-1/3 w-full h-px bg-black/20 z-10"></div>
-            <div className="absolute top-2/3 w-full h-px bg-black/20 z-10"></div>
-            <div className="w-full h-full relative row-span-1 p-2">
-              <div className="relative">
-                <Image
-                  src="/testlanding/timer.png"
-                  alt="Dandi"
-                  fill
-                  className="object-cover object-center"
-                />
-              </div>
-            </div>
-            <div className="w-full h-full bg-blue-500 relative col-span-2 row-span-2">
-              <Image
-                src="/testlanding/timer.png"
-                alt="Dandi"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="w-full h-full bg-red-500 relative row-span-1 row-start-2 col-start-2">
-              <Image
-                src="/testlanding/timer.png"
-                alt="Dandi"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="w-full h-full bg-red-500 relative row-span-1 row-start-2 col-start-5">
-              <Image
-                src="/testlanding/timer.png"
-                alt="Dandi"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="w-full h-full bg-blue-500 relative row-start-3 col-span-2  row-span-1">
-              <Image
-                src="/testlanding/timer.png"
-                alt="Dandi"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-            <div className="w-full h-full bg-red-500 relative row-start-3 col-start-4   row-span-1">
-              <Image
-                src="/testlanding/timer.png"
-                alt="Dandi"
-                fill
-                className="object-cover object-center"
-              />
-            </div>
-          </div> */}
-          <Image
-            src="/wallpaper/flower.jpg"
-            alt="Hero"
-            fill
-            className="object-cover object-center"
-          />
-          {/* <div className="w-full h-full md:hidden flex justify-between">
-            {Array.from({ length: 120 }).map((_, i) => (
-              <div key={i} className="w-px h-full bg-white/30 relative"></div>
-            ))}
-          </div>
-          <div className="w-full h-full hidden md:flex justify-between">
-            {Array.from({ length: 240 }).map((_, i) => (
-              <div key={i} className="w-px h-full bg-white/30 relative"></div>
-            ))}
-          </div>
-          <video
-            src="/projectcards/dandi.mp4"
-            autoPlay
-            loop
-            muted
-            playsInline
-            webkit-playsinline="true"
-            disablePictureInPicture
-            controls={false}
-            className="object-cover -z-20 brightness-120 saturate-0 scale-145 origin-top-left object-[50%_130%] xl:origin-center xl:scale-100 absolute left-0 top-0 w-full h-full md:object-center "
-          /> */}
-          {/* <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1920 1080"
-            preserveAspectRatio="none"
-            className="absolute inset-0   w-full h-full opacity-30 pointer-events-none z-0"
-          >
-            <filter id="noiseFilter">
-              <feTurbulence
-                type="fractalNoise"
-                baseFrequency="10"
-                numOctaves="2"
-                stitchTiles="stitch"
-              />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-          </svg> */}
-        </HeroVisual>
+
         {/* <div className="w-full flex justify-between leading-tight text-sm mono items-center">
           <p> [Contact]</p>
           <p>[Resume]</p>
         </div> */}
       </div>
+      <HeroVisual skip={skipAnimations} delay={heroDelay}>
+        <div className="w-full h-[240px] overflow-hidden md:h-[400px] relative block">
+          <Image
+            src="/wallpaper/naturepainting.jpg"
+            alt="hero"
+            fill
+            className="object-cover object-bottom"
+          />
+        </div>
+
+        {/* <div className="flex justify-between w-full h-full">
+          {Array.from({ length: 120 }).map((_, i) => (
+            <div key={i} className="h-full rotate-5 w-full relative  ">
+              <div className="absolute inset-0 rounded-r-[200%] border-r  border-black/40"></div>
+            </div>
+          ))}
+        </div>
+        <div className="flex absolute inset-0 justify-between  h-full">
+          {Array.from({ length: 120 }).map((_, i) => (
+            <div key={i} className="h-full w-full relative  ">
+              <div className="absolute inset-0 rounded-l-[200%] border-l border-black/40"></div>
+            </div>
+          ))}
+        </div>
+        <div className="flex absolute left-0 w-full top-1/2 -translate-y-1/2 justify-between  h-[75%]">
+          {Array.from({ length: 120 }).map((_, i) => (
+            <div key={i} className="-rotate-5 h-full w-full relative  ">
+              <div className="absolute inset-0 rounded-l-[200%] border-l border-black"></div>
+            </div>
+          ))}
+        </div>
+        <div className="flex absolute left-0 w-full top-1/2 -translate-y-1/2 justify-between  h-[50%]">
+          {Array.from({ length: 120 }).map((_, i) => (
+            <div key={i} className="rotate-5 h-full w-full relative  ">
+              <div className="absolute inset-0 rounded-l-[200%] border-l border-black"></div>
+            </div>
+          ))}
+        </div> */}
+        {/* <div className="flex absolute left-0 w-full top-1/2 -translate-y-1/2 justify-between  h-[10%]">
+          {Array.from({ length: 120 }).map((_, i) => (
+            <div key={i} className="-rotate-5 h-full w-full relative  ">
+              <div className="absolute inset-0 rounded-l-[200%] border-l border-black"></div>
+            </div>
+          ))}
+        </div> */}
+      </HeroVisual>
+
       {/* <div className="py-7 flex text-lg text-center  justify-center">
         <p className="w-full md:w-1/2">
           Junheng has worked with startups, small businesses, and fortune 100s,
@@ -905,7 +859,7 @@ const Page = () => {
         />
       </div> */}
 
-      {/* <div className="tech-marquee w-full fixed bottom-0 left-0   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
+      {/* <div className="tech-marquee w-full   flex  justify-center   overflow-hidden  text-xs uppercase bg-white z-50 text-nowrap border-t border-white/10 ">
         <div className=" flex items-center w-[70%] md:w-[50%]">
           <div className="relative w-full py-2 items-center  overflow-hidden flex-1 flex">
             <div className="pointer-events-none absolute top-0 left-0 z-20  md:w-[15%] h-full bg-linear-to-r from-white via-white to-transparent"></div>
@@ -971,104 +925,133 @@ const Page = () => {
           </div>
         </div>
       </div> */}
-
-      <div
-        id="works-grid"
-        className="grid flex-1 grid-cols-1 saturate-105 md:grid-cols-8 gap-6 scroll-mt-24"
-      >
-        <ProjectCard
-          cover="/cardcovers/makerfixed2.png"
-          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
-          title="Design Engineer @ Crafty Studios "
-          link="/works/makerspace"
-          icon="/isometrics/liberty.png"
-          className="md:col-span-4 "
-          delay={2.2}
-          skipEntrance={skipAnimations}
-        />
-        <ProjectCard
-          cover="/cardcovers/ibmstill.png"
-          technologies={["Figma", "SwiftUI", "Kotlin"]}
-          title="SWE Intern @ IBM Research"
-          link="/works/pack"
-          icon="/isometrics/meditate.png"
-          className="md:col-span-4"
-          delay={2.2}
-          skipEntrance={skipAnimations}
-        >
-          {/* <div className="flex flex-col z-50 group-hover:scale-0 transition-transform duration-300  origin-top-left absolute top-0 left-0 ">
-            <div className="flex items-start ">
-              <div className="pr-3 pl-2 pb-2 pt-1 bg-white text-black/70 text-sm   rounded-br-xl">
-                Coming Soon
+      <div className="w-full flex flex-col gap-12 md:gap-24  md:items-center justify-center  px-4   2xl:px-96 xl:px-48 ">
+        <div className="flex md:mx-auto w-full md:w-fit flex-col gap-10 md:gap-12 md:items-center justify-center">
+          <div className="flex md:items-center flex-col gap-2 justify-center">
+            <Animatedparagrah
+              className="alice uppercase text-2xl font-bold"
+              segments={experienceTitleSegments}
+              skipAnimation={skipAnimations}
+              delayChildren={experienceDelay}
+            />
+            <HomeEntrance
+              skip={skipAnimations}
+              delay={experienceSortDelay}
+              className="relative w-fit"
+            >
+              <div ref={experienceSortRef} className="relative w-fit">
+                <button
+                  type="button"
+                  aria-expanded={experienceSortOpen}
+                  aria-haspopup="listbox"
+                  onClick={() => setExperienceSortOpen((open) => !open)}
+                  className="px-3 py-1 border cursor-pointer active:scale-98 transition-transform duration-300 w-[140px] text-nowrap justify-between flex gap-1 items-center border-gray-200 rounded-md text-sm"
+                >
+                  {experienceSortLabel}
+                  <ChevronDown
+                    size={16}
+                    strokeWidth={1}
+                    className={`transition-transform duration-200 ${experienceSortOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <ul
+                  role="listbox"
+                  aria-label="Sort experience"
+                  className={`absolute left-0 top-full z-50 mt-1 min-w-full text-nowrap overflow-hidden rounded-md border border-gray-200 bg-white py-1 text-sm shadow-sm ${experienceSortOpen ? "opacity-100" : "opacity-0 scale-95 pointer-events-none"} transition-all duration-300`}
+                >
+                  {EXPERIENCE_SORT_OPTIONS.map((option) => (
+                    <li
+                      key={option.value}
+                      role="option"
+                      aria-selected={experienceSort === option.value}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setExperienceSort(option.value);
+                          setExperienceSortOpen(false);
+                        }}
+                        className={`w-full px-3 py-1.5 text-left cursor-pointer hover:bg-gray-50 ${experienceSort === option.value ? "bg-gray-50 font-medium" : ""}`}
+                      >
+                        {option.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <Rounded
-                width={24}
-                height={24}
-                className="rotate-270"
-                fill="#ffffff"
-              />
-            </div>
-            <Rounded
-              width={24}
-              height={24}
-              className="rotate-270"
-              fill="#ffffff"
+            </HomeEntrance>
+          </div>
+
+          <HomeAnimatedLinks
+            skip={skipAnimations}
+            delay={experienceListDelay}
+            className="md:w-[440px] w-full flex flex-col gap-2"
+          >
+            {sortedExperiences.map((item) => (
+              <div key={item.id} className="flex items-center justify-between">
+                <p>{item.role}</p>
+                <p>{item.period}</p>
+              </div>
+            ))}
+          </HomeAnimatedLinks>
+        </div>
+        <div className="flex md:mx-auto w-full flex-col gap-10 md:gap-12 md:items-center justify-center">
+          <Animatedparagrah
+            className="alice uppercase text-2xl font-bold"
+            segments={hackathonsTitleSegments}
+            skipAnimation={skipAnimations}
+            delayChildren={hackathonsDelay}
+          />
+          {/* <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-4">
+            <ProjectCard
+              cover="/cardcovers/makerfixed2.png"
+              technologies={[
+                "Figma",
+                "React",
+                "Next.js",
+                "Node.js",
+                "Typescript",
+                "Vercel",
+              ]}
+              title="UXInterviewer"
+              link="/projects/uxinterviewer"
+              className="w-full"
+            />
+            <ProjectCard
+              cover="/cardcovers/proprio.png"
+              technologies={[
+                "Figma",
+                "React",
+                "Next.js",
+                "Node.js",
+                "Typescript",
+                "Vercel",
+              ]}
+              title="UXInterviewer"
+              link="/projects/uxinterviewer"
+              className="w-full"
             />
           </div> */}
-        </ProjectCard>
-        <ProjectCard
-          cover="/cardcovers/limi.gif"
-          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
-          title="Design Engineer @ LMI "
-          link="/works/libertymutual"
-          icon="/isometrics/liberty.png"
-          className="md:col-span-4 "
-          delay={2.2}
-          skipEntrance={skipAnimations}
-        />
-
-        <ProjectCard
-          cover="/cardcovers/propriomock.png"
-          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
-          title="Figbuild 2026 [Proprio]"
-          link="/works/proprio"
-          icon="/isometrics/liberty.png"
-          className="md:col-span-4 saturate-100 "
-          delay={2.2}
-          skipEntrance={skipAnimations}
-        />
-
-        {/* <ProjectCard
-          cover="/projectcards/packgame.png"
-          technologies={["Figma", "React", "Typescript", "SCSS", "Storybook"]}
-          title="PACK! Mobile Game"
-          link="/works/pack"
-          icon="/isometrics/liberty.png"
-          className="md:col-span-4"
-          skipEntrance={skipAnimations}
-        /> */}
-      </div>
-
-      <div className="w-full flex flex-col  ">
-        <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
-          <p>Frontend Developer Intern @ IBM Research</p>
-          <p className="text-sm md:text-base opacity-80 md:opacity-100">
-            Incoming Summer 2026
-          </p>
-        </div>
-        <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
-          <p>UX Engineer Intern @ Liberty Mutual Insurance</p>
-          <p className="text-sm md:text-base opacity-80 md:opacity-100">
-            Summer 2025
-          </p>
-        </div>
-        <div className="w-full border-b border-gray-200/80 md:flex-row flex-col-reverse py-4 gap-1 flex justify-between items-start md:items-center">
-          <p>Frontend Developer Intern @ D&D Motor Systems</p>
-          <p className="text-sm md:text-base opacity-80 md:opacity-100  ">
-            Fall 2024
-          </p>
+          <HomeAnimatedLinks
+            skip={skipAnimations}
+            delay={hackathonsListDelay}
+            className="md:w-[440px] w-full flex flex-col gap-2"
+            onComplete={() => {
+              if (!skipAnimations) markHomeVisited();
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <p>Lifestory (Winner)</p>
+              <p>Uncommon Hacks &apos;26</p>
+            </div>
+            <div className="flex items-center justify-between">
+              <p>Proprio</p>
+              <p>Figbuild &apos;26</p>
+            </div>
+          </HomeAnimatedLinks>
         </div>
       </div>
+
       {/* <div className="w-full flex flex-col py-12 gap-12">
 
         <p className="w-1/2">
@@ -1088,7 +1071,7 @@ const Page = () => {
           />
         </div>
       </div> */}
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

@@ -1,7 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Alice, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
-import { Instrument_Serif } from "next/font/google";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -12,6 +11,13 @@ export const instrumentSerif = Instrument_Serif({
   weight: "400",
   style: "normal",
   variable: "--font-instrument-serif",
+  display: "swap",
+});
+
+const alice = Alice({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-alice",
   display: "swap",
 });
 
@@ -44,7 +50,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} antialiased`}
       >
         {children}
         <Analytics />

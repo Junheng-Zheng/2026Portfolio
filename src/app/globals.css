@@ -28,6 +28,10 @@ body {
 .instrument-serif {
   font-family: var(--font-instrument-serif);
 }
+
+.alice {
+  font-family: var(--font-alice);
+}
 #about {
   scroll-margin-top: 80px;
 }

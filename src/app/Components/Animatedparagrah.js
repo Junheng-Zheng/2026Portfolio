@@ -39,10 +39,25 @@ const Animatedparagrah = ({
   container = defaultContainer,
   letter = defaultLetter,
   skipAnimation = false,
+  delayChildren,
 }) => {
   const ariaLabel = Array.isArray(segments)
     ? segments.map((s) => s?.text ?? "").join("")
     : "";
+
+  const containerResolved =
+    delayChildren != null && !skipAnimation
+      ? {
+          ...container,
+          show: {
+            ...container.show,
+            transition: {
+              ...(container.show?.transition ?? {}),
+              delayChildren,
+            },
+          },
+        }
+      : container;
 
   if (skipAnimation) {
     return (
@@ -59,7 +74,7 @@ const Animatedparagrah = ({
   return (
     <motion.p
       className={className}
-      variants={container}
+      variants={containerResolved}
       initial="hidden"
       animate={play ? "show" : "hidden"}
       aria-label={ariaLabel}

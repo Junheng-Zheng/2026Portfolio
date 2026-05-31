@@ -69,9 +69,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="min-h-full bg-[#1a1a1a]">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} min-h-dvh bg-[#1a1a1a] text-white antialiased`}
       >
         {children}
         <Analytics />

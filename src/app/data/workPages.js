@@ -53,7 +53,7 @@ export const HOME_ABSTRACT_SEGMENTS = [
     href: "https://www.libertymutual.com/",
   },
   {
-    text: " on the Enterprise UI team working on design system, personally increasing the library by 50%.",
+    text: " on the Enterprise UI team working on internal design systems, increasing the library by 50%.",
     italic: false,
   },
 ];

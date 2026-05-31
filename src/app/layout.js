@@ -1,4 +1,11 @@
-import { Alice, Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import {
+  Alice,
+  Geist,
+  Geist_Mono,
+  IBM_Plex_Sans,
+  Instrument_Serif,
+  Space_Mono,
+} from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 const geistSans = Geist({
@@ -26,6 +33,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const spaceMono = Space_Mono({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-space-mono",
+  display: "swap",
+});
+
+const ibmPlexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  variable: "--font-ibm-plex-sans",
+  display: "swap",
+});
+
 const siteTitle = "Junheng Zheng | Design Engineer";
 const siteDescription =
   "Junheng Zheng is a design engineer with a passion for creating user-friendly and efficient designs.";
@@ -50,7 +71,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} antialiased`}
       >
         {children}
         <Analytics />

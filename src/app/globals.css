@@ -48,6 +48,14 @@ body {
   font-family: var(--font-geist-mono);
 }
 
+.font-label {
+  font-family: var(--font-space-mono), ui-monospace, monospace;
+}
+
+.font-body {
+  font-family: var(--font-ibm-plex-sans), system-ui, sans-serif;
+}
+
 .bg-grid {
   background-image:
     linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),

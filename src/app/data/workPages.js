@@ -1,7 +1,6 @@
 export const WORK_SLUGS = {
   IBM_RESEARCH: "ibm-research",
   LIBERTY_MUTUAL: "liberty-mutual",
-  COLLABOTORY: "collabotory",
   DND_MOTOR: "d-d-motor-systems",
 };
 
@@ -22,11 +21,6 @@ export const WORK_ITEMS = [
     name: "Liberty Mutual",
     period: "Summer 25",
     slug: WORK_SLUGS.LIBERTY_MUTUAL,
-  },
-  {
-    name: "Collabotory",
-    period: "Spring 26",
-    slug: WORK_SLUGS.COLLABOTORY,
   },
   {
     name: "D&D Motor Systems",
@@ -93,25 +87,6 @@ export const WORK_PAGES = {
       },
       {
         text: " on the Enterprise UI team, contributing to the design system and personally increasing the component library by 50%.",
-        italic: false,
-      },
-    ],
-  },
-  [WORK_SLUGS.COLLABOTORY]: {
-    title: "Collabotory",
-    duration: "Spring 26",
-    team: ["Product", "Engineering", "Design"],
-    abstractSegments: [
-      {
-        text: "Jun works across software and design at ",
-        italic: false,
-      },
-      {
-        text: "Collabotory",
-        href: `/work/${WORK_SLUGS.COLLABOTORY}`,
-      },
-      {
-        text: ", building product experiences that blend engineering craft with visual design.",
         italic: false,
       },
     ],

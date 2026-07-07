@@ -36,14 +36,6 @@ const EXPERIENCES = [
     tags: ["swe", "design"],
   },
   {
-    id: "collabotory",
-    role: "swe + design @ Collabotory",
-    period: "Spring '26",
-    relevance: 2,
-    dateKey: 20261,
-    tags: ["swe", "design"],
-  },
-  {
     id: "tiger",
     role: "design @ Tiger Snack Box",
     period: "Spring '25",

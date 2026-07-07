@@ -88,24 +88,14 @@ function ActionLink({ label, href, variant }) {
   );
 }
 
-function WorkRow({ href, label, period }) {
+function WorkRow({ label, period }) {
   return (
-    <Link
-      href={href}
-      className="relative flex w-full items-center justify-between gap-3 group text-white hover:opacity-80 transition-opacity"
-    >
+    <div className="relative flex w-full items-center justify-between gap-3 text-white">
       <span className="text-[14px] leading-normal">{label}</span>
-      <div className="flex items-center gap-3 shrink-0">
-        <span className="text-[14px] leading-normal whitespace-nowrap">
-          {period}
-        </span>
-        <ArrowUpRight
-          strokeWidth={1.5}
-          size={16}
-          className="shrink-0 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-        />
-      </div>
-    </Link>
+      <span className="text-[14px] leading-normal whitespace-nowrap shrink-0">
+        {period}
+      </span>
+    </div>
   );
 }
 
@@ -380,7 +370,6 @@ export default function PortfolioHome() {
             {WORK_ITEMS.map((item) => (
               <WorkRow
                 key={item.slug}
-                href={`/work/${item.slug}`}
                 label={item.name}
                 period={item.period}
               />

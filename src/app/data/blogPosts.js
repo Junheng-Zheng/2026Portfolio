@@ -303,7 +303,7 @@ export const BLOG_POSTS = {
   [BLOG_SLUGS.POMODORO_TIMER]: {
     slug: BLOG_SLUGS.POMODORO_TIMER,
     passwordProtected: false,
-    title: "Creating a 3D Pomodoro Timer without a 3D Library — a UI Exercise",
+    title: "Pomodoro Timer, a UI Development Exercise",
     meta: ["2 Min Read", "Project"],
     cover: "/pomodoro/cover.png",
     coverCaption:
@@ -327,7 +327,7 @@ export const BLOG_POSTS = {
         label: "Logic",
         items: [
           { id: "settings", label: "Settings that reshape the UI" },
-          { id: "ship", label: "Ship it" },
+          { id: "deployment", label: "Deployment" },
         ],
       },
     ],
@@ -400,12 +400,6 @@ export const BLOG_POSTS = {
             language: "jsx",
             caption: "2px grid texture overlay",
             code: `className="bg-[linear-gradient(rgba(255,255,255,0.2)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.2)_1px,transparent_1px)] opacity-20 absolute inset-0 [background-size:2px_2px]"`,
-          },
-          {
-            type: "graphic",
-            src: "/pomodoro/layers.png",
-            alt: "Close-up of the timer showing layered 3D depth",
-            caption: "Layer stacking, gradients, borders, and grid texture working together.",
           },
         ],
       },
@@ -515,18 +509,6 @@ await cardSkewControls.start({
             text: "The progress bar maps one segment per stage. Each segment's flex weight is proportional to its duration (`flex: ${seconds} 1 0%`), so a 25-minute focus block is visually wider than a 5-minute break. The active segment fills with a linear 1-second width transition while the timer runs.",
           },
           {
-            type: "graphic",
-            src: "/pomodoro/progress.png",
-            alt: "Timer running with progress bar filling the first segment",
-            caption: "Progress segments weighted by duration — changing intervals reshapes the bar 1:1.",
-          },
-          {
-            type: "graphic",
-            src: "/pomodoro/settings.png",
-            alt: "Settings drawer with focus, break, and interval inputs",
-            caption: "Settings panel — values persist to localStorage on apply.",
-          },
-          {
             type: "definitions",
             items: [
               {
@@ -546,17 +528,13 @@ await cardSkewControls.start({
         ],
       },
       {
-        id: "ship",
-        title: "Ship it",
+        id: "deployment",
+        title: "Deployment",
         blocks: [
           {
             type: "paragraph",
-            text: "The app is a single Next.js page deployed to Vercel. No backend, no database — settings live in localStorage and the timer runs entirely in the browser.",
-          },
-          {
-            type: "paragraph",
             segments: [
-              { text: "Try it for yourself at " },
+              { text: "Deployed with Vercel. Try it for yourself at " },
               {
                 text: "here",
                 href: "https://junodoro-timer.vercel.app/",

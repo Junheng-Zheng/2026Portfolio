@@ -56,8 +56,7 @@ const bricolageGrotesque = Bricolage_Grotesque({
 });
 
 const siteTitle = "Junheng Zheng | Design Engineer";
-const siteDescription =
-  "Junheng Zheng is a design engineer with a passion for creating user-friendly and efficient designs.";
+const siteDescription = "Junheng Zheng is a design engineer";
 
 export const metadata = {
   title: siteTitle,
@@ -65,13 +64,13 @@ export const metadata = {
   openGraph: {
     title: siteTitle,
     description: siteDescription,
-    images: [{ url: "/coverimage.png", alt: siteTitle }],
+    images: [{ url: "/v12026cover.png", alt: siteTitle }],
   },
   twitter: {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/coverimage.png"],
+    images: ["/v12026cover.png"],
   },
 };
 

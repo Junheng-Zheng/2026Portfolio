@@ -88,7 +88,7 @@ export const HOME_PROJECTS = [
     image: "/landing/pomodorocover.png",
     aspect: "2920/2016",
     meta: ["2 Min Read", "Project"],
-    title: "Creating a 3D Pomodoro Timer without a 3D Library - an UI Exercise",
+    title: "Pomodoro Timer, a UI Development Exercise",
     details: [
       <>
         <span className="text-white">1]</span>

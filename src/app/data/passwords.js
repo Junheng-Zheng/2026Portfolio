@@ -2,4 +2,6 @@
 export const VALID_PASSWORDS = [
   // "example-password",
   "hellotesla",
+  "hireme",
+  "hellorecruiter",
 ];

@@ -1,5 +1,6 @@
 import {
   Alice,
+  Bricolage_Grotesque,
   Geist,
   Geist_Mono,
   IBM_Plex_Sans,
@@ -42,8 +43,15 @@ const spaceMono = Space_Mono({
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   variable: "--font-ibm-plex-sans",
+  display: "swap",
+});
+
+const bricolageGrotesque = Bricolage_Grotesque({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-bricolage-grotesque",
   display: "swap",
 });
 
@@ -71,7 +79,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="min-h-full bg-[#1a1a1a]">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} min-h-dvh bg-[#1a1a1a] text-white antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} ${bricolageGrotesque.variable} min-h-dvh bg-[#1a1a1a] text-white antialiased`}
       >
         {children}
         <Analytics />

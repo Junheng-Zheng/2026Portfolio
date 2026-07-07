@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import PasswordGate from "../../Components/PasswordGate";
 import PortfolioWorkDetail from "../../Components/PortfolioWorkDetail";
 import { getAllWorkSlugs, getWorkPage } from "../../data/workPages";
 
@@ -23,10 +24,12 @@ export default async function WorkPage({ params }) {
   if (!page) notFound();
 
   return (
-    <PortfolioWorkDetail
-      abstractSegments={page.abstractSegments}
-      team={page.team}
-      duration={page.duration}
-    />
+    <PasswordGate>
+      <PortfolioWorkDetail
+        abstractSegments={page.abstractSegments}
+        team={page.team}
+        duration={page.duration}
+      />
+    </PasswordGate>
   );
 }

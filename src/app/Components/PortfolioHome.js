@@ -1,48 +1,115 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowUpRight, CornerRightDown } from "lucide-react";
+import { motion } from "framer-motion";
+import { useEffect } from "react";
 import { usePathname } from "next/navigation";
-import Animatedparagrah from "./Animatedparagrah";
 import {
-  COLORS,
+  HOME_ACTIONS,
+  HOME_BIO,
+  HOME_HACKATHONS,
+  HOME_PROJECTS,
+} from "../data/homePage";
+import { CONTACT_ITEMS, WORK_ITEMS } from "../data/workPages";
+import {
   HomeAnimatedLinks,
   HomeEntrance,
   markHomeVisited,
   useSkipAnimations,
 } from "./portfolioMotion";
 
-const PROJECT_ITEMS = [
-  { name: "Lifestory", href: "https://devpost.com/software/lifestory" },
-  { name: "Proprio", href: "https://devpost.com/software/proprio" },
-];
+const BUTTON_CLASS =
+  "inline-flex w-fit bg-[#262424] rounded px-4 py-1 text-[14px] text-white hover:opacity-90 transition-opacity";
 
-const CONTACT_ITEMS = [
-  { name: "LinkedIn", href: "https://www.linkedin.com/in/junhengzheng/" },
-  { name: "Gmail", href: "mailto:junhengzheng@gmail.com" },
-  { name: "Resume", href: "/Junheng_SWE_Resume.pdf" },
-  { name: "Github", href: "https://github.com/junheng-zheng" },
-];
+const DISABLED_BUTTON_CLASS =
+  "inline-flex w-fit bg-[#262424] rounded px-4 py-1 text-[14px] text-white/40 cursor-not-allowed";
 
-const EXPERIMENT_ITEMS = [
-  { name: "Pomodoro", href: "https://junodoro-timer.vercel.app/" },
-  { name: "Junbot", href: "https://junbot.vercel.app/" },
-];
+const TAP_SCALE = {
+  whileTap: { scale: 0.96 },
+  transition: { type: "spring", stiffness: 400, damping: 25 },
+};
 
-function WorkRow({ label, trailing, className = "" }) {
+function getNewTabProps(href) {
+  if (href.startsWith("http") || /\.pdf(\?|$)/i.test(href)) {
+    return { target: "_blank", rel: "noopener noreferrer" };
+  }
+
+  return {};
+}
+
+function ActionLink({ label, href, variant }) {
+  const linkClass =
+    variant === "button"
+      ? BUTTON_CLASS
+      : "text-[14px] text-white/80 hover:text-white transition-colors";
+
+  const isExternal =
+    href.startsWith("http") ||
+    href.startsWith("mailto:") ||
+    /\.pdf(\?|$)/i.test(href);
+
+  if (variant === "button") {
+    if (isExternal) {
+      return (
+        <motion.a
+          href={href}
+          className={linkClass}
+          {...TAP_SCALE}
+          {...getNewTabProps(href)}
+        >
+          {label}
+        </motion.a>
+      );
+    }
+
+    return (
+      <Link href={href} className={linkClass}>
+        <motion.span className="inline-flex" {...TAP_SCALE}>
+          {label}
+        </motion.span>
+      </Link>
+    );
+  }
+
+  if (isExternal) {
+    return (
+      <a href={href} className={linkClass} {...getNewTabProps(href)}>
+        {label}
+      </a>
+    );
+  }
+
   return (
-    <div
-      className={`relative flex w-full items-center justify-between gap-3 text-white ${className}`}
-    >
-      <span className="text-[14px] leading-normal">{label}</span>
-      <div className="flex items-center gap-3 shrink-0">{trailing}</div>
-    </div>
+    <Link href={href} className={linkClass}>
+      {label}
+    </Link>
   );
 }
 
-function ExternalRow({ href, label, trailing, className = "", children }) {
+function WorkRow({ href, label, period }) {
+  return (
+    <Link
+      href={href}
+      className="relative flex w-full items-center justify-between gap-3 group text-white hover:opacity-80 transition-opacity"
+    >
+      <span className="text-[14px] leading-normal">{label}</span>
+      <div className="flex items-center gap-3 shrink-0">
+        <span className="text-[14px] leading-normal whitespace-nowrap">
+          {period}
+        </span>
+        <ArrowUpRight
+          strokeWidth={1.5}
+          size={16}
+          className="shrink-0 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+        />
+      </div>
+    </Link>
+  );
+}
+
+function ExternalRow({ href, label }) {
   const isExternal =
     href.startsWith("http") ||
     href.startsWith("mailto:") ||
@@ -50,26 +117,17 @@ function ExternalRow({ href, label, trailing, className = "", children }) {
 
   const content = (
     <>
-      {children}
-      {label ? (
-        <span className="text-[14px] leading-normal">{label}</span>
-      ) : null}
-      <div
-        className={`relative flex items-center gap-3 ${label ? "shrink-0" : "flex-1 min-w-0"}`}
-      >
-        {trailing}
-        <span className="size-5 border border-white/10 grid place-items-center">
-          <ArrowUpRight
-            strokeWidth={1.5}
-            size={16}
-            className="shrink-0 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
-          />
-        </span>
-      </div>
+      <span className="text-[14px] leading-normal">{label}</span>
+      <ArrowUpRight
+        strokeWidth={1.5}
+        size={16}
+        className="shrink-0 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+      />
     </>
   );
 
-  const rowClass = `relative flex w-full items-center justify-between gap-3 group text-white hover:opacity-80 transition-opacity ${className}`;
+  const rowClass =
+    "relative flex w-full items-center justify-between gap-3 group text-white hover:opacity-80 transition-opacity";
 
   if (href.startsWith("/") && !isExternal) {
     return (
@@ -80,21 +138,151 @@ function ExternalRow({ href, label, trailing, className = "", children }) {
   }
 
   return (
-    <a
-      href={href}
-      className={rowClass}
-      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-    >
+    <a href={href} className={rowClass} {...getNewTabProps(href)}>
       {content}
     </a>
   );
 }
 
-export default function PortfolioHome({ abstractSegments, heroImage }) {
+const DEVPOST_BUTTON_CLASS =
+  "inline-flex shrink-0 items-center gap-1 bg-[#262424] rounded px-3 py-1 text-[12px] text-white hover:opacity-90 transition-opacity";
+
+function ProjectRow({ href, label, period, devpostHref }) {
+  const nameContent = href ? (
+    <Link
+      href={href}
+      className="group inline-flex items-center gap-1 text-[14px] leading-normal text-white hover:opacity-80 transition-opacity"
+    >
+      {label}
+      <ArrowUpRight
+        strokeWidth={1.5}
+        size={16}
+        className="shrink-0 group-hover:scale-110 group-hover:rotate-45 transition-transform duration-300"
+      />
+    </Link>
+  ) : (
+    <span className="text-[14px] leading-normal">{label}</span>
+  );
+
+  return (
+    <div className="relative flex w-full items-center justify-between gap-3 text-white">
+      {nameContent}
+      <div className="flex items-center gap-2 shrink-0">
+        <span className="text-[14px] leading-normal whitespace-nowrap">
+          {period}
+        </span>
+        {devpostHref ? (
+          <motion.a
+            href={devpostHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={DEVPOST_BUTTON_CLASS}
+            {...TAP_SCALE}
+          >
+            Devpost
+            <ArrowUpRight strokeWidth={1.5} size={12} />
+          </motion.a>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function ProjectDetail({ children }) {
+  return <p>{children}</p>;
+}
+
+function ProjectCard({
+  image,
+  aspect,
+  meta,
+  title,
+  details,
+  href,
+  comingSoon = false,
+  detailsPadding = "p-3",
+  placeholderClass,
+  skip,
+  play,
+  delay = 0,
+}) {
+  const actionButton = comingSoon ? (
+    <span className={DISABLED_BUTTON_CLASS} aria-disabled="true">
+      Coming Soon
+    </span>
+  ) : (
+    <motion.span className={BUTTON_CLASS} {...TAP_SCALE}>
+      Read Process
+    </motion.span>
+  );
+
+  const content = (
+    <>
+      <div
+        className="relative w-full shrink-0 overflow-hidden"
+        style={{ aspectRatio: aspect.replace("/", " / ") }}
+      >
+        {image ? (
+          <Image
+            src={image}
+            alt=""
+            fill
+            className="object-cover pointer-events-none"
+            unoptimized={image.endsWith(".gif")}
+          />
+        ) : (
+          <div
+            className={`absolute inset-0 ${placeholderClass ?? "bg-white/5"}`}
+            aria-hidden
+          />
+        )}
+      </div>
+
+      <div className="flex flex-col gap-1">
+        <div className="text-[12px] text-white/70">{meta.join(" | ")}</div>
+        <p className="text-[14px] text-white">{title}</p>
+      </div>
+
+      <div
+        className={`flex flex-col gap-1 px-3 text-[14px] text-white/80 ${detailsPadding}`}
+      >
+        {details.map((detail, index) => (
+          <ProjectDetail key={index}>{detail}</ProjectDetail>
+        ))}
+      </div>
+
+      {actionButton}
+    </>
+  );
+
+  const card =
+    href && !comingSoon ? (
+      <Link
+        href={href}
+        className="flex flex-col gap-4 hover:opacity-95 transition-opacity"
+      >
+        {content}
+      </Link>
+    ) : (
+      <div className="flex flex-col gap-4">{content}</div>
+    );
+
+  return (
+    <HomeEntrance
+      skip={skip}
+      play={play}
+      delay={delay}
+      className="flex flex-col gap-4 w-full"
+    >
+      <article className="flex flex-col gap-4 w-full">{card}</article>
+    </HomeEntrance>
+  );
+}
+
+export default function PortfolioHome() {
   const pathname = usePathname();
   const skipAnimations = useSkipAnimations();
-  const [abstractDone, setAbstractDone] = useState(false);
-  const showRest = skipAnimations || abstractDone;
+  const listBaseDelay = 0.2 + HOME_PROJECTS.length * 0.08;
 
   useEffect(() => {
     if (pathname !== "/") {
@@ -103,207 +291,151 @@ export default function PortfolioHome({ abstractSegments, heroImage }) {
   }, [pathname]);
 
   return (
-    <div
-      className="font-body text-white min-h-dvh lg:h-dvh flex flex-col gap-6 p-4 md:p-8 lg:overflow-hidden"
-      style={{ backgroundColor: COLORS.background, color: COLORS.foreground }}
-    >
-      {/* <div className="w-full p-4 md:p-8 absolute inset-0 z-20  flex">
-        <div className="w-full h-full border-r border-red-500"></div>
-        <div className="w-full h-full border-r border-red-500"></div>
-        <div className="w-full h-full0"></div>
-      </div> */}
-      {/* <div className="flex justify-between items-center ">
-        <p className="font-label text-[10px] leading-normal  shrink-0">Jun</p>
-        <p className="font-label text-[10px] leading-normal  shrink-0">
-          swe + design
-        </p>
-      </div> */}
-
-      <div className="flex flex-col lg:flex-row gap-6 shrink-0 w-full">
-        <section className="flex flex-1 flex-col min-w-0">
-          <Animatedparagrah
-            label="Abstract"
-            className="text-[14px]  text-white  "
-            segments={abstractSegments}
-            linkUnderline={false}
-            skipAnimation={skipAnimations}
-            delayChildren={0}
-            onComplete={() => {
-              if (!skipAnimations) setAbstractDone(true);
-            }}
-          />
-        </section>
-
-        <section className="flex flex-1 flex-col min-w-0">
-          <HomeAnimatedLinks
+    <div className="font-body text-white min-h-dvh flex flex-col items-center justify-center px-5 py-12 sm:px-8 md:px-12 md:py-24 bg-[#141414]">
+      <div className="flex flex-col gap-8 md:gap-12 items-start w-full max-w-[600px]">
+        <section className="flex flex-col gap-3 w-full">
+          <HomeEntrance
             skip={skipAnimations}
-            play={showRest}
-            className="flex flex-col gap-2 w-full"
+            play
+            className="relative w-full aspect-[600/350] shrink-0 overflow-hidden"
           >
-            <p className="font-label text-[10px] leading-normal shrink-0">
-              Work
-            </p>
-            <div className="flex flex-col gap-1">
-              <WorkRow
-                label="swe + design, IBM Research"
-                trailing={
-                  <span className="text-[14px] leading-normal whitespace-nowrap">
-                    Summer 26
-                  </span>
-                }
-              />
-              <WorkRow
-                label="swe + design, Liberty Mutual"
-                trailing={
-                  <span className="text-[14px] leading-normal whitespace-nowrap">
-                    Summer 25
-                  </span>
-                }
-              />
-              <WorkRow
-                label="design, Collabotory via RIT"
-                trailing={
-                  <span className="text-[14px] leading-normal whitespace-nowrap">
-                    Spring 26
-                  </span>
-                }
-              />
-              <WorkRow
-                label="design, D&D Motor Systems"
-                trailing={
-                  <span className="text-[14px] leading-normal whitespace-nowrap">
-                    Fall 24
-                  </span>
-                }
-              />
-            </div>
-          </HomeAnimatedLinks>
-        </section>
+            <Image
+              src="/landing/jun.png"
+              alt="Junheng Zheng"
+              fill
+              priority
+              className="object-bottom pointer-events-none"
+            />
+          </HomeEntrance>
 
-        <section className="flex flex-1 flex-col min-w-0">
-          <HomeAnimatedLinks
-            skip={skipAnimations}
-            play={showRest}
-            className="flex flex-col gap-2 w-full"
-          >
-            <p className="font-label text-[10px] leading-normal shrink-0">
-              Socials
-            </p>
-            <div className="flex flex-col gap-1">
-              {CONTACT_ITEMS.map((item) => (
-                <ExternalRow
-                  key={item.name}
-                  href={item.href}
-                  label={item.name}
-                />
+          <div className="flex flex-col gap-3 w-full">
+            <HomeEntrance skip={skipAnimations} play delay={0.05}>
+              <p className="text-[14px] leading-normal text-white">{HOME_BIO}</p>
+            </HomeEntrance>
+
+            <HomeAnimatedLinks
+              skip={skipAnimations}
+              play
+              delay={0.1}
+              className="flex flex-wrap gap-3 sm:gap-4 items-center"
+            >
+              {HOME_ACTIONS.map((action) => (
+                <ActionLink key={action.label} {...action} />
               ))}
-            </div>
-          </HomeAnimatedLinks>
-        </section>
-      </div>
-
-      <HomeEntrance
-        skip={skipAnimations}
-        play={showRest}
-        className="relative flex-1 bg-black min-h-[240px] lg:min-h-0 w-full overflow-hidden"
-      >
-        <Image
-          src="/coolness.jpg"
-          alt="Hero"
-          fill
-          priority
-          className="object-cover mix-blend-luminosity inset-0 pointer-events-none"
-        />
-      </HomeEntrance>
-
-      <div className="flex flex-col lg:flex-row gap-6 shrink-0 w-full">
-        <section className="flex flex-1 flex-col min-w-0">
-          <HomeAnimatedLinks
-            skip={skipAnimations}
-            play={showRest}
-            className="flex flex-col gap-2 w-full"
-          >
-            <p className="font-label text-[10px] leading-normal shrink-0">
-              Tools
-            </p>
-            <div className="flex flex-col gap-1">
-              <p className="text-[14px] leading-normal">
-                React, Javascript, Typescript, more
-              </p>
-              <p className="text-[14px] leading-normal">
-                Figma, Miro, Photoshop, Illustrator
-              </p>
-            </div>
-          </HomeAnimatedLinks>
+            </HomeAnimatedLinks>
+          </div>
         </section>
 
-        <section className="flex flex-1 flex-col min-w-0">
-          <HomeAnimatedLinks
-            skip={skipAnimations}
-            play={showRest}
-            className="flex flex-col gap-2 w-full"
-          >
-            <p className="font-label text-[10px] leading-normal shrink-0">
-              Projects
-            </p>
-            <div className="flex flex-col gap-1">
-              {PROJECT_ITEMS.map((item) => (
-                <ExternalRow
-                  key={item.name}
-                  href={item.href}
-                  label={item.name}
-                  trailing={
-                    <span className="text-[14px] leading-normal whitespace-nowrap">
-                      devpost
-                    </span>
+        <HomeEntrance skip={skipAnimations} play delay={0.15}>
+          <motion.div
+            className="flex gap-1 items-center text-[14px] text-white/60"
+            animate={
+              skipAnimations
+                ? {}
+                : {
+                    y: [0, 2, 0],
                   }
-                />
-              ))}
-            </div>
-          </HomeAnimatedLinks>
-        </section>
+            }
+            transition={
+              skipAnimations
+                ? { duration: 0 }
+                : {
+                    duration: 2.2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.8,
+                  }
+            }
+          >
+            <span>Read about my work</span>
+            <CornerRightDown size={14} strokeWidth={1.5} aria-hidden />
+          </motion.div>
+        </HomeEntrance>
 
-        <section className="flex flex-1 flex-col min-w-0">
+        {HOME_PROJECTS.map((project, index) => (
+          <ProjectCard
+            key={project.title}
+            {...project}
+            skip={skipAnimations}
+            play
+            delay={0.2 + index * 0.08}
+          />
+        ))}
+
+        <HomeEntrance
+          skip={skipAnimations}
+          play
+          delay={listBaseDelay}
+          className="flex flex-col gap-3 w-full"
+        >
+          <p className="text-[12px] text-white/70">
+            Work
+          </p>
           <HomeAnimatedLinks
             skip={skipAnimations}
-            play={showRest}
+            play
+            delay={listBaseDelay + 0.05}
             className="flex flex-col gap-2 w-full"
           >
-            <p className="font-label text-[10px] leading-normal shrink-0">
-              Experiments
-            </p>
-            <div className="flex flex-col gap-1">
-              {EXPERIMENT_ITEMS.map((item) => (
-                <ExternalRow
-                  key={item.name}
-                  href={item.href}
-                  label={item.name}
-                />
-              ))}
-            </div>
+            {WORK_ITEMS.map((item) => (
+              <WorkRow
+                key={item.slug}
+                href={`/work/${item.slug}`}
+                label={item.name}
+                period={item.period}
+              />
+            ))}
           </HomeAnimatedLinks>
-        </section>
+        </HomeEntrance>
+
+        <HomeEntrance
+          skip={skipAnimations}
+          play
+          delay={listBaseDelay + 0.05}
+          className="flex flex-col gap-3 w-full"
+        >
+          <p className="text-[12px] text-white/70">
+            Contact + More
+          </p>
+          <HomeAnimatedLinks
+            skip={skipAnimations}
+            play
+            delay={listBaseDelay + 0.1}
+            className="flex flex-col gap-2 w-full"
+          >
+            {CONTACT_ITEMS.map((item) => (
+              <ExternalRow key={item.name} href={item.href} label={item.name} />
+            ))}
+          </HomeAnimatedLinks>
+        </HomeEntrance>
+
+        <HomeEntrance
+          skip={skipAnimations}
+          play
+          delay={listBaseDelay + 0.1}
+          className="flex flex-col gap-3 w-full"
+        >
+          <p className="text-[12px] text-white/70">
+            Projects
+          </p>
+          <HomeAnimatedLinks
+            skip={skipAnimations}
+            play
+            delay={listBaseDelay + 0.15}
+            className="flex flex-col gap-2 w-full"
+          >
+            {HOME_HACKATHONS.map((item) => (
+              <ProjectRow
+                key={item.name}
+                href={item.href}
+                label={item.name}
+                period={item.period}
+                devpostHref={item.devpostHref}
+              />
+            ))}
+          </HomeAnimatedLinks>
+        </HomeEntrance>
       </div>
-      {/* <div className="w-full h-full grid grid-cols-3 grid-rows-3 gap-3 ">
-        <div className="col-span-2  row-span-2 bg-blue-500 relative">
-          <Image
-            src="/cardcovers/ibmstill.png"
-            alt="Hero"
-            fill
-            priority
-            className="object-cover  inset-0 pointer-events-none"
-          />
-        </div>
-        <div className="col-span-1  row-span-2 relative">
-          <Image
-            src="/cardcovers/limi.gif"
-            alt="Hero"
-            fill
-            priority
-            className="object-cover  inset-0 pointer-events-none"
-          />
-        </div>
-      </div> */}
     </div>
   );
 }

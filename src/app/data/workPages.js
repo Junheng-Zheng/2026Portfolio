@@ -7,7 +7,7 @@ export const WORK_SLUGS = {
 
 export const CONTACT_ITEMS = [
   { name: "LinkedIn", href: "https://www.linkedin.com/in/junhengzheng/" },
-  { name: "Resume", href: "/Junheng_SWE_Resume.pdf" },
+  { name: "Resume", href: "/Junhengswedesignresume.pdf" },
   { name: "Github", href: "https://github.com/junheng-zheng" },
   { name: "Gmail", href: "mailto:junhengzheng@gmail.com" },
 ];
@@ -45,7 +45,7 @@ export const HOME_ABSTRACT_SEGMENTS = [
     href: "https://research.ibm.com/",
   },
   {
-    text: " on the internal Apps@Research team assisting researchers on Quantum Computing and AI. Previously, Jun interned as a Design Engineer at ",
+    text: " on the Apps@Research team. Previously, Jun interned as a Design Engineer at ",
     italic: false,
   },
   {
@@ -53,7 +53,7 @@ export const HOME_ABSTRACT_SEGMENTS = [
     href: "https://www.libertymutual.com/",
   },
   {
-    text: " on the Enterprise UI team working on internal design systems, increasing the library by 50%.",
+    text: " on the Enterprise UI team working on internal design systems.",
     italic: false,
   },
 ];

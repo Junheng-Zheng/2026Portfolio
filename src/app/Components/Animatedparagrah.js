@@ -71,7 +71,7 @@ const Animatedparagrah = ({
   const linkClassName = [
     "hover:opacity-80 transition-opacity",
     linkUnderline
-      ? "underline decoration-solid underline-offset-[2px] [text-decoration-skip-ink:none]"
+      ? "underline decoration-solid decoration-white/50 underline-offset-[2px] [text-decoration-skip-ink:none]"
       : "no-underline",
   ].join(" ");
 
@@ -137,8 +137,28 @@ const Animatedparagrah = ({
     );
   };
 
-  const renderSegmentTokens = (seg, i, animated) => {
-    const tokens = (seg?.text ?? "").split(/(\s+)/);
+  const renderSegmentTokens = (seg, i, animated, isLink = false) => {
+    const text = seg?.text ?? "";
+
+    if (isLink) {
+      return animated
+        ? Array.from(text).map((ch, k) => {
+            if (ch === " ") return " ";
+
+            return (
+              <motion.span
+                key={`${i}-link-${k}`}
+                variants={letter}
+                className="inline-block"
+              >
+                {ch}
+              </motion.span>
+            );
+          })
+        : text;
+    }
+
+    const tokens = text.split(/(\s+)/);
 
     return tokens.map((token, j) => {
       if (/^\s+$/.test(token)) return token;
@@ -172,7 +192,7 @@ const Animatedparagrah = ({
       <p className={className} aria-label={ariaLabel}>
         {renderLabel(false)}
         {(segments ?? []).map((seg, i) => {
-          const inner = renderSegmentTokens(seg, i, false);
+          const inner = renderSegmentTokens(seg, i, false, Boolean(seg?.href));
           if (seg?.href) {
             return renderSegmentLink(seg, inner, i);
           }
@@ -199,7 +219,7 @@ const Animatedparagrah = ({
     >
       {renderLabel(true)}
       {(segments ?? []).map((seg, i) => {
-        const inner = renderSegmentTokens(seg, i, true);
+        const inner = renderSegmentTokens(seg, i, true, Boolean(seg?.href));
         if (seg?.href) {
           return renderSegmentLink(seg, inner, i);
         }

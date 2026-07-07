@@ -61,11 +61,11 @@ export function HomeEntrance({
 
   return (
     <motion.div
-      initial={skip ? false : { opacity: 0, y: 10, filter: "blur(3px)" }}
+      initial={skip ? false : { opacity: 0, y: 5, filter: "blur(3px)" }}
       animate={
         visible
           ? { opacity: 1, y: 0, filter: "blur(0px)" }
-          : { opacity: 0, y: 5, filter: "blur(3px)" }
+          : { opacity: 0, y: 2, filter: "blur(3px)" }
       }
       transition={
         skip

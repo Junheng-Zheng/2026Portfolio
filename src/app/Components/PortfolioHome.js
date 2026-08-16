@@ -192,6 +192,8 @@ function ProjectCard({
   comingSoon = false,
   detailsPadding = "p-3",
   placeholderClass,
+  imageScale = 1,
+  imageBgClass,
   skip,
   play,
   delay = 0,
@@ -209,7 +211,7 @@ function ProjectCard({
   const content = (
     <>
       <div
-        className="relative w-full shrink-0 overflow-hidden"
+        className={`relative w-full shrink-0 overflow-hidden ${imageBgClass ?? ""}`}
         style={{ aspectRatio: aspect.replace("/", " / ") }}
       >
         {image ? (
@@ -218,6 +220,11 @@ function ProjectCard({
             alt=""
             fill
             className="object-cover pointer-events-none"
+            style={
+              imageScale !== 1
+                ? { transform: `scale(${imageScale})` }
+                : undefined
+            }
             unoptimized={image.endsWith(".gif")}
           />
         ) : (
@@ -233,13 +240,15 @@ function ProjectCard({
         <p className="text-[14px] text-white">{title}</p>
       </div>
 
-      <div
-        className={`flex flex-col gap-1 px-3 text-[14px] text-white/80 ${detailsPadding}`}
-      >
-        {details.map((detail, index) => (
-          <ProjectDetail key={index}>{detail}</ProjectDetail>
-        ))}
-      </div>
+      {details.length > 0 && (
+        <div
+          className={`flex flex-col gap-1 px-3 text-[14px] text-white/80 ${detailsPadding}`}
+        >
+          {details.map((detail, index) => (
+            <ProjectDetail key={index}>{detail}</ProjectDetail>
+          ))}
+        </div>
+      )}
 
       {actionButton}
     </>

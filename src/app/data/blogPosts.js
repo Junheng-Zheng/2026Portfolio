@@ -1,5 +1,6 @@
 export const BLOG_SLUGS = {
   IBM_RESEARCH: "swe-design-ibm-research",
+  LIBERTY_MUTUAL: "swe-design-liberty-mutual",
   POMODORO_TIMER: "3d-pomodoro-timer",
 };
 
@@ -300,6 +301,243 @@ export const BLOG_POSTS = {
       },
     ],
   },
+  [BLOG_SLUGS.LIBERTY_MUTUAL]: {
+    slug: BLOG_SLUGS.LIBERTY_MUTUAL,
+    title: "Design Engineering @ Liberty Mutual",
+    meta: ["8 Min Read", "Internship"],
+    cover: "/landing/lmicover.gif",
+    coverCaption:
+      "This project is under NDA. Low-fidelity imagery is used throughout this post in place of production screenshots.",
+    description:
+      "How Enterprise UI in CFT UX standardizes higher-level components above LMDS, identifying repeated patterns across internal teams, shipping them to Storybook, and promoting adoption back into the design system.",
+    navigation: [
+      {
+        label: "Context",
+        items: [
+          { id: "overview", label: "Overview" },
+          { id: "enterprise-ui", label: "LMDS and Enterprise UI" },
+        ],
+      },
+      {
+        label: "Design",
+        items: [{ id: "design-figma", label: "Design in Figma" }],
+      },
+      {
+        label: "Development",
+        items: [
+          { id: "build-react", label: "Build in React" },
+          { id: "ship-storybook", label: "Ship to Storybook" },
+        ],
+      },
+      {
+        label: "Impact",
+        items: [
+          { id: "results", label: "Results" },
+          { id: "design-dev-loop", label: "One role, two languages" },
+          { id: "related-work", label: "Related work" },
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "overview",
+        title: "Overview",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "In the summer of 2025, I interned as a Design Engineer on the Enterprise UI (EUI) team within Liberty Mutual's CFT UX division. EUI is a design system built above LMDS, Liberty Mutual's primary design system, and focuses on standardizing the composite components that internal teams kept rebuilding on their own.",
+          },
+          {
+            type: "paragraph",
+            text: "My work sat at the intersection of design and frontend development: identifying repeated UI patterns across the organization, designing higher-level components in Figma, and shipping matching React implementations to the EUI Storybook.",
+          },
+          {
+            type: "flow",
+            caption: "What I did as a Design Engineer intern",
+            steps: [
+              "Gather requirements from internal teams through Jira and Slack",
+              "Audit existing products for duplicate composite UI",
+              "Design flexible variants and states in Figma",
+              "Build, QA, and document matching React components",
+            ],
+          },
+        ],
+      },
+      {
+        id: "enterprise-ui",
+        title: "LMDS and Enterprise UI",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "LMDS (Liberty Mutual Design System) is the design system the organization primarily uses across the company, especially on the client side. It follows atomic design (atoms, molecules, organisms) and gives teams a shared foundation of buttons, inputs, typography, and other primitives.",
+          },
+          {
+            type: "paragraph",
+            text: "But atomic design only goes so far. At some point, internal teams need more than primitives. They assemble LMDS pieces into higher-level UI like an app header, a sidebar, or a filter panel, and ship it. The result looks similar across teams, but each version is slightly different. Same idea, inconsistent execution.",
+          },
+          {
+            type: "paragraph",
+            text: "Enterprise UI exists to solve that gap. EUI lives in the CFT UX division and standardizes components at this higher level: the composite patterns that LMDS doesn't cover, but that teams keep rebuilding independently.",
+          },
+          {
+            type: "flow",
+            caption: "The gap between LMDS and what teams actually build",
+            steps: [
+              "LMDS covers atoms, molecules, and organisms org-wide",
+              "Teams assemble primitives into headers, sidebars, and panels",
+              "Each team ships a similar layout with different execution",
+              "EUI standardizes the composite so everyone builds the same way",
+            ],
+          },
+          {
+            type: "graphic",
+            src: "/projectcards/liberty-landing-card.png",
+            alt: "Liberty Mutual Enterprise UI design system work",
+            caption:
+              "Low-fidelity representation of design system work at Liberty Mutual.",
+          },
+        ],
+      },
+      {
+        id: "design-figma",
+        title: "Design in Figma",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Each component started in Figma. I worked from patterns that had already emerged across internal teams: headers, panels, and layouts that multiple squads had built separately using LMDS primitives. The job was to find the common structure, design one flexible version, and make it the standard.",
+          },
+          {
+            type: "paragraph",
+            text: "Because these are composite components built on top of LMDS, I had to design for flexibility across teams: multiple configurations, states, and content layouts without breaking visual consistency. That meant thinking about how LMDS tokens and atoms slot into a higher-level pattern before writing any code.",
+          },
+        ],
+      },
+      {
+        id: "build-react",
+        title: "Build in React",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Every Figma component had a matching React implementation. I built in React with TypeScript and SCSS, following the team's existing patterns for props, accessibility, and documentation.",
+          },
+          {
+            type: "paragraph",
+            text: "Day-to-day collaboration ran through Slack and Jira. Design reviews happened in Figma; implementation tracked through tickets and pull requests. QA checks against the design spec kept design and code aligned as the library grew.",
+          },
+          {
+            type: "definitions",
+            items: [
+              {
+                label: "Design",
+                text: "through Figjam and Figma",
+              },
+              {
+                label: "Development",
+                text: "through React and TypeScript",
+              },
+              {
+                label: "Stylization",
+                text: "through SCSS and design tokens",
+              },
+              {
+                label: "Deployment",
+                text: "to the EUI design system Storybook",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        id: "ship-storybook",
+        title: "Ship to Storybook",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Finished components were published to the EUI Storybook, the internal catalog where product teams browse, preview, and adopt standardized composite components built on top of LMDS.",
+          },
+          {
+            type: "flow",
+            caption: "How a component graduates from EUI into LMDS",
+            steps: [
+              "EUI publishes the standardized component to Storybook",
+              "Product teams adopt it instead of rebuilding their own",
+              "Usage and feedback accumulate across the organization",
+              "High-adoption components get promoted into LMDS",
+            ],
+          },
+          {
+            type: "paragraph",
+            text: "Storybook was the delivery point between EUI and the rest of the organization. A component wasn't done until it was documented, tested, and available for teams to adopt. Components with strong enough adoption could eventually be promoted into LMDS itself.",
+          },
+        ],
+      },
+      {
+        id: "results",
+        title: "Results",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Beyond growing the EUI library, the work improved consistency between design and development. Instead of every team assembling their own header or filter panel from LMDS pieces, they could pull a standardized composite from Storybook with the same structure, same behavior, and less drift.",
+          },
+          {
+            type: "stats",
+            stats: [
+              { value: "30%+", label: "Library growth" },
+              { value: "60%", label: "Consistency improvement via QA" },
+              { value: "20+", label: "Stakeholders in MCP presentations" },
+            ],
+            columns: 3,
+          },
+        ],
+      },
+      {
+        id: "design-dev-loop",
+        title: "One role, two languages",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Like my later work at IBM Research, where Carbon provided atoms but custom components had to be built on top, this internship was about working above the design system's ceiling. LMDS handled the foundation; EUI handled the composites that teams kept reinventing.",
+          },
+          {
+            type: "paragraph",
+            text: "Figuring out how to design components that were scalable in Figma yet reliable in code was the core challenge. Tokens, variant structures, and state coverage had to work in both tools from the start.",
+          },
+        ],
+      },
+      {
+        id: "related-work",
+        title: "Related work",
+        blocks: [
+          {
+            type: "paragraph",
+            segments: [
+              {
+                text: "After Liberty Mutual, I interned at IBM Research on a full application redesign and migration. Read that process ",
+              },
+              {
+                text: "here",
+                href: "/blog/swe-design-ibm-research",
+              },
+              { text: "." },
+            ],
+          },
+          {
+            type: "paragraph",
+            segments: [
+              {
+                text: "For a broader view of my experience, see my ",
+              },
+              {
+                text: "resume",
+                href: "/Junhengswedesignresume.pdf",
+              },
+              { text: "." },
+            ],
+          },
+        ],
+      },
+    ],
+  },
   [BLOG_SLUGS.POMODORO_TIMER]: {
     slug: BLOG_SLUGS.POMODORO_TIMER,
     passwordProtected: false,
@@ -363,7 +601,8 @@ export const BLOG_POSTS = {
             type: "graphic",
             src: "/pomodoro/timer-full.png",
             alt: "Junodoro timer showing focus mode at 25:00",
-            caption: "The finished timer — isometric tilt, recessed display, and chunky 3D buttons.",
+            caption:
+              "The finished timer — isometric tilt, recessed display, and chunky 3D buttons.",
           },
         ],
       },

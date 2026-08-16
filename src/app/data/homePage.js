@@ -1,7 +1,7 @@
 import { BLOG_SLUGS } from "./blogPosts";
 
 export const HOME_BIO =
-  "Junheng Zheng is a Designer and Developer. Currently, Jun is interning as a Design Engineer @ IBM Research on the internal Apps@Research team. Previously, Jun interned as a Design Engineer @ Liberty Mutual Insurance on the EUI Team. Primarily designing with Figma and developing with React.";
+  "Junheng Zheng is a Designer and Developer. Incoming Frontend Engineer Intern @ Tesla this fall. Currently, interning as a Design Engineer @ IBM Research on the internal Apps@Research team. Previously, Jun interned as a Design Engineer @ Liberty Mutual Insurance on the EUI Team. Primarily designing with Figma and developing with React.";
 
 export const HOME_ACTIONS = [
   {
@@ -33,6 +33,16 @@ export const HOME_HACKATHONS = [
 ];
 
 export const HOME_PROJECTS = [
+  {
+    image: "/cardcovers/tesla.gif",
+    aspect: "1850/1362",
+    meta: ["Internship"],
+    title: "Internal Design Systems and Application Modernization at Tesla",
+    details: [],
+    comingSoon: true,
+    imageScale: 0.5,
+    imageBgClass: "bg-[#FF0201]",
+  },
   {
     image: "/landing/ibmcover.gif",
     aspect: "1850/1362",
@@ -80,8 +90,7 @@ export const HOME_PROJECTS = [
         <span> to Storybook</span>
       </>,
     ],
-    href: null,
-    comingSoon: true,
+    href: `/blog/${BLOG_SLUGS.LIBERTY_MUTUAL}`,
     detailsPadding: "py-3",
   },
   {

@@ -9,6 +9,7 @@ import {
 } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
+import { USE_TEXT_WRAP_PRETTY } from "./siteFlags";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -76,9 +77,9 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="min-h-full bg-[#1a1a1a]">
+    <html lang="en" className="min-h-full bg-white">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} ${bricolageGrotesque.variable} min-h-dvh bg-[#1a1a1a] text-white antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} ${alice.variable} ${spaceMono.variable} ${ibmPlexSans.variable} ${bricolageGrotesque.variable} min-h-dvh bg-white text-[#3f3f3f] antialiased${USE_TEXT_WRAP_PRETTY ? " text-wrap-pretty" : ""}`}
       >
         {children}
         <Analytics />

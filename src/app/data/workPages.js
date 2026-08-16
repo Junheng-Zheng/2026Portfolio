@@ -86,7 +86,7 @@ export const WORK_PAGES = {
         href: `/work/${WORK_SLUGS.LIBERTY_MUTUAL}`,
       },
       {
-        text: " on the Enterprise UI team, contributing to the design system and personally increasing the component library by 50%.",
+        text: " on the Enterprise UI team within CFT UX, standardizing higher-level components above LMDS and growing the EUI Storybook library by 50%.",
         italic: false,
       },
     ],

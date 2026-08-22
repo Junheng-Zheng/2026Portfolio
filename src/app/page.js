@@ -5,7 +5,11 @@ import { ArrowUpRight, ChevronDown, CornerRightDown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import DecryptedText from "./Components/DecryptedText";
-import { SHOW_WORDMARK, SHOW_ALTERNATE_WORDMARK, SHOW_TESLA } from "./siteFlags";
+import {
+  SHOW_WORDMARK,
+  SHOW_ALTERNATE_WORDMARK,
+  SHOW_TESLA,
+} from "./siteFlags";
 
 const LINKS = [
   {

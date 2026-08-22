@@ -1,5 +1,5 @@
 /** Toggle the homepage wordmark SVG */
-export const SHOW_WORDMARK = true;
+export const SHOW_WORDMARK = false;
 
 /** Toggle the alternate homepage wordmark SVG (takes precedence over SHOW_WORDMARK) */
 export const SHOW_ALTERNATE_WORDMARK = false;

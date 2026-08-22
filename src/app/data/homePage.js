@@ -39,24 +39,6 @@ export const HOME_PROJECTS = [
     meta: ["5 Min Read", "Internship"],
     title:
       "Redesign & Migration of a data acquisition application utilized at IBM Research.",
-    details: [
-      <>
-        <span className="text-white">1]</span>{" "}
-        <span className="text-white">Context + design</span>
-        <span> done through through Figjam and Figma Design.</span>
-      </>,
-      <>
-        <span className="text-white">2] Frontend</span>
-        <span>
-          {" "}
-          through React + Vite, SCSS, Javascript, Zustand, and Axios.
-        </span>
-      </>,
-      <>
-        <span className="text-white">3] Deployment</span>
-        <span> through Openshift Kubernetes, Podman, Helm, and Nginx.</span>
-      </>,
-    ],
     href: `/blog/${BLOG_SLUGS.IBM_RESEARCH}`,
   },
   {
@@ -65,47 +47,14 @@ export const HOME_PROJECTS = [
     meta: ["8 Min Read", "Internship"],
     title:
       "Design & Dev of scalable React components utilized across teams at LMI.",
-    details: [
-      <>
-        <span className="text-white">1]</span>{" "}
-        <span className="text-white">Context + design</span>
-        <span> done through through Figjam and Figma Design.</span>
-      </>,
-      <>
-        <span className="text-white">2] Frontend</span>
-        <span> through React + Vite, SCSS, Typscript</span>
-      </>,
-      <>
-        <span className="text-white">3] Deployment</span>
-        <span> to Storybook</span>
-      </>,
-    ],
     href: null,
     comingSoon: true,
-    detailsPadding: "py-3",
   },
   {
     image: "/landing/pomodorocover.png",
     aspect: "2920/2016",
     meta: ["2 Min Read", "Project"],
     title: "Pomodoro Timer, a UI Development Exercise",
-    details: [
-      <>
-        <span className="text-white">1]</span>
-        <span> D</span>
-        <span className="text-white">esign</span>
-        <span> done through through Figma Design & Fast Isometric Plugin.</span>
-      </>,
-      <>
-        <span className="text-white">2] Development </span>
-        <span>through React, TailwindCSS, Javascript, and Framer Motion.</span>
-      </>,
-      <>
-        <span className="text-white">3] Deployment</span>
-        <span> through Vercel</span>
-      </>,
-    ],
     href: `/blog/${BLOG_SLUGS.POMODORO_TIMER}`,
-    detailsPadding: "py-3",
   },
 ];

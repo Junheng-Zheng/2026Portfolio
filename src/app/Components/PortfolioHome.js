@@ -178,19 +178,13 @@ function ProjectRow({ href, label, period, devpostHref }) {
   );
 }
 
-function ProjectDetail({ children }) {
-  return <p>{children}</p>;
-}
-
 function ProjectCard({
   image,
   aspect,
   meta,
   title,
-  details,
   href,
   comingSoon = false,
-  detailsPadding = "p-3",
   placeholderClass,
   skip,
   play,
@@ -230,15 +224,7 @@ function ProjectCard({
 
       <div className="flex flex-col gap-1">
         <div className="text-[12px] text-white/70">{meta.join(" | ")}</div>
-        <p className="text-[14px] text-white">{title}</p>
-      </div>
-
-      <div
-        className={`flex flex-col gap-1 px-3 text-[14px] text-white/80 ${detailsPadding}`}
-      >
-        {details.map((detail, index) => (
-          <ProjectDetail key={index}>{detail}</ProjectDetail>
-        ))}
+        <p className="text-[14px] text-white w-2/3">{title}</p>
       </div>
 
       {actionButton}

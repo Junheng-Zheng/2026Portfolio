@@ -1,4 +1,4 @@
-import Link from "next/link";
+import GetInTouchButton from "../GetInTouchButton";
 import BlogLayout from "./BlogLayout";
 import BlogHeader from "./BlogHeader";
 import BlogSection from "./BlogSection";
@@ -70,7 +70,7 @@ function renderBlock(block, index) {
       return (
         <BlogSubsection key={index} title={block.title}>
           {block.blocks.map((child, childIndex) =>
-            renderBlock(child, `${index}-${childIndex}`)
+            renderBlock(child, `${index}-${childIndex}`),
           )}
         </BlogSubsection>
       );
@@ -100,12 +100,6 @@ export default function BlogPost({ post }) {
   return (
     <BlogLayout>
       <div className="mx-auto flex w-full max-w-[848px] flex-col gap-8">
-        <Link
-          href="/"
-          className="text-[14px] text-white/60 underline decoration-white/30 underline-offset-[2px] transition-opacity hover:opacity-80"
-        >
-          Back home
-        </Link>
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-12">
           <div className="flex w-full min-w-0 max-w-[600px] flex-col gap-8 md:gap-12">
             <BlogHeader
@@ -123,14 +117,7 @@ export default function BlogPost({ post }) {
           {post.navigation?.length > 0 ? (
             <aside className="hidden w-[200px] shrink-0 lg:block">
               <div className="sticky top-24 flex flex-col gap-6">
-                <a
-                  href="https://www.linkedin.com/in/junhengzheng/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded bg-white/8 px-4 py-1.5 text-center text-[14px] text-white/80 transition-colors hover:bg-white/12 hover:text-white/90"
-                >
-                  Contact
-                </a>
+                <GetInTouchButton size="compact" />
                 <BlogTableOfContents navigation={post.navigation} />
               </div>
             </aside>

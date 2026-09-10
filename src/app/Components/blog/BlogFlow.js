@@ -9,7 +9,7 @@ export default function BlogFlow({ steps, caption }) {
       <div className="flex flex-col gap-0">
         {steps.map((step, index) => (
           <div key={step} className="flex flex-col items-center">
-            <div className="w-full rounded-sm  bg-white/[0.04] px-4 py-3 text-center text-[14px] leading-snug text-white/90">
+            <div className="w-full rounded-[16px] bg-white/[0.04] px-4 py-3 text-center text-[14px] leading-snug text-white/90 md:rounded-[20px]">
               {step}
             </div>
             {index < steps.length - 1 ? (

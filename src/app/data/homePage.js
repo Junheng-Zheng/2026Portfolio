@@ -1,12 +1,25 @@
 import { BLOG_SLUGS } from "./blogPosts";
+import { WORK_SLUGS } from "./workPages";
 
 export const HOME_BIO =
-  "Junheng Zheng is a Designer and Developer. Currently, Jun is interning as a Design Engineer @ IBM Research on the internal Apps@Research team. Previously, Jun interned as a Design Engineer @ Liberty Mutual Insurance on the EUI Team. Primarily designing with Figma and developing with React.";
+  "My name is Junheng Zheng, and I am a problem solver working across design and development.";
+
+export const HOME_CONTACT_HREF = "https://www.linkedin.com/in/junhengzheng/";
+export const HOME_EMAIL_HREF = "mailto:junhengzheng@gmail.com";
+export const HOME_GITHUB_HREF = "https://github.com/junheng-zheng";
+export const HOME_RESUME_HREF = "/Junhengswedesignresume.pdf";
+
+export const HOME_CONTACT_DROPDOWN = [
+  { label: "LinkedIn", href: HOME_CONTACT_HREF },
+  { label: "Email", href: HOME_EMAIL_HREF },
+  { label: "Github", href: HOME_GITHUB_HREF },
+  { label: "Resume", href: HOME_RESUME_HREF },
+];
 
 export const HOME_ACTIONS = [
   {
     label: "Contact",
-    href: "https://www.linkedin.com/in/junhengzheng/",
+    href: HOME_CONTACT_HREF,
     variant: "button",
   },
   { label: "Resume", href: "/Junhengswedesignresume.pdf", variant: "link" },
@@ -34,27 +47,36 @@ export const HOME_HACKATHONS = [
 
 export const HOME_PROJECTS = [
   {
-    image: "/landing/ibmcover.gif",
-    aspect: "1850/1362",
-    meta: ["5 Min Read", "Internship"],
-    title:
-      "Redesign & Migration of a data acquisition application utilized at IBM Research.",
+    image: "/landing/tesla-cover.png",
+    title: "SWE + Design @ Tesla",
+    badges: [],
+    href: `/work/${WORK_SLUGS.TESLA}`,
+    ndaProtected: true,
+  },
+  {
+    image: "/landing/ibm-office-cover.png",
+    title: "SWE + Design @ IBM Research",
+    badges: [],
     href: `/blog/${BLOG_SLUGS.IBM_RESEARCH}`,
+    ndaProtected: true,
   },
   {
     image: "/landing/lmicover.gif",
-    aspect: "1380/1080",
-    meta: ["8 Min Read", "Internship"],
-    title:
-      "Design & Dev of scalable React components utilized across teams at LMI.",
-    href: null,
-    comingSoon: true,
+    title: "SWE + Design @ Liberty Mutual",
+    badges: [],
+    href: `/work/${WORK_SLUGS.LIBERTY_MUTUAL}`,
+    ndaProtected: true,
   },
   {
-    image: "/landing/pomodorocover.png",
-    aspect: "2920/2016",
-    meta: ["2 Min Read", "Project"],
-    title: "Pomodoro Timer, a UI Development Exercise",
+    image: "/cardcovers/possample.png",
+    title: "Restaurant POS",
+    badges: [],
+    href: `/blog/${BLOG_SLUGS.RESTAURANT_POS}`,
+  },
+  {
+    image: "/pomodoro/cover.png",
+    title: "Pomodoro Timer",
+    badges: [],
     href: `/blog/${BLOG_SLUGS.POMODORO_TIMER}`,
   },
 ];

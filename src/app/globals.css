@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1a1a1a;
+  --background: #161616;
   --foreground: #ffffff;
   --gray1: #e7e7e7;
   --gray2: #ffffff;
@@ -19,12 +19,13 @@
 }
 
 html {
-  background-color: #1a1a1a;
+  background-color: #161616;
   min-height: 100%;
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: #1a1a1a;
+  background-color: #161616;
   color: var(--foreground);
   min-height: 100dvh;
   font-family: Helvetica, sans-serif;
@@ -38,10 +39,6 @@ body {
 .alice {
   font-family: var(--font-alice);
 }
-#about {
-  scroll-margin-top: 80px;
-}
-
 #works {
   scroll-margin-top: 80px;
 }
@@ -94,6 +91,28 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .tech-marquee__track {
+    animation: none;
+    transform: translateX(0);
+  }
+}
+
+@keyframes cursor-pill-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.cursor-pill-marquee-track {
+  width: max-content;
+  will-change: transform;
+  animation: cursor-pill-marquee 12s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-pill-marquee-track {
     animation: none;
     transform: translateX(0);
   }

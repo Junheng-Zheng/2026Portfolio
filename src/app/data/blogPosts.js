@@ -1,11 +1,13 @@
 export const BLOG_SLUGS = {
   IBM_RESEARCH: "swe-design-ibm-research",
   POMODORO_TIMER: "3d-pomodoro-timer",
+  RESTAURANT_POS: "restaurant-pos",
 };
 
 export const BLOG_POSTS = {
   [BLOG_SLUGS.IBM_RESEARCH]: {
     slug: BLOG_SLUGS.IBM_RESEARCH,
+    requiresProcessUnlock: true,
     title: "Design Engineering @ IBM Research",
     meta: ["5 Min Read", "Internship"],
     cover: "/ibmresearch/cover.gif",
@@ -363,7 +365,8 @@ export const BLOG_POSTS = {
             type: "graphic",
             src: "/pomodoro/timer-full.png",
             alt: "Junodoro timer showing focus mode at 25:00",
-            caption: "The finished timer — isometric tilt, recessed display, and chunky 3D buttons.",
+            caption:
+              "The finished timer — isometric tilt, recessed display, and chunky 3D buttons.",
           },
         ],
       },
@@ -541,6 +544,76 @@ await cardSkewControls.start({
               },
               { text: "." },
             ],
+          },
+        ],
+      },
+    ],
+  },
+  [BLOG_SLUGS.RESTAURANT_POS]: {
+    slug: BLOG_SLUGS.RESTAURANT_POS,
+    passwordProtected: false,
+    title: "Restaurant POS, a Design Concept",
+    meta: ["Concept", "Project"],
+    cover: "/cardcovers/possample.png",
+    description:
+      "A restaurant concept with a marketing site, online ordering for delivery and pickup, end-to-end flows, visual assets, and a supporting design system.",
+    navigation: [
+      {
+        label: "Context",
+        items: [{ id: "overview", label: "Overview" }],
+      },
+      {
+        label: "Design",
+        items: [
+          { id: "experience", label: "Restaurant experience" },
+          { id: "design-system", label: "Flows, assets & design system" },
+        ],
+      },
+    ],
+    sections: [
+      {
+        id: "overview",
+        title: "Overview",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "This is a concept for a restaurant brand built end to end in design — not just a single screen, but the full experience a guest would move through before and after they order.",
+          },
+          {
+            type: "paragraph",
+            text: "The project includes a restaurant marketing page alongside online ordering for delivery and pickup, so the same brand can introduce the restaurant, show the menu, and carry guests through checkout without breaking context.",
+          },
+        ],
+      },
+      {
+        id: "experience",
+        title: "Restaurant experience",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "The restaurant page sets the tone for the brand: what the food is, how the space feels, and how someone should expect to interact with the business. From there, ordering flows split cleanly between delivery and pickup so each path stays focused instead of forcing one generic checkout.",
+          },
+          {
+            type: "list",
+            items: [
+              "Restaurant landing page and brand presentation",
+              "Menu browsing with delivery and pickup paths",
+              "Order flow from item selection through checkout",
+            ],
+          },
+        ],
+      },
+      {
+        id: "design-system",
+        title: "Flows, assets & design system",
+        blocks: [
+          {
+            type: "paragraph",
+            text: "Beyond the core screens, the work includes mapped user flows, production-ready visual assets, and a design system that keeps typography, color, components, and layout consistent across the marketing site and ordering experience.",
+          },
+          {
+            type: "paragraph",
+            text: "The system is built to scale — new menu items, promotions, and order states can plug into the same component library without redesigning each screen from scratch.",
           },
         ],
       },

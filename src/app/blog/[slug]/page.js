@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import BlogPost from "../../Components/blog/BlogPost";
+import BlogScrollToTop from "../../Components/blog/BlogScrollToTop";
 import PasswordGate from "../../Components/PasswordGate";
+import ProcessUnlockCheck from "../../Components/ProcessUnlockCheck";
 import { getAllBlogSlugs, getBlogPost } from "../../data/blogPosts";
 
 export function generateStaticParams() {
@@ -23,13 +25,32 @@ export default async function BlogPostPage({ params }) {
   const post = getBlogPost(slug);
   if (!post) notFound();
 
+  if (post.requiresProcessUnlock) {
+    return (
+      <>
+        <BlogScrollToTop />
+        <ProcessUnlockCheck>
+          <BlogPost post={post} />
+        </ProcessUnlockCheck>
+      </>
+    );
+  }
+
   if (post.passwordProtected === false) {
-    return <BlogPost post={post} />;
+    return (
+      <>
+        <BlogScrollToTop />
+        <BlogPost post={post} />
+      </>
+    );
   }
 
   return (
-    <PasswordGate>
-      <BlogPost post={post} />
-    </PasswordGate>
+    <>
+      <BlogScrollToTop />
+      <PasswordGate>
+        <BlogPost post={post} />
+      </PasswordGate>
+    </>
   );
 }

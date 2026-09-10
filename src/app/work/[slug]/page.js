@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import PasswordGate from "../../Components/PasswordGate";
+import ProcessUnlockCheck from "../../Components/ProcessUnlockCheck";
 import PortfolioWorkDetail from "../../Components/PortfolioWorkDetail";
 import { getAllWorkSlugs, getWorkPage } from "../../data/workPages";
 
@@ -23,13 +24,17 @@ export default async function WorkPage({ params }) {
   const page = getWorkPage(slug);
   if (!page) notFound();
 
-  return (
-    <PasswordGate>
-      <PortfolioWorkDetail
-        abstractSegments={page.abstractSegments}
-        team={page.team}
-        duration={page.duration}
-      />
-    </PasswordGate>
+  const content = (
+    <PortfolioWorkDetail
+      abstractSegments={page.abstractSegments}
+      team={page.team}
+      duration={page.duration}
+    />
   );
+
+  if (page.requiresProcessUnlock) {
+    return <ProcessUnlockCheck>{content}</ProcessUnlockCheck>;
+  }
+
+  return <PasswordGate>{content}</PasswordGate>;
 }

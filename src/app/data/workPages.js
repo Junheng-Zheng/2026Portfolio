@@ -1,4 +1,5 @@
 export const WORK_SLUGS = {
+  TESLA: "tesla",
   IBM_RESEARCH: "ibm-research",
   LIBERTY_MUTUAL: "liberty-mutual",
   DND_MOTOR: "d-d-motor-systems",
@@ -12,6 +13,11 @@ export const CONTACT_ITEMS = [
 ];
 
 export const WORK_ITEMS = [
+  {
+    name: "Tesla",
+    period: "2026",
+    slug: WORK_SLUGS.TESLA,
+  },
   {
     name: "IBM Research",
     period: "Summer 26",
@@ -53,6 +59,26 @@ export const HOME_ABSTRACT_SEGMENTS = [
 ];
 
 export const WORK_PAGES = {
+  [WORK_SLUGS.TESLA]: {
+    requiresProcessUnlock: true,
+    title: "Tesla",
+    duration: "2026",
+    team: ["Design Systems", "Internal Tools"],
+    abstractSegments: [
+      {
+        text: "Jun is interning as a Frontend Engineer and Designer at ",
+        italic: false,
+      },
+      {
+        text: "Tesla",
+        href: `/work/${WORK_SLUGS.TESLA}`,
+      },
+      {
+        text: ", working on Design Systems and Internal Tools.",
+        italic: false,
+      },
+    ],
+  },
   [WORK_SLUGS.IBM_RESEARCH]: {
     title: "IBM Research",
     duration: "Summer 26",
@@ -73,6 +99,7 @@ export const WORK_PAGES = {
     ],
   },
   [WORK_SLUGS.LIBERTY_MUTUAL]: {
+    requiresProcessUnlock: true,
     title: "Liberty Mutual",
     duration: "Summer 25",
     team: ["Enterprise UI", "Design Systems"],

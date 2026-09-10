@@ -2,10 +2,15 @@ export const UNLOCK_STORAGE_KEY = "portfolio-process-unlocked";
 
 export function isProcessUnlocked() {
   if (typeof window === "undefined") return false;
-  return sessionStorage.getItem(UNLOCK_STORAGE_KEY) === "true";
+
+  return (
+    localStorage.getItem(UNLOCK_STORAGE_KEY) === "true" ||
+    sessionStorage.getItem(UNLOCK_STORAGE_KEY) === "true"
+  );
 }
 
 export function setProcessUnlocked() {
+  localStorage.setItem(UNLOCK_STORAGE_KEY, "true");
   sessionStorage.setItem(UNLOCK_STORAGE_KEY, "true");
 }
 

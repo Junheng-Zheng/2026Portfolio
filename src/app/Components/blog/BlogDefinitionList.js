@@ -17,7 +17,9 @@ export default function BlogDefinitionList({ items, ordered = false }) {
             <span className="text-[14px] leading-normal">
               {label ? (
                 <>
-                  <span className="font-semibold text-white">{index + 1}] </span>
+                  <span className="font-semibold text-white">
+                    {index + 1}]{" "}
+                  </span>
                   <span className="font-semibold text-white">{label}:</span>{" "}
                   <span className="text-white/90">{text}</span>
                 </>

@@ -7,7 +7,7 @@ export default function BlogStatGrid({ stats, columns = 2 }) {
       {stats.map((stat) => (
         <div
           key={stat.label}
-          className="flex flex-col h-[120px] justify-between  gap-1 border border-white/10 bg-white/[0.03] px-4 py-3"
+          className="flex h-[120px] flex-col justify-between gap-1 rounded-[16px] border border-white/10 bg-white/[0.03] px-4 py-3 md:rounded-[20px]"
         >
           <span className="text-[20px] leading-tight text-white">
             {stat.value}

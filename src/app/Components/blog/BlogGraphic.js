@@ -1,13 +1,15 @@
+const MEDIA_ROUND_CLASS = "overflow-hidden rounded-[16px] md:rounded-[20px]";
+
 export default function BlogGraphic({ src, alt = "", caption }) {
   if (!src) return null;
 
   return (
     <figure className="flex w-full flex-col gap-2">
-      <div className="aspect-[4/3] w-full overflow-hidden rounded border border-white/10 bg-white/[0.02]">
+      <div className={`aspect-[4/3] w-full bg-white/[0.02] ${MEDIA_ROUND_CLASS}`}>
         <img
           src={src}
           alt={alt}
-          className="aspect-[4/3] w-full object-cover"
+          className="aspect-[4/3] h-full w-full object-cover"
         />
       </div>
       {caption ? (

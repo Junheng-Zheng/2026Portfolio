@@ -71,7 +71,9 @@ export default function BlogTableOfContents({ navigation = [] }) {
                       href={`#${item.id}`}
                       onClick={(event) => scrollToSection(event, item.id)}
                       className={`block text-[13px] leading-snug transition-colors ${
-                        isActive ? "text-white" : "text-white/50 hover:text-white/75"
+                        isActive
+                          ? "text-white"
+                          : "text-white/50 hover:text-white/75"
                       }`}
                     >
                       {item.label}

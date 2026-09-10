@@ -16,7 +16,11 @@ export default function BlogPostFooter() {
         <Link href="/" className={linkClass}>
           Back to home
         </Link>
-        <button type="button" onClick={scrollToTop} className={`${linkClass} text-left`}>
+        <button
+          type="button"
+          onClick={scrollToTop}
+          className={`${linkClass} text-left`}
+        >
           Back to top
         </button>
         <a

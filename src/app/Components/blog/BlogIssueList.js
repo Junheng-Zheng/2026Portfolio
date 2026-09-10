@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 
 export default function BlogIssueList({ items }) {
   return (
-    <div className="flex w-full flex-col gap-3">
+    <div className="mt-5 mb-1 flex w-full flex-col gap-3">
       {items.map((item, index) => (
         <div
           key={index}

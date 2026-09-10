@@ -43,7 +43,6 @@ export const BLOG_POSTS = {
       {
         label: "Benefits of SWE + Design",
         items: [
-          { id: "one-role-two-languages", label: "One role, two languages" },
           {
             id: "reducing-design-dev-friction",
             label: "Reducing the friction between design and dev",
@@ -56,10 +55,6 @@ export const BLOG_POSTS = {
         id: "two-sides",
         title: "Two sides, one portal",
         blocks: [
-          {
-            type: "paragraph",
-            text: "This summer, I interned at IBM Research as a Design Engineer on Apps@Research, the team that maintains internal tools for research ventures across the organization. I was brought on to redesign and migrate one of their oldest applications: the Data & AI Model/Services Acquisition Portal (DARF).",
-          },
           {
             type: "paragraph",
             text: "DARF is how IBM Research requests and tracks access to external client data and AI models. Researchers submit forms through the portal; once approved, they receive access to the resources their projects need.",
@@ -113,14 +108,6 @@ export const BLOG_POSTS = {
           {
             type: "paragraph",
             text: "Those findings drove a full redesign across roughly 11 screens on the client and admin sides. The legacy app didn't use Carbon at all, so I had to implement the design system from scratch: hierarchy, spacing, and patterns across every screen.",
-          },
-          {
-            type: "stats",
-            stats: [
-              { value: "11", label: "Admin + Client pages redesigned" },
-              { value: "8", label: "Reusable components" },
-            ],
-            columns: 2,
           },
           {
             type: "graphic",
@@ -222,27 +209,6 @@ export const BLOG_POSTS = {
             text: "The React app had to run on IBM's internal OpenShift cluster. I ran Jest tests, built a production image, pushed it to IBM Cloud Container Registry, and deployed with Helm templates.",
           },
           {
-            type: "definitions",
-            items: [
-              {
-                label: "Test",
-                text: "Jest test coverage across components and critical flows.",
-              },
-              {
-                label: "Containerize",
-                text: "Build a production image of the application.",
-              },
-              {
-                label: "Registry",
-                text: "Push the image to IBM Cloud Container Registry.",
-              },
-              {
-                label: "Deploy",
-                text: "Apply Helm templates to run the app on an OpenShift pod.",
-              },
-            ],
-          },
-          {
             type: "flow",
             caption: "Deploy pipeline (simplified)",
             steps: [
@@ -252,20 +218,6 @@ export const BLOG_POSTS = {
               "Helm apply",
               "Pod on OpenShift",
             ],
-          },
-        ],
-      },
-      {
-        id: "one-role-two-languages",
-        title: "One role, two languages",
-        blocks: [
-          {
-            type: "paragraph",
-            text: "I worked across design and engineering on this project: Figma screens, React implementation, and OpenShift deployment.",
-          },
-          {
-            type: "paragraph",
-            text: "Researchers needed a solid client UI. Admins needed workflows that matched how they operated. Both had to ship on the new stack.",
           },
         ],
       },

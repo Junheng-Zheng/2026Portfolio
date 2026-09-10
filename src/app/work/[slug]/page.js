@@ -1,7 +1,5 @@
 import { notFound } from "next/navigation";
-import PasswordGate from "../../Components/PasswordGate";
-import ProcessUnlockCheck from "../../Components/ProcessUnlockCheck";
-import PortfolioWorkDetail from "../../Components/PortfolioWorkDetail";
+import WorkProjectPage from "../../Components/WorkProjectPage";
 import { getAllWorkSlugs, getWorkPage } from "../../data/workPages";
 
 export function generateStaticParams() {
@@ -15,7 +13,7 @@ export async function generateMetadata({ params }) {
 
   return {
     title: `${page.title} | Junheng Zheng`,
-    description: page.abstractSegments.map((s) => s.text).join(""),
+    description: page.about?.[0] ?? `${page.title} — Junheng Zheng`,
   };
 }
 
@@ -24,17 +22,5 @@ export default async function WorkPage({ params }) {
   const page = getWorkPage(slug);
   if (!page) notFound();
 
-  const content = (
-    <PortfolioWorkDetail
-      abstractSegments={page.abstractSegments}
-      team={page.team}
-      duration={page.duration}
-    />
-  );
-
-  if (page.requiresProcessUnlock) {
-    return <ProcessUnlockCheck>{content}</ProcessUnlockCheck>;
-  }
-
-  return <PasswordGate>{content}</PasswordGate>;
+  return <WorkProjectPage page={page} slug={slug} />;
 }

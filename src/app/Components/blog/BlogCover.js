@@ -13,7 +13,7 @@ export default function BlogCover({ src, caption }) {
         ) : null}
       </div>
       {caption ? (
-        <figcaption className="text-[12px] leading-snug text-white/45">
+        <figcaption className="text-[14px] leading-snug text-white/45">
           {caption}
         </figcaption>
       ) : null}

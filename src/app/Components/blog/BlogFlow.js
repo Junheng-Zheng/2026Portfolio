@@ -2,7 +2,7 @@ import { ArrowDown } from "lucide-react";
 
 export default function BlogFlow({ steps, caption }) {
   return (
-    <figure className="flex w-full flex-col gap-3">
+    <figure className="mt-5 mb-1 flex w-full flex-col gap-3">
       {/* {caption ? (
         <p className="text-[14px] leading-normal text-white/55">{caption}</p>
       ) : null} */}

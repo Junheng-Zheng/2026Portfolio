@@ -4,6 +4,7 @@ export const ProjectTag = {
   DESIGN_SYSTEM: "DESIGN_SYSTEM",
   INTERNAL_TOOLS: "INTERNAL_TOOLS",
   UI_DEVELOPMENT: "UI_DEVELOPMENT",
+  AI_WORKFLOW: "AI_WORKFLOW",
 };
 
 export const PROJECT_TAG_TYPES = {
@@ -26,6 +27,10 @@ export const PROJECT_TAG_TYPES = {
   [ProjectTag.UI_DEVELOPMENT]: {
     label: "UI Development",
     className: "bg-[#ec4899] text-white",
+  },
+  [ProjectTag.AI_WORKFLOW]: {
+    label: "AI Workflows",
+    className: "bg-[#22c55e] text-white",
   },
 };
 

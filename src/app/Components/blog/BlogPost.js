@@ -11,7 +11,6 @@ import BlogDefinitionList from "./BlogDefinitionList";
 import BlogIssueList from "./BlogIssueList";
 import BlogTableOfContents from "./BlogTableOfContents";
 import BlogMobileTableOfContents from "./BlogMobileTableOfContents";
-import BlogPostFooter from "./BlogPostFooter";
 import BlogCode from "./BlogCode";
 
 function renderBlock(block, index) {
@@ -89,41 +88,53 @@ function renderSection(section, index) {
       key={section.id ?? section.title ?? index}
       id={section.id}
       title={section.title}
-      className={section.spacious ? "[&>div]:gap-6" : undefined}
     >
       {renderBlocks(section.blocks)}
     </BlogSection>
   );
 }
 
-export default function BlogPost({ post }) {
-  return (
-    <BlogLayout>
-      <div className="mx-auto flex w-full max-w-[848px] flex-col gap-8">
-        <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-12">
-          <div className="flex w-full min-w-0 max-w-[600px] flex-col gap-8 md:gap-12">
+export default function BlogPost({ post, embedded = false }) {
+  const content = (
+    <div
+      className={`mx-auto flex w-full flex-col gap-16 ${
+        embedded ? "max-w-none" : "max-w-[848px]"
+      }`}
+    >
+      <div className="flex w-full flex-col gap-16 lg:flex-row lg:gap-12">
+        <div
+          className={`flex w-full min-w-0 flex-col gap-16 ${
+            embedded ? "max-w-none" : "max-w-[600px]"
+          }`}
+        >
+          {embedded ? null : (
             <BlogHeader
               title={post.title}
               meta={post.meta}
               cover={post.cover}
               coverCaption={post.coverCaption}
             />
-            {post.navigation?.length > 0 ? (
-              <BlogMobileTableOfContents navigation={post.navigation} />
-            ) : null}
-            {post.sections.map(renderSection)}
-            <BlogPostFooter />
-          </div>
-          {post.navigation?.length > 0 ? (
-            <aside className="hidden w-[200px] shrink-0 lg:block">
-              <div className="sticky top-24 flex flex-col gap-6">
-                <GetInTouchButton size="compact" />
-                <BlogTableOfContents navigation={post.navigation} />
-              </div>
-            </aside>
+          )}
+          {!embedded && post.navigation?.length > 0 ? (
+            <BlogMobileTableOfContents navigation={post.navigation} />
           ) : null}
+          {post.sections.map(renderSection)}
         </div>
+        {!embedded && post.navigation?.length > 0 ? (
+          <aside className="hidden w-[200px] shrink-0 lg:block">
+            <div className="sticky top-24 flex flex-col gap-6">
+              <GetInTouchButton size="compact" />
+              <BlogTableOfContents navigation={post.navigation} />
+            </div>
+          </aside>
+        ) : null}
       </div>
-    </BlogLayout>
+    </div>
   );
+
+  if (embedded) {
+    return content;
+  }
+
+  return <BlogLayout>{content}</BlogLayout>;
 }

@@ -10,18 +10,17 @@ export default function BlogDefinitionList({ items, ordered = false }) {
         return (
           <li key={label ?? index} className="flex gap-2">
             {ordered && !label ? (
-              <span className="shrink-0 pt-px text-[14px] text-white/50">
+              <span className="shrink-0 pt-px text-[16px] text-white/50">
                 {index + 1}.
               </span>
             ) : null}
-            <span className="text-[14px] leading-normal">
+            <span className="text-[16px] leading-normal text-white/80">
               {label ? (
                 <>
-                  <span className="font-semibold text-white">
+                  <span className="font-semibold">
                     {index + 1}]{" "}
                   </span>
-                  <span className="font-semibold text-white">{label}:</span>{" "}
-                  <span className="text-white/90">{text}</span>
+                  <span className="font-semibold">{label}:</span> {text}
                 </>
               ) : (
                 text

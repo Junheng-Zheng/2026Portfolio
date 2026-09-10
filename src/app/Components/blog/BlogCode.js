@@ -1,6 +1,6 @@
 export default function BlogCode({ code, language, caption }) {
   return (
-    <figure className="flex w-full flex-col gap-2">
+    <figure className="mt-5 mb-1 flex w-full flex-col gap-2">
       <div className="overflow-x-auto rounded-[16px] border border-white/10 bg-white/[0.04] md:rounded-[20px]">
         {language ? (
           <div className="border-b border-white/10 px-4 py-2 text-[11px] uppercase tracking-wide text-white/40">
@@ -12,7 +12,7 @@ export default function BlogCode({ code, language, caption }) {
         </pre>
       </div>
       {caption ? (
-        <figcaption className="text-[12px] leading-snug text-white/45">
+        <figcaption className="text-[14px] leading-snug text-white/45">
           {caption}
         </figcaption>
       ) : null}

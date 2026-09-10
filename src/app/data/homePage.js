@@ -1,5 +1,5 @@
 import { BLOG_SLUGS } from "./blogPosts";
-import { WORK_SLUGS } from "./workPages";
+import { WORK_PAGES, WORK_SLUGS } from "./workPages";
 
 export const HOME_BIO =
   "My name is Junheng Zheng, and I am a problem solver working across design and development.";
@@ -45,27 +45,31 @@ export const HOME_HACKATHONS = [
   },
 ];
 
+const TESLA_PAGE = WORK_PAGES[WORK_SLUGS.TESLA];
+const IBM_PAGE = WORK_PAGES[WORK_SLUGS.IBM_RESEARCH];
+const LIBERTY_PAGE = WORK_PAGES[WORK_SLUGS.LIBERTY_MUTUAL];
+
 export const HOME_PROJECTS = [
   {
     image: "/landing/tesla-cover.png",
-    title: "SWE + Design @ Tesla",
+    title: TESLA_PAGE.title,
+    titleParts: TESLA_PAGE.titleParts,
     badges: [],
     href: `/work/${WORK_SLUGS.TESLA}`,
-    ndaProtected: true,
   },
   {
     image: "/landing/ibm-office-cover.png",
-    title: "SWE + Design @ IBM Research",
+    title: IBM_PAGE.title,
+    titleParts: IBM_PAGE.titleParts,
     badges: [],
-    href: `/blog/${BLOG_SLUGS.IBM_RESEARCH}`,
-    ndaProtected: true,
+    href: `/work/${WORK_SLUGS.IBM_RESEARCH}`,
   },
   {
     image: "/landing/lmicover.gif",
-    title: "SWE + Design @ Liberty Mutual",
+    title: LIBERTY_PAGE.title,
+    titleParts: LIBERTY_PAGE.titleParts,
     badges: [],
     href: `/work/${WORK_SLUGS.LIBERTY_MUTUAL}`,
-    ndaProtected: true,
   },
   {
     image: "/cardcovers/possample.png",

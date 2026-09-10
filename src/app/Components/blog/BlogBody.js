@@ -1,7 +1,7 @@
 export default function BlogBody({ children, className = "" }) {
   return (
     <div
-      className={`flex flex-col gap-5 text-[14px] leading-normal text-white/90 ${className}`}
+      className={`flex flex-col gap-4 text-[16px] leading-normal text-white/80 ${className}`}
     >
       {children}
     </div>

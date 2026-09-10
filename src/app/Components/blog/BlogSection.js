@@ -2,12 +2,12 @@ export default function BlogSection({ id, title, children, className = "" }) {
   return (
     <section
       id={id}
-      className={`flex w-full scroll-mt-28 flex-col gap-4 ${className}`}
+      className={`flex w-full scroll-mt-28 flex-col gap-5 ${className}`}
     >
-      <h2 className="text-[18px] leading-normal text-white md:text-[20px]">
+      <h2 className="text-[22px] font-medium leading-[1.2] text-white/85 md:text-[26px]">
         {title}
       </h2>
-      <div className="flex flex-col gap-5">{children}</div>
+      {children}
     </section>
   );
 }

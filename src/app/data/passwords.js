@@ -1,2 +1,2 @@
 // Add valid passwords here — any match will unlock process pages for the session.
-export const VALID_PASSWORDS = [];
+export const VALID_PASSWORDS = ["hello"];

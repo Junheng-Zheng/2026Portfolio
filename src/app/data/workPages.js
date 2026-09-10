@@ -1,3 +1,6 @@
+import { BLOG_SLUGS } from "./blogPosts";
+import { ProjectTag } from "./projectTags";
+
 export const WORK_SLUGS = {
   TESLA: "tesla",
   IBM_RESEARCH: "ibm-research",
@@ -15,7 +18,7 @@ export const CONTACT_ITEMS = [
 export const WORK_ITEMS = [
   {
     name: "Tesla",
-    period: "2026",
+    period: "Fall 2026",
     slug: WORK_SLUGS.TESLA,
   },
   {
@@ -35,106 +38,131 @@ export const WORK_ITEMS = [
   },
 ];
 
-export const HOME_ABSTRACT_SEGMENTS = [
-  {
-    text: "Junheng Zheng (Jun) is currently a Design Engineer intern at ",
-    italic: false,
-  },
-  {
-    text: "IBM Research",
-    href: "https://research.ibm.com/",
-  },
-  {
-    text: " on the Apps@Research team. Previously, Jun interned as a Design Engineer at ",
-    italic: false,
-  },
-  {
-    text: "Liberty Mutual Insurance",
-    href: "https://www.libertymutual.com/",
-  },
-  {
-    text: " on the Enterprise UI team working on internal design systems.",
-    italic: false,
-  },
-];
-
 export const WORK_PAGES = {
   [WORK_SLUGS.TESLA]: {
-    requiresProcessUnlock: true,
-    title: "Tesla",
-    duration: "2026",
-    team: ["Design Systems", "Internal Tools"],
-    abstractSegments: [
+    ndaProtected: true,
+    title: "User Interfaces & AI Workflows @ Tesla",
+    titleParts: [
+      { type: "text", value: "Interfaces " },
       {
-        text: "Jun is interning as a Frontend Engineer and Designer at ",
-        italic: false,
+        type: "icons",
+        icons: [
+          { src: "/logos/figma.png", alt: "Figma", className: "bg-blue-500" },
+          { src: "/logos/react.png", alt: "React", className: "bg-blue-500" },
+          {
+            src: "/logos/javascript.png",
+            alt: "JavaScript",
+            className: "bg-blue-500",
+          },
+        ],
       },
+
+      { type: "text", value: " & AI Workflows " },
       {
-        text: "Tesla",
-        href: `/work/${WORK_SLUGS.TESLA}`,
+        type: "icons",
+        icons: [
+          { src: "/logos/claude.png", alt: "Claude", className: "bg-blue-500" },
+          { src: "/logos/grok.png", alt: "Grok", className: "bg-blue-500" },
+        ],
       },
-      {
-        text: ", working on Design Systems and Internal Tools.",
-        italic: false,
-      },
+      { type: "text", value: " @ Tesla" },
     ],
+    duration: "Fall 2026",
+    readTime: "5 Min Read",
+    tags: [
+      ProjectTag.DESIGN_SYSTEM,
+      ProjectTag.INTERNAL_TOOLS,
+      ProjectTag.AI_WORKFLOW,
+    ],
+    cover: "/landing/tesla-cover.png",
+    about: [
+      "I'm interning at Tesla as a Frontend Engineer and Designer, working across Design Systems and Internal Tools.",
+      "The work sits at the intersection of product engineering and design, shipping interfaces that need to feel clear, consistent, and fast inside a complex internal ecosystem.",
+    ],
+    processSummary:
+      "Unlocked. The full Tesla case study is still being written.",
   },
   [WORK_SLUGS.IBM_RESEARCH]: {
-    title: "IBM Research",
-    duration: "Summer 26",
-    team: ["Apps@Research"],
-    abstractSegments: [
+    ndaProtected: true,
+    title: "Redesigns & Migrations @ IBM Research",
+    titleParts: [
+      { type: "text", value: "Redesigns " },
       {
-        text: "Jun is a Design Engineer intern at ",
-        italic: false,
+        type: "icons",
+        icons: [
+          { src: "/logos/figma.png", alt: "Figma", className: "bg-blue-500" },
+          { src: "/logos/miro.png", alt: "Miro", className: "bg-yellow-500" },
+        ],
       },
+      { type: "text", value: " & Migrations " },
       {
-        text: "IBM Research",
-        href: `/work/${WORK_SLUGS.IBM_RESEARCH}`,
+        type: "icons",
+        icons: [
+          { src: "/logos/react.png", alt: "React", className: "bg-blue-500" },
+          {
+            src: "/logos/javascript.png",
+            alt: "JavaScript",
+            className: "bg-yellow-500",
+          },
+        ],
       },
-      {
-        text: " on the internal Apps@Research team, building tools that help researchers working on Quantum Computing and AI ship internal applications faster.",
-        italic: false,
-      },
+      { type: "text", value: " @ IBM Research" },
     ],
+    duration: "Summer 26",
+    tags: [ProjectTag.INTERNAL_TOOLS, ProjectTag.DESIGN_SYSTEM],
+    cover: "/landing/ibm-office-cover.png",
+    about: [
+      "I interned at IBM Research as a Design Engineer on Apps@Research, the team that maintains internal tools for research ventures across the organization.",
+      "I was brought on to redesign and migrate one of their oldest applications: the Data & AI Model/Services Acquisition Portal (DARF), covering Figma redesign with Carbon, a Vue-to-React migration, an internal component library, and deployment to OpenShift.",
+    ],
+    processSummary:
+      "Unlocked. Read the full design-to-code case study for DARF.",
+    caseStudySlug: BLOG_SLUGS.IBM_RESEARCH,
+    processHref: `/blog/${BLOG_SLUGS.IBM_RESEARCH}`,
   },
   [WORK_SLUGS.LIBERTY_MUTUAL]: {
-    requiresProcessUnlock: true,
-    title: "Liberty Mutual",
-    duration: "Summer 25",
-    team: ["Enterprise UI", "Design Systems"],
-    abstractSegments: [
+    ndaProtected: true,
+    title: "Design Systems & MCPs @ Liberty Mutual",
+    titleParts: [
+      { type: "text", value: "Design Systems & " },
       {
-        text: "Jun interned as a Design Engineer at ",
-        italic: false,
+        type: "icons",
+        icons: [
+          { src: "/logos/figma.png", alt: "Figma", className: "bg-blue-500" },
+          { src: "/logos/react.png", alt: "React", className: "bg-blue-500" },
+          {
+            src: "/logos/javascript.png",
+            alt: "JavaScript",
+            className: "bg-yellow-500",
+          },
+        ],
       },
+      { type: "text", value: " & MCPs " },
       {
-        text: "Liberty Mutual Insurance",
-        href: `/work/${WORK_SLUGS.LIBERTY_MUTUAL}`,
+        type: "icons",
+        icons: [
+          { src: "/logos/claude.png", alt: "Claude", className: "bg-blue-500" },
+        ],
       },
-      {
-        text: " on the Enterprise UI team, contributing to the design system and personally increasing the component library by 50%.",
-        italic: false,
-      },
+      { type: "text", value: " @ Liberty Mutual" },
     ],
+    duration: "Summer 25",
+    tags: [ProjectTag.DESIGN_SYSTEM],
+    cover: "/landing/lmicover.gif",
+    about: [
+      "I interned as a Design Engineer at Liberty Mutual Insurance on the Enterprise UI team, contributing to the internal design system.",
+      "My work focused on reusable components and patterns, personally increasing the component library by 50% while helping the system stay consistent across internal products.",
+    ],
+    processSummary:
+      "Unlocked. The full Liberty Mutual case study is still being written.",
   },
   [WORK_SLUGS.DND_MOTOR]: {
+    ndaProtected: false,
     title: "D&D Motor Systems",
     duration: "Fall 24",
-    team: ["Web", "Design", "Marketing"],
-    abstractSegments: [
-      {
-        text: "Jun led design and frontend development for ",
-        italic: false,
-      },
-      {
-        text: "D&D Motor Systems",
-        href: `/work/${WORK_SLUGS.DND_MOTOR}`,
-      },
-      {
-        text: ", a complete website refresh for a motor manufacturing company in Syracuse, NY.",
-        italic: false,
-      },
+    tags: [ProjectTag.UI_DEVELOPMENT],
+    about: [
+      "I led design and frontend development for D&D Motor Systems, a complete website refresh for a motor manufacturing company in Syracuse, NY.",
     ],
   },
 };

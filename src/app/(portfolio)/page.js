@@ -1,26 +1,22 @@
 "use client";
 
-import { AnimatePresence, motion, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   ArrowUp,
   ArrowUpRight,
   CornerRightDown,
-  Eye,
-  EyeOff,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import GetInTouchButton from "../Components/GetInTouchButton";
+import {
+  markHomeVisited,
+  useSkipAnimations,
+} from "../Components/portfolioMotion";
 import { HOME_PROJECTS, HOME_CONTACT_DROPDOWN } from "../data/homePage";
 import { resolveProjectTags } from "../data/projectTags";
-import { VALID_PASSWORDS } from "../data/passwords";
-import {
-  isProcessUnlocked,
-  isValidPassword,
-  setProcessUnlocked,
-} from "../lib/passwordAuth";
+import WorkTitleWithIcons from "../Components/WorkTitleWithIcons";
 
 const HELLO_LETTERS = ["H", "e", "l", "l", "o"];
 const LETTER_SPRING = {
@@ -36,10 +32,8 @@ const PARENT_SPRING = {
   mass: 0.8,
 };
 
-const REVEAL_HIDDEN = { opacity: 0, y: 36, filter: "blur(10px)" };
-const REVEAL_VISIBLE = { opacity: 1, y: 0, filter: "blur(0px)" };
-const SLIDE_REVEAL_HIDDEN = { y: "100%", opacity: 0, filter: "blur(10px)" };
-const SLIDE_REVEAL_VISIBLE = { y: 0, opacity: 1, filter: "blur(0px)" };
+const SLIDE_REVEAL_HIDDEN = { y: 20, opacity: 0 };
+const SLIDE_REVEAL_VISIBLE = { y: 0, opacity: 1 };
 
 const FOOTER_LINK_CLASS =
   "inline-flex items-center gap-2 text-[16px] leading-normal text-[#919191] transition-colors hover:text-white/80 md:gap-3";
@@ -68,21 +62,6 @@ const ABOUT_FOOTER_LINKS = [
   { label: "Back to top", scrollTo: "top", icon: ArrowUp },
 ];
 
-function AboutReveal({ show, delay = 0, className = "", children }) {
-  return (
-    <div className="overflow-hidden">
-      <motion.div
-        className={className}
-        initial={SLIDE_REVEAL_HIDDEN}
-        animate={show ? SLIDE_REVEAL_VISIBLE : SLIDE_REVEAL_HIDDEN}
-        transition={{ ...LETTER_SPRING, delay }}
-      >
-        {children}
-      </motion.div>
-    </div>
-  );
-}
-
 function FooterLink({
   label,
   href,
@@ -99,33 +78,35 @@ function FooterLink({
     </span>
   );
 
+  const motionProps = {
+    initial: SLIDE_REVEAL_HIDDEN,
+    animate: show ? SLIDE_REVEAL_VISIBLE : SLIDE_REVEAL_HIDDEN,
+    transition: { ...LETTER_SPRING, delay: show ? delay : 0 },
+  };
+
+  if (scrollTo) {
+    return (
+      <motion.button
+        type="button"
+        onClick={() => onScrollTo(scrollTo)}
+        {...motionProps}
+        className={`${FOOTER_LINK_CLASS} ${show ? "pointer-events-auto" : "pointer-events-none"}`}
+      >
+        {content}
+      </motion.button>
+    );
+  }
+
   return (
-    <div className="overflow-hidden">
-      {scrollTo ? (
-        <motion.button
-          type="button"
-          onClick={() => onScrollTo(scrollTo)}
-          initial={SLIDE_REVEAL_HIDDEN}
-          animate={show ? SLIDE_REVEAL_VISIBLE : SLIDE_REVEAL_HIDDEN}
-          transition={{ ...LETTER_SPRING, delay }}
-          className={`block w-full text-left ${FOOTER_LINK_CLASS} ${show ? "pointer-events-auto" : "pointer-events-none"}`}
-        >
-          {content}
-        </motion.button>
-      ) : (
-        <motion.a
-          href={href}
-          target={opensInNewTab(href) ? "_blank" : undefined}
-          rel={opensInNewTab(href) ? "noopener noreferrer" : undefined}
-          initial={SLIDE_REVEAL_HIDDEN}
-          animate={show ? SLIDE_REVEAL_VISIBLE : SLIDE_REVEAL_HIDDEN}
-          transition={{ ...LETTER_SPRING, delay }}
-          className={`block ${FOOTER_LINK_CLASS} ${show ? "pointer-events-auto" : "pointer-events-none"}`}
-        >
-          {content}
-        </motion.a>
-      )}
-    </div>
+    <motion.a
+      href={href}
+      target={opensInNewTab(href) ? "_blank" : undefined}
+      rel={opensInNewTab(href) ? "noopener noreferrer" : undefined}
+      {...motionProps}
+      className={`${FOOTER_LINK_CLASS} ${show ? "pointer-events-auto" : "pointer-events-none"}`}
+    >
+      {content}
+    </motion.a>
   );
 }
 
@@ -192,16 +173,13 @@ function CursorPillMarquee({ comingSoon }) {
 function ProjectCard({
   image,
   title,
+  titleParts,
   badges = [],
   href,
   comingSoon = false,
   featured = false,
-  ndaProtected = false,
-  isNdaUnlocked = false,
-  onNdaGateOpen,
 }) {
   const isLinked = Boolean(href) && !comingSoon;
-  const needsNdaGate = ndaProtected && !isNdaUnlocked && Boolean(href);
   const resolvedBadges = resolveProjectTags(badges);
   const mediaRef = useRef(null);
   const pillRef = useRef(null);
@@ -264,8 +242,15 @@ function ProjectCard({
 
   const footer = (
     <div className="flex w-full items-center justify-between gap-3 md:gap-4">
-      <p className="text-[16px] leading-normal text-[#c1c1c1] transition-colors duration-300 group-hover:text-white">
-        {title}
+      <p
+        className="min-w-0 text-[16px] leading-normal text-[#a8a8a8] transition-colors duration-300 group-hover:text-white/85"
+        aria-label={title}
+      >
+        <WorkTitleWithIcons
+          title={title}
+          titleParts={titleParts}
+          iconSizeClassName="size-5 md:size-6"
+        />
       </p>
       <span
         className="inline-flex size-9 shrink-0 items-center justify-center rounded-full md:size-11"
@@ -274,7 +259,7 @@ function ProjectCard({
         <ArrowUpRight
           size={18}
           strokeWidth={1.5}
-          className="text-[#c1c1c1] transition-all duration-300 group-hover:rotate-45 group-hover:text-white md:size-5"
+          className="text-[#a8a8a8] transition-all duration-300 group-hover:rotate-45 group-hover:text-white/85 md:size-5"
         />
       </span>
     </div>
@@ -293,209 +278,47 @@ function ProjectCard({
     <article
       className={`w-full shrink-0 ${featured ? "lg:col-span-2" : "lg:col-span-1"}`}
     >
-      {isLinked && !needsNdaGate ? (
+      {isLinked ? (
         <Link href={href} className={cardClassName}>
           {body}
         </Link>
       ) : (
-        <div
-          className={cardClassName}
-          onClick={() => {
-            if (needsNdaGate) onNdaGateOpen?.(href);
-          }}
-          onKeyDown={(event) => {
-            if (needsNdaGate && (event.key === "Enter" || event.key === " ")) {
-              event.preventDefault();
-              onNdaGateOpen?.(href);
-            }
-          }}
-          role={needsNdaGate ? "button" : undefined}
-          tabIndex={needsNdaGate ? 0 : undefined}
-        >
-          {body}
-        </div>
+        <div className={cardClassName}>{body}</div>
       )}
     </article>
   );
 }
 
-function NdaGate({ open, onClose, onUnlock }) {
-  const [password, setPassword] = useState("");
-  const [visible, setVisible] = useState(false);
-  const [error, setError] = useState(false);
-  const inputFocusedRef = useRef(false);
-
-  useEffect(() => {
-    if (!open) {
-      setPassword("");
-      setVisible(false);
-      setError(false);
-      inputFocusedRef.current = false;
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    const handleScroll = () => {
-      if (inputFocusedRef.current) return;
-      onClose();
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [open, onClose]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-
-    if (isValidPassword(password, VALID_PASSWORDS)) {
-      setProcessUnlocked();
-      setError(false);
-      onUnlock();
-      return;
-    }
-
-    setError(true);
-  };
-
-  return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          key="nda-gate"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[100] flex items-end bg-black/50 backdrop-blur-[2px]"
-          onClick={onClose}
-        >
-          <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={LETTER_SPRING}
-            className="h-fit w-full bg-black py-6 md:py-8 lg:py-12"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-5 px-5 text-[16px] leading-normal md:gap-8 md:px-24">
-              <div className="flex flex-col gap-1">
-                <h2 className="text-[22px] font-medium leading-[1.1] text-white md:text-[28px]">
-                  This work is under NDA
-                </h2>
-                <p className="leading-normal text-white/60">
-                  Enter the password to view protected case studies.
-                </p>
-              </div>
-
-              <form
-                onSubmit={handleSubmit}
-                className="flex w-full max-w-xl flex-col gap-2"
-              >
-                <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-stretch">
-                  <div
-                    className={`flex h-10 flex-1 items-center gap-2 rounded-full bg-[#262424] px-4 border transition-colors ${
-                      error
-                        ? "border-red-500 focus-within:ring-1 focus-within:ring-red-500/50"
-                        : "border-transparent focus-within:ring-1 focus-within:ring-white/20"
-                    }`}
-                  >
-                    <input
-                      type={visible ? "text" : "password"}
-                      value={password}
-                      onChange={(event) => {
-                        setPassword(event.target.value);
-                        if (error) setError(false);
-                      }}
-                      onFocus={() => {
-                        inputFocusedRef.current = true;
-                      }}
-                      onBlur={() => {
-                        inputFocusedRef.current = false;
-                      }}
-                      placeholder="Password"
-                      autoComplete="current-password"
-                      className="min-w-0 flex-1 h-full bg-transparent py-0 text-[16px] leading-normal text-white placeholder:text-white/40 outline-none"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setVisible((current) => !current)}
-                      aria-label={visible ? "Hide password" : "Show password"}
-                      className="shrink-0 text-white/50 transition-colors hover:text-white/80"
-                    >
-                      {visible ? (
-                        <Eye className="size-4" strokeWidth={1.5} />
-                      ) : (
-                        <EyeOff className="size-4" strokeWidth={1.5} />
-                      )}
-                    </button>
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="inline-flex h-10 shrink-0 cursor-pointer items-center justify-center rounded-full bg-[#0059ff] px-5 text-[16px] leading-normal text-white transition-opacity hover:opacity-90 active:scale-[0.98]"
-                  >
-                    Unlock
-                  </button>
-                </div>
-
-                {error ? (
-                  <p className="text-red-500">
-                    Incorrect password. Please try again.
-                  </p>
-                ) : null}
-              </form>
-            </div>
-          </motion.div>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
-  );
-}
-
 const AnimationPage = () => {
-  const router = useRouter();
+  // Hydration-safe: SSR + first client paint are false; sessionStorage applies after mount.
+  const skipAnimations = useSkipAnimations();
   const [lettersDone, setLettersDone] = useState(false);
-  const [ndaGateOpen, setNdaGateOpen] = useState(false);
-  const [ndaPendingHref, setNdaPendingHref] = useState(null);
-  const [isNdaUnlocked, setIsNdaUnlocked] = useState(false);
   const workRef = useRef(null);
   const aboutRef = useRef(null);
-  const aboutInView = useInView(aboutRef, { once: true, amount: 0.4 });
+  const aboutTitleRef = useRef(null);
+  const aboutInView = useInView(aboutTitleRef, { once: true, amount: 0.4 });
+  const reveal = skipAnimations || lettersDone;
+  const instant = { duration: 0 };
+  const motionTransition = skipAnimations ? instant : PARENT_SPRING;
+  const fadeVisible = { opacity: 1, y: 0, filter: "blur(0px)" };
+  const fadeHidden = { opacity: 0, y: 30, filter: "blur(5px)" };
+  const workHidden = { opacity: 0, y: 36, filter: "blur(10px)" };
 
   useEffect(() => {
-    setIsNdaUnlocked(isProcessUnlocked());
-  }, []);
+    if (skipAnimations) return undefined;
 
-  const handleNdaClose = useCallback(() => {
-    setNdaGateOpen(false);
-  }, []);
+    const timeout = window.setTimeout(() => {
+      setLettersDone(true);
+    }, 1200);
 
-  const handleNdaGateOpen = useCallback((href) => {
-    setNdaPendingHref(href);
-    setNdaGateOpen(true);
-  }, []);
+    return () => window.clearTimeout(timeout);
+  }, [skipAnimations]);
 
-  const handleNdaUnlock = useCallback(() => {
-    const href = ndaPendingHref;
-    setIsNdaUnlocked(true);
-    setNdaGateOpen(false);
-    setNdaPendingHref(null);
-
-    if (!href) return;
-
-    document.documentElement.style.scrollBehavior = "auto";
-    document.body.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-    router.push(href, { scroll: false });
-  }, [ndaPendingHref, router]);
+  useEffect(() => {
+    if (!reveal) return undefined;
+    markHomeVisited();
+    return undefined;
+  }, [reveal]);
 
   const scrollToSection = useCallback((section) => {
     if (section === "top") smoothScrollToTop();
@@ -505,31 +328,24 @@ const AnimationPage = () => {
 
   return (
     <div className="relative flex min-h-dvh w-full flex-col bg-[#161616] max-md:overflow-x-hidden">
-      <NdaGate
-        open={ndaGateOpen}
-        onClose={handleNdaClose}
-        onUnlock={handleNdaUnlock}
-      />
-
       <motion.div
-        initial={{ maxHeight: "100dvh" }}
-        animate={
-          lettersDone
+        initial={
+          skipAnimations
             ? { maxHeight: "fit-content", scale: 1 }
             : { maxHeight: "100dvh" }
         }
-        transition={PARENT_SPRING}
-        className={`mx-auto flex w-full max-w-[1600px] flex-col ${lettersDone ? "overflow-visible" : "overflow-hidden"}`}
+        animate={
+          reveal
+            ? { maxHeight: "fit-content", scale: 1 }
+            : { maxHeight: "100dvh" }
+        }
+        transition={motionTransition}
+        className={`mx-auto flex w-full max-w-[1600px] flex-col ${reveal ? "overflow-visible" : "overflow-hidden"}`}
       >
         <div className="relative z-30  flex flex-col gap-4">
           <motion.div
-            initial={{
-              height: "100dvh",
-              width: "100%",
-              translateY: "-28px",
-            }}
-            animate={
-              lettersDone
+            initial={
+              skipAnimations
                 ? {
                     height: "fit-content",
                     width: "fit-content",
@@ -541,19 +357,41 @@ const AnimationPage = () => {
                     translateY: "-28px",
                   }
             }
-            transition={PARENT_SPRING}
+            animate={
+              reveal
+                ? {
+                    height: "fit-content",
+                    width: "fit-content",
+                    translateY: "0px",
+                  }
+                : {
+                    height: "100dvh",
+                    width: "100%",
+                    translateY: "-28px",
+                  }
+            }
+            transition={motionTransition}
             className="flex items-center px-24 pt-14  justify-center max-md:px-5 max-md:pt-10"
           >
             {HELLO_LETTERS.map((letter, index) => (
               <motion.span
                 key={`${letter}-${index}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                transition={{
-                  ...LETTER_SPRING,
-                  delay: index * 0.05,
-                }}
+                initial={
+                  skipAnimations
+                    ? fadeVisible
+                    : { opacity: 0, y: 10 }
+                }
+                animate={fadeVisible}
+                transition={
+                  skipAnimations
+                    ? instant
+                    : {
+                        ...LETTER_SPRING,
+                        delay: index * 0.05,
+                      }
+                }
                 onAnimationComplete={() => {
+                  if (skipAnimations) return;
                   if (index === HELLO_LETTERS.length - 1) {
                     setLettersDone(true);
                   }
@@ -567,16 +405,16 @@ const AnimationPage = () => {
           <div className="px-24 max-md:px-5">
             <div className="overflow-hidden max-w-[442px]">
               <motion.p
-                initial={{ opacity: 0, y: 30, filter: "blur(5px)" }}
-                animate={
-                  lettersDone
-                    ? { opacity: 1, y: 0, filter: "blur(0px)" }
-                    : { opacity: 0, y: 30, filter: "blur(5px)" }
+                initial={skipAnimations ? fadeVisible : fadeHidden}
+                animate={reveal ? fadeVisible : fadeHidden}
+                transition={
+                  skipAnimations
+                    ? instant
+                    : {
+                        ...LETTER_SPRING,
+                        delay: 0.5,
+                      }
                 }
-                transition={{
-                  ...LETTER_SPRING,
-                  delay: 0.5,
-                }}
                 className="text-[16px] leading-normal text-white"
               >
                 Jun is a Developer and Designer. Exp @ Tesla, IBM Research, and
@@ -593,16 +431,16 @@ const AnimationPage = () => {
           </div>
           <div className="relative px-24 max-md:px-5">
             <motion.div
-              initial={{ opacity: 0, y: 30, filter: "blur(5px)" }}
-              animate={
-                lettersDone
-                  ? { opacity: 1, y: 0, filter: "blur(0px)" }
-                  : { opacity: 0, y: 30, filter: "blur(5px)" }
+              initial={skipAnimations ? fadeVisible : fadeHidden}
+              animate={reveal ? fadeVisible : fadeHidden}
+              transition={
+                skipAnimations
+                  ? instant
+                  : {
+                      ...LETTER_SPRING,
+                      delay: 0.7,
+                    }
               }
-              transition={{
-                ...LETTER_SPRING,
-                delay: 0.7,
-              }}
               className="flex flex-row flex-wrap items-center gap-4 sm:gap-6 max-md:gap-3"
             >
               <GetInTouchButton />
@@ -624,25 +462,23 @@ const AnimationPage = () => {
         >
           <motion.section
             className="flex w-full flex-col gap-8 px-24 lg:grid lg:grid-cols-2 lg:gap-9 lg:overflow-x-auto lg:pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:gap-6 max-md:px-5"
-            initial={false}
-            animate={
-              lettersDone
-                ? { opacity: 1, y: 0, filter: "blur(0px)" }
-                : { opacity: 0, y: 36, filter: "blur(10px)" }
+            initial={skipAnimations ? fadeVisible : workHidden}
+            animate={reveal ? fadeVisible : workHidden}
+            transition={
+              skipAnimations
+                ? instant
+                : {
+                    ...LETTER_SPRING,
+                    delay: 0.9,
+                  }
             }
-            transition={{
-              ...LETTER_SPRING,
-              delay: 0.9,
-            }}
-            style={{ pointerEvents: lettersDone ? "auto" : "none" }}
+            style={{ pointerEvents: reveal ? "auto" : "none" }}
           >
             {HOME_PROJECTS.map((project, index) => (
               <ProjectCard
                 key={project.title}
                 {...project}
                 featured={index === 0}
-                isNdaUnlocked={isNdaUnlocked}
-                onNdaGateOpen={handleNdaGateOpen}
               />
             ))}
           </motion.section>
@@ -651,7 +487,10 @@ const AnimationPage = () => {
           ref={aboutRef}
           className="flex w-full flex-col gap-8 px-24 pt-0  pb-16 text-[16px] leading-normal max-md:px-5 max-lg:gap-8 lg:flex-row lg:gap-0 lg:py-12 lg:pb-24"
         >
-          <div className="w-full lg:w-1/4 lg:self-start lg:sticky lg:top-12">
+          <div
+            ref={aboutTitleRef}
+            className="w-full lg:w-1/4 lg:self-start lg:sticky lg:top-12"
+          >
             <h1 className="text-[40px] font-medium leading-[1] text-white sm:text-[48px] max-lg:leading-none lg:text-[64px] lg:leading-[64px]">
               About
             </h1>

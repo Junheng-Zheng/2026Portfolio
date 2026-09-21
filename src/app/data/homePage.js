@@ -53,21 +53,18 @@ export const HOME_PROJECTS = [
   {
     image: "/landing/tesla-cover.png",
     title: TESLA_PAGE.title,
-    titleParts: TESLA_PAGE.titleParts,
     badges: [],
     href: `/work/${WORK_SLUGS.TESLA}`,
   },
   {
     image: "/landing/ibm-office-cover.png",
     title: IBM_PAGE.title,
-    titleParts: IBM_PAGE.titleParts,
     badges: [],
     href: `/work/${WORK_SLUGS.IBM_RESEARCH}`,
   },
   {
     image: "/landing/lmicover.gif",
     title: LIBERTY_PAGE.title,
-    titleParts: LIBERTY_PAGE.titleParts,
     badges: [],
     href: `/work/${WORK_SLUGS.LIBERTY_MUTUAL}`,
   },
@@ -79,7 +76,7 @@ export const HOME_PROJECTS = [
   },
   {
     image: "/pomodoro/cover.png",
-    title: "Pomodoro Timer",
+    title: "Pomodoro Timer, an UI Exercise",
     badges: [],
     href: `/blog/${BLOG_SLUGS.POMODORO_TIMER}`,
   },

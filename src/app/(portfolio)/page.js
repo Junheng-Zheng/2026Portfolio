@@ -2,11 +2,7 @@
 
 import { motion, useInView } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  ArrowUp,
-  ArrowUpRight,
-  CornerRightDown,
-} from "lucide-react";
+import { ArrowUp, ArrowUpRight, CornerRightDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import GetInTouchButton from "../Components/GetInTouchButton";
@@ -16,20 +12,58 @@ import {
 } from "../Components/portfolioMotion";
 import { HOME_PROJECTS, HOME_CONTACT_DROPDOWN } from "../data/homePage";
 import { resolveProjectTags } from "../data/projectTags";
-import WorkTitleWithIcons from "../Components/WorkTitleWithIcons";
 
-const HELLO_LETTERS = ["H", "e", "l", "l", "o"];
+const HERO_ROLES = [
+  {
+    label: "Designer",
+    icons: [
+      { src: "/logos/miro.png", alt: "Miro", className: "bg-green-500" },
+      { src: "/logos/figma.png", alt: "Figma", className: "bg-blue-500" },
+    ],
+  },
+  {
+    label: "Developer",
+    icons: [
+      { src: "/logos/react.png", alt: "React", className: "bg-blue-500" },
+      {
+        src: "/logos/tailwind.png",
+        alt: "Tailwind",
+        className: "bg-yellow-500",
+      },
+      {
+        src: "/logos/javascript.png",
+        alt: "JavaScript",
+        className: "bg-green-500",
+      },
+    ],
+  },
+  {
+    label: "Builder",
+    icons: [
+      { src: "/logos/claude.png", alt: "Claude", className: "bg-blue-500" },
+      { src: "/logos/grok.png", alt: "Grok", className: "bg-blue-500" },
+    ],
+  },
+];
+
+// Each role = its letters + one icon stack; used for stagger timing.
+const HERO_STAGGER_COUNT = HERO_ROLES.reduce(
+  (count, role) => count + role.label.length + 1,
+  0,
+);
+
+const HERO_REVEAL_DELAY_MS = 200;
+const HERO_STAGGER_S = 0.05;
+const HERO_ENTRANCE_MS = (HERO_STAGGER_COUNT * HERO_STAGGER_S + 0.55) * 1000;
 const LETTER_SPRING = {
   type: "spring",
   stiffness: 120,
   damping: 18,
   mass: 0.8,
 };
-const PARENT_SPRING = {
-  type: "spring",
-  stiffness: 120,
-  damping: 18,
-  mass: 0.8,
+const LAYOUT_EASE = {
+  duration: 0.55,
+  ease: [0.22, 1, 0.36, 1],
 };
 
 const SLIDE_REVEAL_HIDDEN = { y: 20, opacity: 0 };
@@ -124,6 +158,91 @@ function Badge({ label, className: tagClassName, tone }) {
   );
 }
 
+function RoleIconStack({ icons, sizeClassName = "size-[0.95em]" }) {
+  return (
+    <span className="inline-flex items-center w-fit align-middle" aria-hidden>
+      {icons.map((icon, index) => (
+        <span
+          key={`${icon.src}-${index}`}
+          className={`relative inline-block shrink-0 overflow-hidden rounded-full align-middle ${sizeClassName} ${
+            index > 0 ? "-ml-[0.28em]" : ""
+          } ${icon.className ?? ""}`}
+        >
+          <Image
+            src={icon.src}
+            alt={icon.alt ?? ""}
+            fill
+            className="object-contain"
+          />
+        </span>
+      ))}
+    </span>
+  );
+}
+
+const HERO_TEXT_CLASS =
+  "text-[24px] font-medium leading-none text-white sm:text-[48px] md:text-[20px] md:leading-6";
+
+function HeroSentence({ skipAnimations }) {
+  const instant = { duration: 0 };
+  let staggerIndex = 0;
+
+  return (
+    <h1
+      className={`flex flex-wrap items-center justify-start gap-x-[0.6em] gap-y-2 ${HERO_TEXT_CLASS}`}
+      aria-label="Designer, Developer, Builder"
+    >
+      {HERO_ROLES.map((role) => {
+        const letterNodes = role.label.split("").map((char, charIndex) => {
+          const delay = staggerIndex * HERO_STAGGER_S;
+          staggerIndex += 1;
+          return (
+            <motion.span
+              key={`${role.label}-${charIndex}`}
+              initial={
+                skipAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+              }
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                skipAnimations ? instant : { ...LETTER_SPRING, delay }
+              }
+              className="inline-block"
+            >
+              {char}
+            </motion.span>
+          );
+        });
+
+        const iconsDelay = staggerIndex * HERO_STAGGER_S;
+        staggerIndex += 1;
+
+        return (
+          <span
+            key={role.label}
+            className="inline-flex items-center whitespace-nowrap"
+          >
+            {letterNodes}
+            <motion.span
+              initial={
+                skipAnimations ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+              }
+              animate={{ opacity: 1, y: 0 }}
+              transition={
+                skipAnimations
+                  ? instant
+                  : { ...LETTER_SPRING, delay: iconsDelay }
+              }
+              className="inline-flex ml-[0.28em]"
+            >
+              <RoleIconStack icons={role.icons} />
+            </motion.span>
+          </span>
+        );
+      })}
+    </h1>
+  );
+}
+
 const CURSOR_PILL_BASE_CLASS =
   "pointer-events-none absolute left-0 top-0 z-20 hidden opacity-0 transition-opacity duration-150 will-change-transform lg:block";
 
@@ -170,23 +289,31 @@ function CursorPillMarquee({ comingSoon }) {
   );
 }
 
+const PROJECT_COL_SPAN_CLASS = {
+  3: "lg:col-span-3",
+  5: "lg:col-span-5",
+  6: "lg:col-span-6",
+  7: "lg:col-span-7",
+  9: "lg:col-span-9",
+  12: "lg:col-span-12",
+};
+
+/** 12-col layout: 6|6, 7|5, 3|9 */
+const PROJECT_GRID_SPANS = [6, 6, 7, 5, 3, 9];
+
 function ProjectCard({
   image,
   title,
-  titleParts,
   badges = [],
   href,
   comingSoon = false,
-  featured = false,
+  colSpan = 6,
 }) {
   const isLinked = Boolean(href) && !comingSoon;
   const resolvedBadges = resolveProjectTags(badges);
   const mediaRef = useRef(null);
   const pillRef = useRef(null);
-
-  const aspectClass = featured
-    ? "aspect-[4/3] lg:aspect-[8/3]"
-    : "aspect-[4/3]";
+  const spanClass = PROJECT_COL_SPAN_CLASS[colSpan] ?? "lg:col-span-6";
 
   const updatePillPosition = (clientX, clientY) => {
     const media = mediaRef.current;
@@ -219,13 +346,16 @@ function ProjectCard({
       onMouseEnter={handleMediaEnter}
       onMouseLeave={handleMediaLeave}
       onMouseMove={handleMediaMove}
-      className={`relative ${aspectClass} w-full overflow-hidden rounded-[16px] md:rounded-[20px] lg:cursor-none`}
+      className="relative h-full min-h-0 w-full overflow-hidden rounded-none lg:cursor-none"
     >
+      {/* In-flow sizer so wider cards set the row height; image fills on stretch */}
+      <div className="w-full aspect-[4/3]" aria-hidden />
       <Image
         src={image}
         alt=""
         fill
-        className="object-cover pointer-events-none transition-transform duration-500 ease-out group-hover:scale-105"
+        sizes="(max-width: 1024px) 100vw, 60vw"
+        className="object-cover object-center pointer-events-none transition-transform duration-500 ease-out group-hover:scale-105"
         unoptimized={image.endsWith(".gif")}
       />
       <div className="absolute inset-0 flex flex-wrap items-start gap-2 p-3 md:gap-2.5 md:p-5 pointer-events-none">
@@ -241,19 +371,15 @@ function ProjectCard({
   );
 
   const footer = (
-    <div className="flex w-full items-center justify-between gap-3 md:gap-4">
+    <div className="flex w-full shrink-0 items-center justify-between gap-3 pt-1.5 md:gap-4 md:pt-2">
       <p
-        className="min-w-0 text-[16px] leading-normal text-[#a8a8a8] transition-colors duration-300 group-hover:text-white/85"
+        className="min-w-0 flex-1 pr-5 text-[16px] leading-normal text-[#a8a8a8] transition-colors duration-300 group-hover:text-white/85 md:pr-0"
         aria-label={title}
       >
-        <WorkTitleWithIcons
-          title={title}
-          titleParts={titleParts}
-          iconSizeClassName="size-5 md:size-6"
-        />
+        {title}
       </p>
       <span
-        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full md:size-11"
+        className="inline-flex size-9 shrink-0 items-center justify-center max-md:ml-2 md:size-11"
         aria-hidden
       >
         <ArrowUpRight
@@ -266,17 +392,18 @@ function ProjectCard({
   );
 
   const body = (
-    <div className="flex w-full flex-col gap-2.5 md:gap-3">
+    <>
       {media}
       {footer}
-    </div>
+    </>
   );
 
-  const cardClassName = "group block w-full cursor-pointer";
+  const cardClassName =
+    "group grid h-full w-full min-h-0 cursor-pointer grid-rows-[1fr_auto]";
 
   return (
     <article
-      className={`w-full shrink-0 ${featured ? "lg:col-span-2" : "lg:col-span-1"}`}
+      className={`col-span-1 flex h-full min-h-0 w-full flex-col ${spanClass}`}
     >
       {isLinked ? (
         <Link href={href} className={cardClassName}>
@@ -293,32 +420,55 @@ const AnimationPage = () => {
   // Hydration-safe: SSR + first client paint are false; sessionStorage applies after mount.
   const skipAnimations = useSkipAnimations();
   const [lettersDone, setLettersDone] = useState(false);
+  const [revealReady, setRevealReady] = useState(false);
+  const [clipUnlocked, setClipUnlocked] = useState(false);
   const workRef = useRef(null);
   const aboutRef = useRef(null);
   const aboutTitleRef = useRef(null);
   const aboutInView = useInView(aboutTitleRef, { once: true, amount: 0.4 });
-  const reveal = skipAnimations || lettersDone;
+  const reveal = skipAnimations || revealReady;
+  const pageUnlocked = skipAnimations || clipUnlocked;
   const instant = { duration: 0 };
-  const motionTransition = skipAnimations ? instant : PARENT_SPRING;
+  const layoutTransition = skipAnimations ? instant : LAYOUT_EASE;
   const fadeVisible = { opacity: 1, y: 0, filter: "blur(0px)" };
   const fadeHidden = { opacity: 0, y: 30, filter: "blur(5px)" };
   const workHidden = { opacity: 0, y: 36, filter: "blur(10px)" };
 
   useEffect(() => {
-    if (skipAnimations) return undefined;
+    if (skipAnimations) {
+      setRevealReady(true);
+      setClipUnlocked(true);
+      return undefined;
+    }
+    if (lettersDone) {
+      const timeout = window.setTimeout(() => {
+        setRevealReady(true);
+      }, HERO_REVEAL_DELAY_MS);
+      return () => window.clearTimeout(timeout);
+    }
 
     const timeout = window.setTimeout(() => {
       setLettersDone(true);
-    }, 1200);
-
+    }, HERO_ENTRANCE_MS);
     return () => window.clearTimeout(timeout);
-  }, [skipAnimations]);
+  }, [skipAnimations, lettersDone]);
 
   useEffect(() => {
     if (!reveal) return undefined;
     markHomeVisited();
     return undefined;
   }, [reveal]);
+
+  useEffect(() => {
+    if (!reveal || skipAnimations || clipUnlocked) return undefined;
+    const timeout = window.setTimeout(
+      () => {
+        setClipUnlocked(true);
+      },
+      LAYOUT_EASE.duration * 1000 + 80,
+    );
+    return () => window.clearTimeout(timeout);
+  }, [reveal, skipAnimations, clipUnlocked]);
 
   const scrollToSection = useCallback((section) => {
     if (section === "top") smoothScrollToTop();
@@ -328,79 +478,28 @@ const AnimationPage = () => {
 
   return (
     <div className="relative flex min-h-dvh w-full flex-col bg-[#161616] max-md:overflow-x-hidden">
-      <motion.div
-        initial={
-          skipAnimations
-            ? { maxHeight: "fit-content", scale: 1 }
-            : { maxHeight: "100dvh" }
-        }
-        animate={
-          reveal
-            ? { maxHeight: "fit-content", scale: 1 }
-            : { maxHeight: "100dvh" }
-        }
-        transition={motionTransition}
-        className={`mx-auto flex w-full max-w-[1600px] flex-col ${reveal ? "overflow-visible" : "overflow-hidden"}`}
+      <div
+        className={`mx-auto flex w-full max-w-[1600px] flex-col ${
+          pageUnlocked ? "overflow-visible" : "max-h-dvh overflow-hidden"
+        }`}
       >
         <div className="relative z-30  flex flex-col gap-4">
           <motion.div
             initial={
               skipAnimations
-                ? {
-                    height: "fit-content",
-                    width: "fit-content",
-                    translateY: "0px",
-                  }
-                : {
-                    height: "100dvh",
-                    width: "100%",
-                    translateY: "-28px",
-                  }
+                ? { height: "auto", y: 0 }
+                : { height: "100dvh", y: -28 }
             }
             animate={
-              reveal
-                ? {
-                    height: "fit-content",
-                    width: "fit-content",
-                    translateY: "0px",
-                  }
-                : {
-                    height: "100dvh",
-                    width: "100%",
-                    translateY: "-28px",
-                  }
+              reveal ? { height: "auto", y: 0 } : { height: "100dvh", y: -28 }
             }
-            transition={motionTransition}
-            className="flex items-center px-24 pt-14  justify-center max-md:px-5 max-md:pt-10"
+            transition={layoutTransition}
+            onAnimationComplete={() => {
+              if (reveal) setClipUnlocked(true);
+            }}
+            className="flex w-full items-center justify-start px-24 pt-14 relative max-md:px-5 max-md:pt-10"
           >
-            {HELLO_LETTERS.map((letter, index) => (
-              <motion.span
-                key={`${letter}-${index}`}
-                initial={
-                  skipAnimations
-                    ? fadeVisible
-                    : { opacity: 0, y: 10 }
-                }
-                animate={fadeVisible}
-                transition={
-                  skipAnimations
-                    ? instant
-                    : {
-                        ...LETTER_SPRING,
-                        delay: index * 0.05,
-                      }
-                }
-                onAnimationComplete={() => {
-                  if (skipAnimations) return;
-                  if (index === HELLO_LETTERS.length - 1) {
-                    setLettersDone(true);
-                  }
-                }}
-                className="text-[40px] font-medium leading-[1] text-white sm:text-[48px] md:text-[64px] md:leading-[64px]"
-              >
-                {letter}
-              </motion.span>
-            ))}
+            <HeroSentence skipAnimations={skipAnimations} />
           </motion.div>
           <div className="px-24 max-md:px-5">
             <div className="overflow-hidden max-w-[442px]">
@@ -461,7 +560,7 @@ const AnimationPage = () => {
           className="overflow-hidden pt-14 pb-14 bg-[#161616] z-20 max-md:pt-10 max-md:pb-12"
         >
           <motion.section
-            className="flex w-full flex-col gap-8 px-24 lg:grid lg:grid-cols-2 lg:gap-9 lg:overflow-x-auto lg:pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-md:gap-6 max-md:px-5"
+            className="grid w-full grid-cols-1 items-stretch gap-6 px-5 max-md:gap-6 md:gap-8 lg:grid-cols-12 lg:gap-3 lg:px-24"
             initial={skipAnimations ? fadeVisible : workHidden}
             animate={reveal ? fadeVisible : workHidden}
             transition={
@@ -478,7 +577,7 @@ const AnimationPage = () => {
               <ProjectCard
                 key={project.title}
                 {...project}
-                featured={index === 0}
+                colSpan={PROJECT_GRID_SPANS[index] ?? 6}
               />
             ))}
           </motion.section>
@@ -634,7 +733,7 @@ const AnimationPage = () => {
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 };

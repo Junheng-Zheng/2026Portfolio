@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@iconify/react": "^6.0.2",
+    "@paper-design/shaders-react": "^0.0.81",
     "@vercel/analytics": "^2.0.1",
     "framer-motion": "^12.23.26",
     "lucide-react": "^0.562.0",

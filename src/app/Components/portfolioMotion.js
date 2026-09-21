@@ -5,6 +5,9 @@ import { useSyncExternalStore } from "react";
 
 export const HOME_VISITED_KEY = "portfolio-home-visited";
 
+/** Set false while testing so Hello always plays (no sessionStorage read/write). */
+export const PERSIST_HOME_VISIT = true;
+
 export const COLORS = {
   background: "#1a1a1a",
   foreground: "#ffffff",
@@ -24,6 +27,7 @@ function notifyHomeVisitedSubscribers() {
 }
 
 function getHomeVisitedSnapshot() {
+  if (!PERSIST_HOME_VISIT) return false;
   if (typeof window === "undefined") return false;
   return sessionStorage.getItem(HOME_VISITED_KEY) === "true";
 }
@@ -41,6 +45,7 @@ export function useSkipAnimations() {
 }
 
 export function markHomeVisited() {
+  if (!PERSIST_HOME_VISIT) return;
   try {
     sessionStorage.setItem(HOME_VISITED_KEY, "true");
     notifyHomeVisitedSubscribers();
